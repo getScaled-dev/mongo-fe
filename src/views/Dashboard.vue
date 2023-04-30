@@ -1,0 +1,58 @@
+<template>
+  <div class="mx-10">
+    <div class="d-flex justify-space-between mt-8 mb-4">
+      <img
+        src="../assets/logo_scaled_falcqb.png"
+        alt=""
+        style="max-width: 225px; height: fit-content"
+      />
+      <div class="text-center">
+        <v-menu offset-y>
+          <template v-slot:activator="{ on, attrs }">
+            <v-btn color="#070253" v-bind="attrs" v-on="on">
+              <span style="color: white">{{ currentUser }}</span>
+            </v-btn>
+          </template>
+          <v-list>
+            <v-list-item @click="viewProfile">
+              <v-list-item-title>View Profile</v-list-item-title>
+            </v-list-item>
+            <v-list-item @click="logout">
+              <v-list-item-title>Logout</v-list-item-title>
+            </v-list-item>
+          </v-list>
+        </v-menu>
+      </div>
+    </div>
+
+    <UsersTable />
+  </div>
+</template>
+
+<script>
+import UsersTable from "./UsersTable.vue";
+
+export default {
+  name: "Home",
+
+  components: {
+    UsersTable,
+  },
+  data() {
+    return {
+      currentUser: "Cameron",
+    };
+  },
+  methods: {
+    viewProfile() {
+      this.$router.push("/");
+    },
+    logout() {
+      localStorage.removeItem("token");
+      localStorage.removeItem("isAdmin");
+
+      this.$router.push("/login");
+    },
+  },
+};
+</script>

@@ -1,0 +1,7 @@
+npm install
+
+npm run serve
+
+// For build
+
+npm run build
