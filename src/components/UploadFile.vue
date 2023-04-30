@@ -98,7 +98,7 @@ export default {
       }
       this.loading = true;
       axios
-        .post(`http://localhost:3000/api/add-data`, data, {
+        .post(`${process.env.VUE_APP_API_URL}api/add-data`, data, {
           headers: {
             "Content-Type": "multipart/form-data",
             Authorization: `Bearer ${localStorage.getItem("token")}`,

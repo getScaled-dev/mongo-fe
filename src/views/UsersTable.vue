@@ -421,7 +421,9 @@ export default {
         stateValue: this.filtersData?.stateValue || null,
         zipCode: this.filtersData?.zipCodes || null,
       };
-      let url = `http://localhost:3000/api/dashboard?export=${true}&ageStartValue=${
+      let url = `${
+        process.env.VUE_APP_API_URL
+      }api/dashboard?export=${true}&ageStartValue=${
         filters?.ageStartValue
       }&ageEndValue=${filters?.ageEndValue}&age=${filters?.age}&firstName=${
         filters?.firstName
