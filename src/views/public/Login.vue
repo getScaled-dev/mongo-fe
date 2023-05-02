@@ -114,9 +114,10 @@ export default {
           }
         })
         .catch((err) => {
-          console.log(err);
+          console.log(err.response.data.message);
           this.loading = false;
-          this.text = "Something went wrong";
+          this.snackbar = true;
+          this.text = err.response.data.message;
         });
     },
   },
