@@ -85,7 +85,7 @@ export default {
   },
   methods: {
     submit() {
-      // console.log("submit form", ApiService);
+     
       this.loading = true;
       let payload = {
         email: this.email,
@@ -114,7 +114,7 @@ export default {
           }
         })
         .catch((err) => {
-          console.log(err.response.data.message);
+        
           this.loading = false;
           this.snackbar = true;
           this.text = err.response.data.message;
