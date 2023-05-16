@@ -1,7 +1,7 @@
 <template>
   <div class="text-center">
     <v-snackbar v-model="fielUploaded" timeout="3000" top>
-      File is uploading in stream!
+      {{ successMsg }}
     </v-snackbar>
     <v-dialog v-model="dialog" width="600">
       <v-card>
@@ -78,6 +78,7 @@ export default {
       files: null,
       fielUploaded: false,
       loading: false,
+      successMsg: "",
     };
   },
 
@@ -112,7 +113,11 @@ export default {
 
           this.$emit("file-uploaded");
           console.log(this.loading, res, "=========>");
+
           this.dialog = false;
+          this.successMsg =
+            res.data.count + " records has been added succesfully!";
+          this.$emit("update-data");
         })
         .catch((error) => {
           if (error.response) {

@@ -351,20 +351,20 @@
             <div class="d-flex flex-column">
               <label for="firstName">City</label>
               <v-select
-                :items="filterItems"
+                :items="jobTitleFilters"
+                :menu-props="{ bottom: true }"
                 outlined
                 dense
                 v-model="filters.city"
-                :menu-props="{ bottom: true }"
                 item-text="name"
                 item-value="key"
-                @change="checkIsAny(filters.city, 'city')"
+                @change="checkIsAny(filters.city, 'jobTitle')"
               ></v-select>
             </div>
           </v-col>
 
           <v-col md="3">
-            <v-text-field
+            <!-- <v-text-field
               class="mt-5"
               outlined
               type="text"
@@ -377,7 +377,81 @@
                 filters.city == 'endsWith'
               "
               v-model="filters.cityValue"
-            ></v-text-field>
+            ></v-text-field> -->
+            <v-combobox
+              v-if="filters.city != 'all'"
+              class="mt-7"
+              v-model="filters.cities"
+              :filter="filter"
+              :hide-no-data="!searchCity"
+              :items="items"
+              :search-input.sync="searchCity"
+              hide-selected
+              label="Search for an option"
+              multiple
+              small-chips
+              solo
+              dense
+            >
+              <template v-slot:no-data>
+                <v-list-item>
+                  <span class="subheading">Create</span>
+                  <v-chip
+                    :color="`${colors[nonceCity - 1]} lighten-3`"
+                    label
+                    small
+                  >
+                    {{ searchCity }}
+                  </v-chip>
+                </v-list-item>
+              </template>
+              <template v-slot:selection="{ attrs, item, parent, selected }">
+                <v-chip
+                  v-if="item === Object(item)"
+                  v-bind="attrs"
+                  :color="`${item.color} lighten-3`"
+                  :input-value="selected"
+                  label
+                  small
+                >
+                  <span class="pr-2">
+                    {{ item.city }}
+                  </span>
+                  <v-icon small @click="parent.selectItem(item)">
+                    $delete
+                  </v-icon>
+                </v-chip>
+              </template>
+              <template v-slot:item="{ index, item }">
+                <v-text-field
+                  v-if="editingCity === item"
+                  v-model="editingCity.cityValue"
+                  autofocus
+                  flat
+                  background-color="transparent"
+                  hide-details
+                  solo
+                  @keyup.enter="editCity(index, item)"
+                ></v-text-field>
+                <v-chip
+                  v-else
+                  :color="`${item.color} lighten-3`"
+                  dark
+                  label
+                  small
+                >
+                  {{ item.cityValue }}
+                </v-chip>
+                <v-spacer></v-spacer>
+                <v-list-item-action @click.stop>
+                  <v-btn icon @click.stop.prevent="editCity(index, item)">
+                    <v-icon>{{
+                      editingCity !== item ? "mdi-pencil" : "mdi-check"
+                    }}</v-icon>
+                  </v-btn>
+                </v-list-item-action>
+              </template>
+            </v-combobox>
           </v-col>
         </v-row>
         <!-- Job title  -->
@@ -401,13 +475,13 @@
 
           <v-col md="3">
             <v-combobox
-              v-if="filters.jobTitle == 'like'"
+              v-if="filters.jobTitle != 'all'"
               class="mt-7"
               v-model="filters.jobTitles"
               :filter="filter"
-              :hide-no-data="!search"
+              :hide-no-data="!searchJobTitle"
               :items="items"
-              :search-input.sync="search"
+              :search-input.sync="searchJobTitle"
               hide-selected
               label="Search for an option"
               multiple
@@ -418,8 +492,12 @@
               <template v-slot:no-data>
                 <v-list-item>
                   <span class="subheading">Create</span>
-                  <v-chip :color="`${colors[nonce - 1]} lighten-3`" label small>
-                    {{ search }}
+                  <v-chip
+                    :color="`${colors[nonceJobTitle - 1]} lighten-3`"
+                    label
+                    small
+                  >
+                    {{ searchJobTitle }}
                   </v-chip>
                 </v-list-item>
               </template>
@@ -440,16 +518,17 @@
                   </v-icon>
                 </v-chip>
               </template>
+
               <template v-slot:item="{ index, item }">
                 <v-text-field
-                  v-if="editing === item"
-                  v-model="editing.jobTitleValue"
+                  v-if="edtingJobTitle === item"
+                  v-model="edtingJobTitle.jobTitleValue"
                   autofocus
                   flat
                   background-color="transparent"
                   hide-details
                   solo
-                  @keyup.enter="edit(index, item)"
+                  @keyup.enter="editJobTitle(index, item)"
                 ></v-text-field>
                 <v-chip
                   v-else
@@ -462,9 +541,9 @@
                 </v-chip>
                 <v-spacer></v-spacer>
                 <v-list-item-action @click.stop>
-                  <v-btn icon @click.stop.prevent="edit(index, item)">
+                  <v-btn icon @click.stop.prevent="editJobTitle(index, item)">
                     <v-icon>{{
-                      editing !== item ? "mdi-pencil" : "mdi-check"
+                      edtingJobTitle !== item ? "mdi-pencil" : "mdi-check"
                     }}</v-icon>
                   </v-btn>
                 </v-list-item-action>
@@ -558,25 +637,20 @@ export default {
       activator: null,
       attach: null,
       colors: ["green", "purple", "indigo", "cyan", "teal", "orange"],
-      editing: null,
-      editingIndex: -1,
-      items: [
-        { header: "Select an option or create one" },
-        {
-          jobTitleValue: "CEO",
-        },
-        {
-          jobTitleValue: "President",
-        },
-      ],
-      nonce: 1,
-      menu: false,
-      model: [],
-      x: 0,
-      search: null,
-      y: 0,
-      items: [],
-      textBox: "",
+      edtingJobTitle: null,
+      editingCity: null,
+      editingIndexJobTitle: -1,
+      editingIndexCity: -1,
+
+      nonceJobTitle: 1,
+      nonceCity: 1,
+
+      searchJobTitle: null,
+      searchCity: null,
+
+      cityItems: [],
+      jobTitleItems: [],
+
       filters: {
         lastName: "all",
         firstName: "all",
@@ -591,6 +665,7 @@ export default {
         companyName: "all",
         jobTitle: "all",
         jobTitles: [],
+        cities: [],
         dob: "all",
         firstNameValue: "",
         lastNameValue: "",
@@ -629,6 +704,7 @@ export default {
       jobTitleFilters: [
         { name: "is any", key: "all" },
         { name: "contains", key: "like" },
+        { name: "is", key: "in" },
       ],
       ageFilters: [
         { name: "is any", key: "all" },
@@ -640,6 +716,7 @@ export default {
   },
   watch: {
     "filters.jobTitles"(val, prev) {
+      console.log(val, prev);
       if (val.length === prev.length) return;
 
       this.filters.jobTitles = val.map((v) => {
@@ -648,9 +725,29 @@ export default {
             jobTitleValue: v,
           };
 
-          this.items.push(v);
+          this.jobTitleItems.push(v);
 
-          this.nonce++;
+          this.nonceJobTitle++;
+        }
+
+        return v;
+      });
+    },
+
+    "filters.cities"(val, prev) {
+      console.log(val, prev);
+      if (val.length === prev.length) return;
+
+      this.filters.cities = val.map((v) => {
+        if (typeof v === "string") {
+          v = {
+            cityValue: v,
+          };
+
+          this.cityItems.push(v);
+          console.log(this.cityItems);
+
+          this.nonceCity++;
         }
 
         return v;
@@ -659,38 +756,25 @@ export default {
   },
 
   methods: {
-    edit(index, item) {
-      if (!this.editing) {
-        this.editing = item;
-        this.editingIndex = index;
-      } else {
-        this.editing = null;
-        this.editingIndex = -1;
-      }
-    },
-    filter(item, queryText, itemText) {
-      if (item.header) return false;
+    // filter(item, queryText, itemText) {
+    //   if (item.header) return false;
 
-      const hasValue = (val) => (val != null ? val : "");
+    //   const hasValue = (val) => (val != null ? val : "");
 
-      const jobTitleValue = hasValue(itemText);
-      const query = hasValue(queryText);
+    //   const jobTitleValue = hasValue(itemText);
+    //   const query = hasValue(queryText);
 
-      return (
-        jobTitleValue
-          .toString()
-          .toLowerCase()
-          .indexOf(query.toString().toLowerCase()) > -1
-      );
-    },
+    //   return (
+    //     jobTitleValue
+    //       .toString()
+    //       .toLowerCase()
+    //       .indexOf(query.toString().toLowerCase()) > -1
+    //   );
+    // },
     applyFilters() {
       this.$emit("apply-filter", this.filters);
     },
-    addJobTitle() {
-      this.filters.jobTitles.push({
-        jobTitleValue: "",
-      });
-    },
+
     removeJobTitle(index) {
       this.filters.jobTitle.splice(index, 1);
     },

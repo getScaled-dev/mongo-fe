@@ -39,7 +39,11 @@
           <v-icon> mdi-database-import-outline </v-icon> Check Duplicates
         </v-btn>
         <DuplicateDataModal ref="duplicates" />
-        <UploadFile ref="uploadFile" @file-uploaded="fileUploaded = true" />
+        <UploadFile
+          ref="uploadFile"
+          @file-uploaded="fileUploaded = true"
+          @update-data="getUsers"
+        />
         <v-btn
           class="ma-2"
           color="error"
