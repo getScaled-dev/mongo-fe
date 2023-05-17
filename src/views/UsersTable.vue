@@ -336,7 +336,7 @@ export default {
         firstNameValue: this.filtersData?.firstNameValue || null,
         lastNameValue: this.filtersData?.lastNameValue || null,
         ageValue: this.filtersData?.ageValue || null,
-        cityValue: this.filtersData?.cityValue || null,
+        cityValue: this.filtersData?.cities || null,
         dobValue: this.filtersData?.dobvalue || null,
         addressValue: this.filtersData?.addressValue || null,
         address2Value: this.filtersData?.address2Value || null,
@@ -364,15 +364,15 @@ export default {
         filters?.mobilePhone
       }&mobilePhoneValue=${filters?.mobilePhoneValue}&city=${
         filters?.city
-      }&cityValue=${filters?.cityValue}&state=${filters?.state}&stateValue=${
-        filters?.stateValue
-      }&jobTitle=${filters?.jobTitle}&jobTitleValue=${JSON.stringify(
-        filters?.jobTitleValue
-      )}&address=${filters?.address}&addressValue=${
-        filters?.addressValue
-      }&companyName=${filters?.companyName}&companyNameValue=${
-        filters?.companyNameValue
-      }`;
+      }&cityValue=${JSON.stringify(filters?.cityValue)}&state=${
+        filters?.state
+      }&stateValue=${filters?.stateValue}&jobTitle=${
+        filters?.jobTitle
+      }&jobTitleValue=${JSON.stringify(filters?.jobTitleValue)}&address=${
+        filters?.address
+      }&addressValue=${filters?.addressValue}&companyName=${
+        filters?.companyName
+      }&companyNameValue=${filters?.companyNameValue}`;
       axios
         .get(url, {
           headers: {

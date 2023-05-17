@@ -415,7 +415,7 @@
                   small
                 >
                   <span class="pr-2">
-                    {{ item.city }}
+                    {{ item.cityValue }}
                   </span>
                   <v-icon small @click="parent.selectItem(item)">
                     $delete
@@ -671,7 +671,6 @@ export default {
         lastNameValue: "",
         agrStartValue: 0,
         ageEndValue: 0,
-        cityValue: "",
 
         addressValue: "",
         address2Value: "",
@@ -745,7 +744,6 @@ export default {
           };
 
           this.cityItems.push(v);
-          console.log(this.cityItems);
 
           this.nonceCity++;
         }
