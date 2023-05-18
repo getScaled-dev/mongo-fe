@@ -415,19 +415,18 @@ export default {
 
         companyName: this.filtersData?.companyName || null,
         jobTitle: this.filtersData?.jobTitle || null,
-        jobTitleValue: this.filtersData?.jobTitles || null,
         dob: this.filtersData?.dob || null,
         firstNameValue: this.filtersData?.firstNameValue || null,
         lastNameValue: this.filtersData?.lastNameValue || null,
         ageValue: this.filtersData?.ageValue || null,
-        cityValue: this.filtersData?.cities || null,
+        cityValue: this.filtersData?.cityValue || null,
         dobValue: this.filtersData?.dobvalue || null,
         addressValue: this.filtersData?.addressValue || null,
         address2Value: this.filtersData?.address2Value || null,
         emailValue: this.filtersData?.emailValue || null,
         companyPhoneValue: this.filtersData?.companyPhoneValue || null,
-        companyNameValue: this.filtersData?.companies || null,
-
+        companyNameValue: this.filtersData?.companyNameValue || null,
+        jobTitleValue: this.filtersData?.jobTitleValue || null,
         stateValue: this.filtersData?.stateValue || null,
         zipCode: this.filtersData?.zipCodes || null,
       };
