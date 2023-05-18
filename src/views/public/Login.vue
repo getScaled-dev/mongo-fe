@@ -15,7 +15,7 @@
             <v-card elevation="10">
               <v-card-text>
                 <v-form>
-                  <label for="email">Email Address</label>
+                  <label for="email"> Email Address</label>
                   <BaseInput
                     outlined
                     name="Login"
