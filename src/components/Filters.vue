@@ -176,72 +176,107 @@
             <div class="d-flex flex-column">
               <label for="firstName">Company Name</label>
               <v-select
-                :items="filterItems"
+                :items="jobTitleFilters"
                 outlined
                 dense
                 v-model="filters.companyName"
                 :menu-props="{ bottom: true }"
                 item-text="name"
                 item-value="key"
+                @change="checkIsAny(filters.companyName, 'companyName')"
               ></v-select>
             </div>
           </v-col>
 
           <v-col md="3">
-            <v-text-field
-              class="mt-5"
-              outlined
-              type="text"
-              v-model="filters.companyNameValue"
+            <v-combobox
               v-if="
                 filters.companyName == 'like' ||
-                filters.companyName == 'notLike' ||
-                filters.companyName == 'eq' ||
-                filters.companyName == 'ne' ||
-                filters.companyName == 'startsWith' ||
-                filters.companyName == 'endsWith'
+                filters.companyName == 'not' ||
+                filters.companyName == 'in'
               "
-            ></v-text-field>
+              class="mt-7"
+              v-model="filters.companies"
+              :filter="filter"
+              :hide-no-data="!searchCompany"
+              :items="items"
+              :search-input.sync="searchCompany"
+              hide-selected
+              label="Search for an option"
+              multiple
+              small-chips
+              solo
+              dense
+            >
+              <template v-slot:no-data>
+                <v-list-item>
+                  <span class="subheading">Create</span>
+                  <v-chip
+                    :color="`${colors[nonceCompany - 1]} lighten-3`"
+                    label
+                    small
+                  >
+                    {{ searchCompany }}
+                  </v-chip>
+                </v-list-item>
+              </template>
+              <template v-slot:selection="{ attrs, item, parent, selected }">
+                <v-chip
+                  v-if="item === Object(item)"
+                  v-bind="attrs"
+                  :color="`${item.color} lighten-3`"
+                  :input-value="selected"
+                  label
+                  small
+                >
+                  <span class="pr-2">
+                    {{ item.companyNameValue }}
+                  </span>
+                  <v-icon small @click="parent.selectItem(item)">
+                    $delete
+                  </v-icon>
+                </v-chip>
+              </template>
+              <template v-slot:item="{ index, item }">
+                <v-text-field
+                  v-if="editingCompany === item"
+                  v-model="editingCompany.companyNameValue"
+                  autofocus
+                  flat
+                  background-color="transparent"
+                  hide-details
+                  solo
+                  @keyup.enter="editCompanyName(index, item)"
+                ></v-text-field>
+                <v-chip
+                  v-else
+                  :color="`${item.color} lighten-3`"
+                  dark
+                  label
+                  small
+                >
+                  {{ item.companyNameValue }}
+                </v-chip>
+                <v-spacer></v-spacer>
+                <v-list-item-action @click.stop>
+                  <v-btn
+                    icon
+                    @click.stop.prevent="editCompanyName(index, item)"
+                  >
+                    <v-icon>{{
+                      editingCompany !== item ? "mdi-pencil" : "mdi-check"
+                    }}</v-icon>
+                  </v-btn>
+                </v-list-item-action>
+              </template>
+            </v-combobox>
           </v-col>
         </v-row>
         <!-- Company Name  -->
         <v-row class="mt-4"> </v-row>
         <!-- Job Title  -->
         <v-row class="mt-4"> </v-row>
-        <!-- Date of birth  -->
-        <!-- <v-row class="mt-4">
-          <v-col md="6">
-            <div class="d-flex flex-column">
-              <label for="firstName">Date Of Birth</label>
-              <v-select
-                :items="filterItems"
-                outlined
-                dense
-                v-model="filters.dob"
-                item-text="name"
-                :menu-props="{ bottom: true }"
-                item-value="key"
-              ></v-select>
-            </div>
-          </v-col>
 
-          <v-col md="6">
-            <v-text-field
-              class="mt-5"
-              outlined
-              type="date"
-              v-if="
-                filters.dob == 'like' ||
-                filters.dob == 'notLike' ||
-                filters.dob == 'eq' ||
-                filters.dob == 'ne' ||
-                filters.dob == 'startsWith' ||
-                filters.dob == 'endsWith'
-              "
-              v-model="filters.dobValue"
-            ></v-text-field>
-          </v-col>
-        </v-row> -->
         <!-- Age  -->
         <v-row class="mt-4">
           <v-col md="3">
@@ -364,22 +399,12 @@
           </v-col>
 
           <v-col md="3">
-            <!-- <v-text-field
-              class="mt-5"
-              outlined
-              type="text"
+            <v-combobox
               v-if="
                 filters.city == 'like' ||
-                filters.city == 'notLike' ||
-                filters.city == 'eq' ||
-                filters.city == 'ne' ||
-                filters.city == 'startsWith' ||
-                filters.city == 'endsWith'
+                filters.city == 'not' ||
+                filters.city == 'in'
               "
-              v-model="filters.cityValue"
-            ></v-text-field> -->
-            <v-combobox
-              v-if="filters.city != 'all'"
               class="mt-7"
               v-model="filters.cities"
               :filter="filter"
@@ -475,7 +500,11 @@
 
           <v-col md="3">
             <v-combobox
-              v-if="filters.jobTitle != 'all'"
+              v-if="
+                filters.jobTitle == 'like' ||
+                filters.jobTitle == 'not' ||
+                filters.jobTitle == 'in'
+              "
               class="mt-7"
               v-model="filters.jobTitles"
               :filter="filter"
@@ -639,17 +668,22 @@ export default {
       colors: ["green", "purple", "indigo", "cyan", "teal", "orange"],
       edtingJobTitle: null,
       editingCity: null,
+      editingCompany: null,
       editingIndexJobTitle: -1,
       editingIndexCity: -1,
+      editingIndexCompany: -1,
 
       nonceJobTitle: 1,
       nonceCity: 1,
+      nonceCompany: 1,
 
       searchJobTitle: null,
       searchCity: null,
+      searchCompany: null,
 
       cityItems: [],
       jobTitleItems: [],
+      companyItems: [],
 
       filters: {
         lastName: "all",
@@ -677,7 +711,7 @@ export default {
         emailValue: "",
         mobilePhoneValue: "",
         companyPhoneValue: "",
-        companyNameValue: "",
+        companies: [],
 
         dobValue: "",
         stateValue: "",
@@ -704,6 +738,9 @@ export default {
         { name: "is any", key: "all" },
         { name: "contains", key: "like" },
         { name: "is", key: "in" },
+        { name: "is not", key: "not" },
+        { name: "is blank", key: "isBlank" },
+        { name: "is not blank", key: "notBlank" },
       ],
       ageFilters: [
         { name: "is any", key: "all" },
@@ -732,7 +769,7 @@ export default {
         return v;
       });
     },
-
+    //watch for city filter
     "filters.cities"(val, prev) {
       console.log(val, prev);
       if (val.length === prev.length) return;
@@ -746,6 +783,27 @@ export default {
           this.cityItems.push(v);
 
           this.nonceCity++;
+        }
+
+        return v;
+      });
+    },
+
+    // watch for company Name
+
+    "filters.companies"(val, prev) {
+      console.log(val, prev);
+      if (val.length === prev.length) return;
+
+      this.filters.companies = val.map((v) => {
+        if (typeof v === "string") {
+          v = {
+            companyNameValue: v,
+          };
+
+          this.companyItems.push(v);
+
+          this.nonceCompany++;
         }
 
         return v;

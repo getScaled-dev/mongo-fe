@@ -1,162 +1,166 @@
 <template>
   <div>
-    <!-- filter  -->
-    <v-snackbar v-model="dataDeleted" :timeout="timeout" top right>
-      {{ deletedText }}
-    </v-snackbar>
-    <div class="d-flex justify-space-between">
-      <div class="d-flex">
-        <!-- <v-text-field
+    <Loader v-if="isLoading" />
+
+    <div>
+      <!-- filter  -->
+      <v-snackbar v-model="dataDeleted" :timeout="timeout" top right>
+        {{ deletedText }}
+      </v-snackbar>
+      <div class="d-flex justify-space-between">
+        <div class="d-flex">
+          <!-- <v-text-field
           outlined
           type="text"
           placeholder="Search..."
           v-model="serarchText"
         ></v-text-field> -->
-        <span class="mt-2 mx-2">
-          <v-btn color="#070253" @click="clearForm">
-            <v-icon color="white"> mdi-sync </v-icon>
-          </v-btn>
-        </span>
+          <span class="mt-2 mx-2">
+            <v-btn color="#070253" @click="clearForm">
+              <v-icon color="white"> mdi-sync </v-icon>
+            </v-btn>
+          </span>
 
-        <!-- <v-btn class="ma-2" color="primary" @click="openFiltersModal"
+          <!-- <v-btn class="ma-2" color="primary" @click="openFiltersModal"
           ><v-icon> mdi-filter-outline </v-icon> Add Filters
         </v-btn> -->
 
-        <v-btn
-          class="ma-2"
-          color="#D75D3F"
-          :loading="exportLoader"
-          @click="exportCSV"
-        >
-          <v-icon color="white"> mdi-database-export-outline </v-icon>
-          <span style="color: white">Launch To Campaign</span>
-        </v-btn>
+          <v-btn
+            class="ma-2"
+            color="#D75D3F"
+            :loading="exportLoader"
+            @click="exportCSV"
+          >
+            <v-icon color="white"> mdi-database-export-outline </v-icon>
+            <span style="color: white">Launch To Campaign</span>
+          </v-btn>
 
-        <v-btn class="ma-2" color="Primary" @click="uploadCSV">
-          <v-icon> mdi-database-import-outline </v-icon> Import CSV
-        </v-btn>
-        <v-btn class="ma-2" color="Primary" @click="checkDuplicates">
-          <v-icon> mdi-database-import-outline </v-icon> Check Duplicates
-        </v-btn>
-        <DuplicateDataModal ref="duplicates" />
-        <UploadFile
-          ref="uploadFile"
-          @file-uploaded="fileUploaded = true"
-          @update-data="getUsers"
-        />
-        <v-btn
-          class="ma-2"
-          color="error"
-          @click="openConfirmation"
-          :disabled="selected.length < 1"
-        >
-          <v-icon> mdi-trash-can-outline </v-icon> Delete Selected Records
-        </v-btn>
-      </div>
-    </div>
-    <v-expansion-panels class="mt-5">
-      <v-expansion-panel>
-        <v-expansion-panel-header> Apply Filters </v-expansion-panel-header>
-        <v-expansion-panel-content>
-          <Filters
-            ref="filters"
-            @apply-filter="applyFilters"
-            @check-any="checkAny"
+          <v-btn class="ma-2" color="Primary" @click="uploadCSV">
+            <v-icon> mdi-database-import-outline </v-icon> Import CSV
+          </v-btn>
+          <v-btn class="ma-2" color="Primary" @click="checkDuplicates">
+            <v-icon> mdi-database-import-outline </v-icon> Check Duplicates
+          </v-btn>
+          <DuplicateDataModal ref="duplicates" />
+          <UploadFile
+            ref="uploadFile"
+            @file-uploaded="fileUploaded = true"
+            @update-data="getUsers"
           />
-        </v-expansion-panel-content>
-      </v-expansion-panel>
-    </v-expansion-panels>
-
-    <v-row>
-      <v-col md="12">
-        <div id="wrapper2">
-          <div id="div2" class="width-scroll"></div>
+          <v-btn
+            class="ma-2"
+            color="error"
+            @click="openConfirmation"
+            :disabled="selected.length < 1"
+          >
+            <v-icon> mdi-trash-can-outline </v-icon> Delete Selected Records
+          </v-btn>
         </div>
-
-        <v-data-table
-          ref="dt"
-          v-model="selected"
-          :headers="headers"
-          :loading="isLoading"
-          hide-default-footer
-          :items="usersData"
-          show-select
-          :single-select="singleSelect"
-          fixed-header
-          item-key="_id"
-          class="elevation-1 v-scroll-x-reverse v-data-table__overflow table-reference"
-          height="70vh"
-          :page.sync="pagination.page"
-          :items-per-page="pagination.itemPerPage"
-        >
-          <template v-slot:header.source="{ header }">
-            <span v-if="isAdmin == 'true'">{{ header.text }}</span>
-          </template>
-          <template v-slot:item.fullName="{ item }">
-            {{ item.firstName }} {{ item.lastName }}
-          </template>
-          <template v-slot:item.companyPhone="{ item }">
-            {{ item.companyPhone == "null" ? "" : item.companyPhone }}
-          </template>
-          <template v-slot:item.companyName="{ item }">
-            {{ item.companyName == "null" ? "" : item.companyName }}
-          </template>
-          <template v-slot:item.mobilePhone="{ item }">
-            {{ item.mobilePhone == "null" ? "" : item.mobilePhone }}
-          </template>
-          <template v-slot:item.jobTitle="{ item }">
-            {{ item.jobTitle == "null" ? "" : item.jobTitle }}
-          </template>
-          <template v-slot:item.address="{ item }">
-            {{ item.address == "null" ? "" : item.address }}
-          </template>
-          <template v-slot:item.address2="{ item }">
-            {{ item.address2 == "null" ? "" : item.address2 }}
-          </template>
-          <template v-slot:item.age="{ item }">
-            {{ item.age == "null" ? "" : item.age }}
-          </template>
-          <template v-slot:item.dob="{ item }">
-            {{ item.dob == "null" ? "" : item.dob }}
-          </template>
-          <template v-slot:item.city="{ item }">
-            {{ item.city == "null" ? "" : item.city }}
-          </template>
-          <template v-slot:item.state="{ item }">
-            {{ item.state == "null" ? "" : item.state }}
-          </template>
-          <template v-slot:item.zip="{ item }">
-            {{ item.zip == "null" ? "" : item.zip }}
-          </template>
-          <template v-slot:item.createdAt="{ item }">
-            {{ moment(item.createdAt).format("MM-DD-YYYY") }}
-          </template>
-          <template v-slot:item.details="{ item }">
-            <v-btn class="ma-2" @click="openUserDetails(item)">
-              View Details
-            </v-btn>
-            <UserDetailsModal ref="userDetails" :userData="userData" />
-          </template>
-          <template v-slot:top>
-            <Pagination
-              :count="count"
-              :pagination="pagination"
-              @pageChangedEvent="pagination.page = $event"
+      </div>
+      <v-expansion-panels class="mt-5">
+        <v-expansion-panel>
+          <v-expansion-panel-header> Apply Filters </v-expansion-panel-header>
+          <v-expansion-panel-content>
+            <Filters
+              ref="filters"
+              @apply-filter="applyFilters"
+              @check-any="checkAny"
             />
-          </template>
-        </v-data-table>
-      </v-col>
-    </v-row>
-    <ConfirmationModalVue
-      @delete-records="deleteData"
-      ref="confirmation"
-      :loading="loading"
-    />
+          </v-expansion-panel-content>
+        </v-expansion-panel>
+      </v-expansion-panels>
+
+      <v-row>
+        <v-col md="12">
+          <div id="wrapper2">
+            <div id="div2" class="width-scroll"></div>
+          </div>
+
+          <v-data-table
+            ref="dt"
+            v-model="selected"
+            :headers="headers"
+            hide-default-footer
+            :items="usersData"
+            show-select
+            :single-select="singleSelect"
+            fixed-header
+            item-key="_id"
+            class="elevation-1 v-scroll-x-reverse v-data-table__overflow table-reference"
+            height="70vh"
+            :page.sync="pagination.page"
+            :items-per-page="pagination.itemPerPage"
+          >
+            <template v-slot:header.source="{ header }">
+              <span v-if="isAdmin == 'true'">{{ header.text }}</span>
+            </template>
+            <template v-slot:item.fullName="{ item }">
+              {{ item.firstName }} {{ item.lastName }}
+            </template>
+            <template v-slot:item.companyPhone="{ item }">
+              {{ item.companyPhone == "null" ? "" : item.companyPhone }}
+            </template>
+            <template v-slot:item.companyName="{ item }">
+              {{ item.companyName == "null" ? "" : item.companyName }}
+            </template>
+            <template v-slot:item.mobilePhone="{ item }">
+              {{ item.mobilePhone == "null" ? "" : item.mobilePhone }}
+            </template>
+            <template v-slot:item.jobTitle="{ item }">
+              {{ item.jobTitle == "null" ? "" : item.jobTitle }}
+            </template>
+            <template v-slot:item.address="{ item }">
+              {{ item.address == "null" ? "" : item.address }}
+            </template>
+            <template v-slot:item.address2="{ item }">
+              {{ item.address2 == "null" ? "" : item.address2 }}
+            </template>
+            <template v-slot:item.age="{ item }">
+              {{ item.age == "null" ? "" : item.age }}
+            </template>
+            <template v-slot:item.dob="{ item }">
+              {{ item.dob == "null" ? "" : item.dob }}
+            </template>
+            <template v-slot:item.city="{ item }">
+              {{ item.city == "null" ? "" : item.city }}
+            </template>
+            <template v-slot:item.state="{ item }">
+              {{ item.state == "null" ? "" : item.state }}
+            </template>
+            <template v-slot:item.zip="{ item }">
+              {{ item.zip == "null" ? "" : item.zip }}
+            </template>
+            <template v-slot:item.createdAt="{ item }">
+              {{ moment(item.createdAt).format("MM-DD-YYYY") }}
+            </template>
+            <template v-slot:item.details="{ item }">
+              <v-btn class="ma-2" @click="openUserDetails(item)">
+                View Details
+              </v-btn>
+              <UserDetailsModal ref="userDetails" :userData="userData" />
+            </template>
+            <template v-slot:top>
+              <Pagination
+                :count="count"
+                :pagination="pagination"
+                @pageChangedEvent="pagination.page = $event"
+              />
+            </template>
+          </v-data-table>
+        </v-col>
+      </v-row>
+      <ConfirmationModalVue
+        @delete-records="deleteData"
+        ref="confirmation"
+        :loading="loading"
+      />
+    </div>
   </div>
 </template>
 
 <script>
 import BaseInput from "@/components/common/BaseInput.vue";
+import Loader from "@/components/common/Loader.vue";
 import axios from "axios";
 import UserDetailsModal from "@/components/UserDetailsModal.vue";
 import Filters from "@/components/Filters.vue";
@@ -175,6 +179,7 @@ export default {
     Pagination,
     DuplicateDataModal,
     ConfirmationModalVue,
+    Loader,
   },
   data() {
     return {
@@ -342,7 +347,7 @@ export default {
         address2Value: this.filtersData?.address2Value || null,
         emailValue: this.filtersData?.emailValue || null,
         companyPhoneValue: this.filtersData?.companyPhoneValue || null,
-        companyNameValue: this.filtersData?.companyNameValue || null,
+        companyNameValue: this.filtersData?.companies || null,
 
         stateValue: this.filtersData?.stateValue || null,
         zipCode: this.filtersData?.zipCodes || null,
@@ -372,7 +377,7 @@ export default {
         filters?.address
       }&addressValue=${filters?.addressValue}&companyName=${
         filters?.companyName
-      }&companyNameValue=${filters?.companyNameValue}`;
+      }&companyNameValue=${JSON.stringify(filters?.companyNameValue)}`;
       axios
         .get(url, {
           headers: {
@@ -410,18 +415,19 @@ export default {
 
         companyName: this.filtersData?.companyName || null,
         jobTitle: this.filtersData?.jobTitle || null,
+        jobTitleValue: this.filtersData?.jobTitles || null,
         dob: this.filtersData?.dob || null,
         firstNameValue: this.filtersData?.firstNameValue || null,
         lastNameValue: this.filtersData?.lastNameValue || null,
         ageValue: this.filtersData?.ageValue || null,
-        cityValue: this.filtersData?.cityValue || null,
+        cityValue: this.filtersData?.cities || null,
         dobValue: this.filtersData?.dobvalue || null,
         addressValue: this.filtersData?.addressValue || null,
         address2Value: this.filtersData?.address2Value || null,
         emailValue: this.filtersData?.emailValue || null,
         companyPhoneValue: this.filtersData?.companyPhoneValue || null,
-        companyNameValue: this.filtersData?.companyNameValue || null,
-        jobTitleValue: this.filtersData?.jobTitleValue || null,
+        companyNameValue: this.filtersData?.companies || null,
+
         stateValue: this.filtersData?.stateValue || null,
         zipCode: this.filtersData?.zipCodes || null,
       };

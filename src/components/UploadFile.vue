@@ -115,8 +115,7 @@ export default {
           console.log(this.loading, res, "=========>");
 
           this.dialog = false;
-          this.successMsg =
-            res.data.count + " records has been added succesfully!";
+          this.successMsg = "Records has been added succesfully!";
           this.$emit("update-data");
         })
         .catch((error) => {
