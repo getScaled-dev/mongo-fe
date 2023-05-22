@@ -81,6 +81,12 @@ export default {
       successMsg: "",
     };
   },
+  props: {
+    dataType: {
+      type: String,
+      default: "",
+    },
+  },
 
   methods: {
     onChange() {
@@ -99,12 +105,18 @@ export default {
       }
       this.loading = true;
       axios
-        .post(`${process.env.VUE_APP_API_URL}api/add-data`, data, {
-          headers: {
-            "Content-Type": "multipart/form-data",
-            Authorization: `Bearer ${localStorage.getItem("token")}`,
-          },
-        })
+        .post(
+          `${process.env.VUE_APP_API_URL}api/${
+            this.dataType == "consumerData" ? "add-consumer-data" : "add-data"
+          }`,
+          data,
+          {
+            headers: {
+              "Content-Type": "multipart/form-data",
+              Authorization: `Bearer ${localStorage.getItem("token")}`,
+            },
+          }
+        )
 
         .then((res) => {
           this.files = null;

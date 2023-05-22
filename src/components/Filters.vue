@@ -1,6 +1,7 @@
 <template>
   <v-card>
     <v-card-text class="filters">
+      {{ dataType }}
       <!-- First Name  -->
       <v-form ref="form">
         <v-row class="mt-4">
@@ -642,6 +643,60 @@
               ></v-text-field>
             </v-col> -->
         </v-row>
+        <v-row class="mt-4" v-if="dataType == 'consumerData'">
+          <!-- own rent  -->
+          <v-col md="3">
+            <div class="d-flex flex-column">
+              <label for="firstName">Own Rent</label>
+              <v-select
+                :menu-props="{ bottom: true }"
+                :items="ownRentFilter"
+                outlined
+                dense
+                v-model="filters.ownRent"
+                item-text="name"
+                item-value="key"
+                @change="checkIsAny(filters.ownRent, 'ownRent')"
+              ></v-select>
+            </div>
+          </v-col>
+
+          <v-col md="3"> </v-col>
+
+          <!-- option source  -->
+          <v-col md="3">
+            <div class="d-flex flex-column">
+              <label for="firstName">Option Source</label>
+              <v-select
+                :menu-props="{ bottom: true }"
+                :items="filterItems"
+                outlined
+                dense
+                v-model="filters.optionSource"
+                item-text="name"
+                item-value="key"
+                @change="checkIsAny(filters.optionSource, 'optionSource')"
+              ></v-select>
+            </div>
+          </v-col>
+
+          <v-col md="3">
+            <v-text-field
+              class="mt-5"
+              outlined
+              type="text"
+              v-if="
+                filters.optionSource == 'like' ||
+                filters.optionSource == 'notLike' ||
+                filters.optionSource == 'eq' ||
+                filters.optionSource == 'ne' ||
+                filters.optionSource == 'startsWith' ||
+                filters.optionSource == 'endsWith'
+              "
+              v-model="filters.optionSourceValue"
+            ></v-text-field>
+          </v-col>
+        </v-row>
       </v-form>
     </v-card-text>
 
@@ -661,6 +716,12 @@
 
 <script>
 export default {
+  props: {
+    dataType: {
+      type: String,
+      default: "",
+    },
+  },
   data() {
     return {
       activator: null,
@@ -705,6 +766,8 @@ export default {
         lastNameValue: "",
         agrStartValue: 0,
         ageEndValue: 0,
+        optionSource: "all",
+        optionSourceValue: "",
 
         addressValue: "",
         address2Value: "",
@@ -712,7 +775,7 @@ export default {
         mobilePhoneValue: "",
         companyPhoneValue: "",
         companies: [],
-
+        ownRent: "own",
         dobValue: "",
         stateValue: "",
         zipCodes: [],
@@ -747,6 +810,11 @@ export default {
         { name: "greater than and equal", key: "gte" },
         { name: "less than and equal", key: "lte" },
         { name: "between", key: "between" },
+      ],
+      ownRentFilter: [
+        { name: "Select type" },
+        { name: "Own", key: "own" },
+        { name: "Rent", key: "rent" },
       ],
     };
   },

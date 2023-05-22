@@ -21,9 +21,16 @@ const routes = [
   },
   {
     path: '/',
-    name: 'Dashboard',
+    name: 'LinkedIn Data',
 
-    component: () => import(/* webpackChunkName: "about" */ '../views/Dashboard.vue'),
+    component: () => import(/* webpackChunkName: "about" */ '../views/UsersTable.vue'),
+    meta: { requiresAuth: true },
+  },
+  {
+    path: '/consumer-data',
+    name: 'Consumer Data',
+
+    component: () => import(/* webpackChunkName: "about" */ '../views/ConsumerData.vue'),
     meta: { requiresAuth: true },
   }
 ]

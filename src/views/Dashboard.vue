@@ -6,7 +6,28 @@
         alt=""
         style="max-width: 225px; height: fit-content"
       />
+
       <div class="text-center">
+        <v-menu offset-y>
+          <template v-slot:activator="{ on, attrs }">
+            <v-btn color="#070253" v-bind="attrs" v-on="on" class="mr-3">
+              <span style="color: white"> {{ currentRoute }}</span>
+            </v-btn>
+          </template>
+          <v-list>
+            <v-list-item>
+              <v-list-item-title>
+                <router-link to="/consumer-data"> Consumer Data </router-link>
+              </v-list-item-title>
+            </v-list-item>
+            <v-list-item>
+              <v-list-item-title>
+                <router-link to="/">LinkedIn Data</router-link>
+              </v-list-item-title>
+            </v-list-item>
+          </v-list>
+        </v-menu>
+
         <v-menu offset-y>
           <template v-slot:activator="{ on, attrs }">
             <v-btn color="#070253" v-bind="attrs" v-on="on">
@@ -25,7 +46,7 @@
       </div>
     </div>
 
-    <UsersTable />
+    <router-view></router-view>
   </div>
 </template>
 
@@ -37,6 +58,12 @@ export default {
 
   components: {
     UsersTable,
+  },
+  computed: {
+    currentRoute() {
+      console.log(this.$route.name);
+      return this.$route.name;
+    },
   },
   data() {
     return {

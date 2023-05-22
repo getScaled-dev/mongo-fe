@@ -5,7 +5,6 @@
     <div>
       <!-- filter  -->
       <v-snackbar v-model="dataDeleted" :timeout="timeout" top right>
-        {{ deletedText }}
       </v-snackbar>
       <div class="d-flex justify-space-between">
         <div class="d-flex">
@@ -46,6 +45,7 @@
             ref="uploadFile"
             @file-uploaded="fileUploaded = true"
             @update-data="getUsers"
+            dataType="consumerData"
           />
           <v-btn
             class="ma-2"
@@ -65,7 +65,7 @@
               ref="filters"
               @apply-filter="applyFilters"
               @check-any="checkAny"
-              dataType="linkedinData"
+              dataType="consumerData"
             />
           </v-expansion-panel-content>
         </v-expansion-panel>
@@ -225,6 +225,8 @@ export default {
         { text: "State", value: "state", width: "100px" },
         { text: "ZIP", value: "zipCode", width: "100px" },
         { text: "Source", value: "source", width: "100px" },
+        { text: "Own Rent", value: "ownRent", width: "150px" },
+        { text: "Option Source", value: "optionSource", width: "150px" },
         { text: "Created At", value: "createdAt", width: "150px" },
       ],
       csv_data: [],
@@ -254,7 +256,7 @@ export default {
       const selectedIds = this.selected.map((item) => item._id);
       console.log(selectedIds);
       axios
-        .delete(`${process.env.VUE_APP_API_URL}delete-records`, {
+        .delete(`${process.env.VUE_APP_API_URL}delete-consumer-records`, {
           data: {
             id: selectedIds,
           },
@@ -354,25 +356,25 @@ export default {
         zipCode: this.filtersData?.zipCodes || null,
       };
 
-      let url = `${process.env.VUE_APP_API_URL}api/dashboard?itemsPerPage=${
-        this.pagination.itemPerPage
-      }&page=${this.pagination.page}&ageStartValue=${
-        filters?.ageStartValue
-      }&ageEndValue=${filters?.ageEndValue}&age=${filters?.age}&firstName=${
-        filters?.firstName
-      }&firstNameValue=${filters?.firstNameValue}&lastName=${
-        filters?.lastName
-      }&lastNameValue=${filters?.lastNameValue}&email=${
-        filters?.email
-      }&emailValue=${filters?.emailValue}&companyPhone=${
-        filters?.companyPhone
-      }&companyPhoneValue=${filters?.companyPhoneValue}&mobilePhone=${
-        filters?.mobilePhone
-      }&mobilePhoneValue=${filters?.mobilePhoneValue}&city=${
-        filters?.city
-      }&cityValue=${JSON.stringify(filters?.cityValue)}&state=${
-        filters?.state
-      }&stateValue=${filters?.stateValue}&jobTitle=${
+      let url = `${
+        process.env.VUE_APP_API_URL
+      }api/get-consumer-data?itemsPerPage=${this.pagination.itemPerPage}&page=${
+        this.pagination.page
+      }&ageStartValue=${filters?.ageStartValue}&ageEndValue=${
+        filters?.ageEndValue
+      }&age=${filters?.age}&firstName=${filters?.firstName}&firstNameValue=${
+        filters?.firstNameValue
+      }&lastName=${filters?.lastName}&lastNameValue=${
+        filters?.lastNameValue
+      }&email=${filters?.email}&emailValue=${
+        filters?.emailValue
+      }&companyPhone=${filters?.companyPhone}&companyPhoneValue=${
+        filters?.companyPhoneValue
+      }&mobilePhone=${filters?.mobilePhone}&mobilePhoneValue=${
+        filters?.mobilePhoneValue
+      }&city=${filters?.city}&cityValue=${JSON.stringify(
+        filters?.cityValue
+      )}&state=${filters?.state}&stateValue=${filters?.stateValue}&jobTitle=${
         filters?.jobTitle
       }&jobTitleValue=${JSON.stringify(filters?.jobTitleValue)}&address=${
         filters?.address
@@ -387,7 +389,6 @@ export default {
           },
         })
         .then((response) => {
-          console.log(response);
           this.usersData = response.data.data;
           this.count = response.data.count;
           this.isLoading = false;
@@ -433,7 +434,7 @@ export default {
       };
       let url = `${
         process.env.VUE_APP_API_URL
-      }api/dashboard?export=${true}&ageStartValue=${
+      }api/get-consumer-data?export=${true}&ageStartValue=${
         filters?.ageStartValue
       }&ageEndValue=${filters?.ageEndValue}&age=${filters?.age}&firstName=${
         filters?.firstName
