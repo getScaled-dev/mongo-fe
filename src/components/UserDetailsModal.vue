@@ -170,6 +170,29 @@
                 ></v-text-field>
               </div>
             </v-col>
+
+            <v-col md="6">
+              <div class="d-flex flex-column">
+                <v-text-field
+                  label="Option Source"
+                  outlined
+                  dense
+                  v-model="userData.optionSource"
+                  placeholder="Enter option source"
+                ></v-text-field>
+              </div>
+            </v-col>
+            <!-- <v-col md="6">
+              <div class="d-flex flex-column">
+                <v-text-field
+                  label="State"
+                  outlined
+                  dense
+                  v-model="userData.state"
+                  placeholder="Enter state"
+                ></v-text-field>
+              </div>
+            </v-col> -->
           </v-row>
         </v-card-text>
 
@@ -197,6 +220,9 @@
 import axios from "axios";
 export default {
   props: {
+    dataType: {
+      default: "",
+    },
     userData: {
       default: {},
     },

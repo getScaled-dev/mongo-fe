@@ -656,6 +656,7 @@
                 v-model="filters.ownRent"
                 item-text="name"
                 item-value="key"
+                placeholder="Select type"
                 @change="checkIsAny(filters.ownRent, 'ownRent')"
               ></v-select>
             </div>
@@ -775,7 +776,7 @@ export default {
         mobilePhoneValue: "",
         companyPhoneValue: "",
         companies: [],
-        ownRent: "own",
+        ownRent: "",
         dobValue: "",
         stateValue: "",
         zipCodes: [],
@@ -812,9 +813,9 @@ export default {
         { name: "between", key: "between" },
       ],
       ownRentFilter: [
-        { name: "Select type" },
         { name: "Own", key: "own" },
         { name: "Rent", key: "rent" },
+        { name: "Both", key: null },
       ],
     };
   },

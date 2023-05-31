@@ -138,7 +138,11 @@
               <v-btn class="ma-2" @click="openUserDetails(item)">
                 View Details
               </v-btn>
-              <UserDetailsModal ref="userDetails" :userData="userData" />
+              <UserDetailsModal
+                ref="userDetails"
+                :userData="userData"
+                dataType="consumer"
+              />
             </template>
             <template v-slot:top>
               <Pagination
@@ -354,6 +358,9 @@ export default {
 
         stateValue: this.filtersData?.stateValue || null,
         zipCode: this.filtersData?.zipCodes || null,
+        optionSource: this.filtersData?.optionSource || null,
+        optionSourceValue: this.filtersData?.optionSourceValue || null,
+        ownRent: this.filtersData?.ownRent || null,
       };
 
       let url = `${
@@ -380,7 +387,11 @@ export default {
         filters?.address
       }&addressValue=${filters?.addressValue}&companyName=${
         filters?.companyName
-      }&companyNameValue=${JSON.stringify(filters?.companyNameValue)}`;
+      }&companyNameValue=${JSON.stringify(
+        filters?.companyNameValue
+      )}&optionSource=${filters?.optionSource}&optionSourceValue=${
+        filters?.optionSourceValue
+      }&ownRent=${filters?.ownRent}`;
       axios
         .get(url, {
           headers: {
@@ -431,6 +442,8 @@ export default {
         jobTitleValue: this.filtersData?.jobTitleValue || null,
         stateValue: this.filtersData?.stateValue || null,
         zipCode: this.filtersData?.zipCodes || null,
+        optionSource: this.filtersData?.optionSource || null,
+        ownRent: this.filtersData?.ownRent || null,
       };
       let url = `${
         process.env.VUE_APP_API_URL
