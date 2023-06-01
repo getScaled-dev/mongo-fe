@@ -35,8 +35,8 @@
             </v-btn>
           </template>
           <v-list>
-            <v-list-item @click="viewProfile">
-              <v-list-item-title>View Profile</v-list-item-title>
+            <v-list-item @click="viewMautic">
+              <v-list-item-title>View Mautic</v-list-item-title>
             </v-list-item>
             <v-list-item @click="logout">
               <v-list-item-title>Logout</v-list-item-title>
@@ -71,8 +71,8 @@ export default {
     };
   },
   methods: {
-    viewProfile() {
-      this.$router.push("/");
+    viewMautic() {
+      this.$router.push("/mautic");
     },
     logout() {
       localStorage.removeItem("token");
