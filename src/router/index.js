@@ -32,6 +32,20 @@ const routes = [
 
     component: () => import(/* webpackChunkName: "about" */ '../views/ConsumerData.vue'),
     meta: { requiresAuth: true },
+  },
+  {
+    path: '/linkedin2',
+    name: 'LinkedIn Data 2',
+
+    component: () => import(/* webpackChunkName: "about" */ '../views/LinkedinData2.vue'),
+    meta: { requiresAuth: true },
+  },
+  {
+    path: '/mautic',
+    name: 'Mautic',
+
+    component: () => import(/* webpackChunkName: "about" */ '../views/mautic/Mautic.vue'),
+    meta: { requiresAuth: true },
   }
 ]
 

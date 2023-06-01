@@ -45,7 +45,7 @@
             ref="uploadFile"
             @file-uploaded="fileUploaded = true"
             @update-data="getUsers"
-            dataType="consumerData"
+            dataType="add-consumer-data"
           />
           <v-btn
             class="ma-2"
@@ -141,7 +141,7 @@
               <UserDetailsModal
                 ref="userDetails"
                 :userData="userData"
-                dataType="consumer"
+                dataType="add-consumer-data"
               />
             </template>
             <template v-slot:top>

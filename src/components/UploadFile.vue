@@ -98,25 +98,19 @@ export default {
     uploadFiles() {
       this.loading = true;
       let data = new FormData();
-
+      console.log(this.dataType);
       for (var i = 0; i < this.$refs.documents.files.length; i++) {
         let file = this.$refs.documents.files[i];
         data.append("csvFile", file);
       }
       this.loading = true;
       axios
-        .post(
-          `${process.env.VUE_APP_API_URL}api/${
-            this.dataType == "consumerData" ? "add-consumer-data" : "add-data"
-          }`,
-          data,
-          {
-            headers: {
-              "Content-Type": "multipart/form-data",
-              Authorization: `Bearer ${localStorage.getItem("token")}`,
-            },
-          }
-        )
+        .post(`${process.env.VUE_APP_API_URL}api/${this.dataType}`, data, {
+          headers: {
+            "Content-Type": "multipart/form-data",
+            Authorization: `Bearer ${localStorage.getItem("token")}`,
+          },
+        })
 
         .then((res) => {
           this.files = null;

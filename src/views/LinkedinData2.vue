@@ -46,7 +46,7 @@
             ref="uploadFile"
             @file-uploaded="fileUploaded = true"
             @update-data="getUsers"
-            dataType="add-data"
+            dataType="add-linkedin2"
           />
           <v-btn
             class="ma-2"
@@ -142,7 +142,7 @@
               <UserDetailsModal
                 ref="userDetails"
                 :userData="userData"
-                dataType="linkedin"
+                dataType="add-data"
               />
             </template>
             <template v-slot:top>
@@ -359,7 +359,7 @@ export default {
         zipCode: this.filtersData?.zipCodes || null,
       };
 
-      let url = `${process.env.VUE_APP_API_URL}api/dashboard?itemsPerPage=${
+      let url = `${process.env.VUE_APP_API_URL}api/linkedin2?itemsPerPage=${
         this.pagination.itemPerPage
       }&page=${this.pagination.page}&ageStartValue=${
         filters?.ageStartValue

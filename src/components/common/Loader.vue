@@ -1,6 +1,6 @@
 <template>
   <div class="text-center">
-    <v-overlay :value="overlay">
+    <v-overlay>
       <div class="text-center">
         <v-progress-circular indeterminate size="64"></v-progress-circular>
       </div>
