@@ -421,24 +421,23 @@ export default {
 
         companyName: this.filtersData?.companyName || null,
         jobTitle: this.filtersData?.jobTitle || null,
+        jobTitleValue: this.filtersData?.jobTitles || null,
         dob: this.filtersData?.dob || null,
         firstNameValue: this.filtersData?.firstNameValue || null,
         lastNameValue: this.filtersData?.lastNameValue || null,
         ageValue: this.filtersData?.ageValue || null,
-        cityValue: this.filtersData?.cityValue || null,
+        cityValue: this.filtersData?.cities || null,
         dobValue: this.filtersData?.dobvalue || null,
         addressValue: this.filtersData?.addressValue || null,
         address2Value: this.filtersData?.address2Value || null,
         emailValue: this.filtersData?.emailValue || null,
         companyPhoneValue: this.filtersData?.companyPhoneValue || null,
-        companyNameValue: this.filtersData?.companyNameValue || null,
-        jobTitleValue: this.filtersData?.jobTitleValue || null,
+        companyNameValue: this.filtersData?.companies || null,
+
         stateValue: this.filtersData?.stateValue || null,
         zipCode: this.filtersData?.zipCodes || null,
       };
-      let url = `${
-        process.env.VUE_APP_API_URL
-      }api/dashboard?export=${true}&ageStartValue=${
+      let url = `${process.env.VUE_APP_API_URL}api/linkedin2?export=${true}&ageStartValue=${
         filters?.ageStartValue
       }&ageEndValue=${filters?.ageEndValue}&age=${filters?.age}&firstName=${
         filters?.firstName
@@ -452,15 +451,15 @@ export default {
         filters?.mobilePhone
       }&mobilePhoneValue=${filters?.mobilePhoneValue}&city=${
         filters?.city
-      }&cityValue=${filters?.cityValue}&state=${filters?.state}&stateValue=${
-        filters?.stateValue
-      }&jobTitle=${filters?.jobTitle}&jobTitleValue=${
-        filters?.jobTitleValue
-      }&address=${filters?.address}&addressValue=${
-        filters?.addressValue
-      }&companyName=${filters?.companyName}&companyNameValue=${
-        filters?.companyNameValue
-      }`;
+      }&cityValue=${JSON.stringify(filters?.cityValue)}&state=${
+        filters?.state
+      }&stateValue=${filters?.stateValue}&jobTitle=${
+        filters?.jobTitle
+      }&jobTitleValue=${JSON.stringify(filters?.jobTitleValue)}&address=${
+        filters?.address
+      }&addressValue=${filters?.addressValue}&companyName=${
+        filters?.companyName
+      }&companyNameValue=${JSON.stringify(filters?.companyNameValue)}`;
 
       axios
         .get(url, {
