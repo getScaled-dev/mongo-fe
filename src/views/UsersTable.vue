@@ -404,6 +404,7 @@ export default {
     exportCSV() {
       this.exportLoader = true;
       // let pagination = `?itemsPerPage=${this.pagination.itemPerPage}&page=${this.pagination.page}`
+       // let pagination = `?itemsPerPage=${this.pagination.itemPerPage}&page=${this.pagination.page}`
       let filters = {
         lastName: this.filtersData?.lastName || null,
         firstName: this.filtersData?.firstName || null,
@@ -421,18 +422,19 @@ export default {
 
         companyName: this.filtersData?.companyName || null,
         jobTitle: this.filtersData?.jobTitle || null,
+        jobTitleValue: this.filtersData?.jobTitles || null,
         dob: this.filtersData?.dob || null,
         firstNameValue: this.filtersData?.firstNameValue || null,
         lastNameValue: this.filtersData?.lastNameValue || null,
         ageValue: this.filtersData?.ageValue || null,
-        cityValue: this.filtersData?.cityValue || null,
+        cityValue: this.filtersData?.cities || null,
         dobValue: this.filtersData?.dobvalue || null,
         addressValue: this.filtersData?.addressValue || null,
         address2Value: this.filtersData?.address2Value || null,
         emailValue: this.filtersData?.emailValue || null,
         companyPhoneValue: this.filtersData?.companyPhoneValue || null,
-        companyNameValue: this.filtersData?.companyNameValue || null,
-        jobTitleValue: this.filtersData?.jobTitleValue || null,
+        companyNameValue: this.filtersData?.companies || null,
+
         stateValue: this.filtersData?.stateValue || null,
         zipCode: this.filtersData?.zipCodes || null,
       };

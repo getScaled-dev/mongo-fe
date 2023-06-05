@@ -413,7 +413,7 @@ export default {
     exportCSV() {
       this.exportLoader = true;
       // let pagination = `?itemsPerPage=${this.pagination.itemPerPage}&page=${this.pagination.page}`
-      let filters = {
+        let filters = {
         lastName: this.filtersData?.lastName || null,
         firstName: this.filtersData?.firstName || null,
         age: this.filtersData?.age || null,
@@ -430,48 +430,54 @@ export default {
 
         companyName: this.filtersData?.companyName || null,
         jobTitle: this.filtersData?.jobTitle || null,
+        jobTitleValue: this.filtersData?.jobTitles || null,
         dob: this.filtersData?.dob || null,
         firstNameValue: this.filtersData?.firstNameValue || null,
         lastNameValue: this.filtersData?.lastNameValue || null,
         ageValue: this.filtersData?.ageValue || null,
-        cityValue: this.filtersData?.cityValue || null,
+        cityValue: this.filtersData?.cities || null,
         dobValue: this.filtersData?.dobvalue || null,
         addressValue: this.filtersData?.addressValue || null,
         address2Value: this.filtersData?.address2Value || null,
         emailValue: this.filtersData?.emailValue || null,
         companyPhoneValue: this.filtersData?.companyPhoneValue || null,
-        companyNameValue: this.filtersData?.companyNameValue || null,
-        jobTitleValue: this.filtersData?.jobTitleValue || null,
+        companyNameValue: this.filtersData?.companies || null,
+
         stateValue: this.filtersData?.stateValue || null,
         zipCode: this.filtersData?.zipCodes || null,
         optionSource: this.filtersData?.optionSource || null,
+        optionSourceValue: this.filtersData?.optionSources || null,
         ownRent: this.filtersData?.ownRent || null,
       };
-      let url = `${
+        let url = `${
         process.env.VUE_APP_API_URL
-      }api/get-consumer-data?export=${true}&ageStartValue=${
-        filters?.ageStartValue
-      }&ageEndValue=${filters?.ageEndValue}&age=${filters?.age}&firstName=${
-        filters?.firstName
-      }&firstNameValue=${filters?.firstNameValue}&lastName=${
-        filters?.lastName
-      }&lastNameValue=${filters?.lastNameValue}&email=${
-        filters?.email
-      }&emailValue=${filters?.emailValue}&companyPhone=${
-        filters?.companyPhone
-      }&companyPhoneValue=${filters?.companyPhoneValue}&mobilePhone=${
-        filters?.mobilePhone
-      }&mobilePhoneValue=${filters?.mobilePhoneValue}&city=${
-        filters?.city
-      }&cityValue=${filters?.cityValue}&state=${filters?.state}&stateValue=${
-        filters?.stateValue
-      }&jobTitle=${filters?.jobTitle}&jobTitleValue=${
-        filters?.jobTitleValue
-      }&address=${filters?.address}&addressValue=${
-        filters?.addressValue
-      }&companyName=${filters?.companyName}&companyNameValue=${
+      }api/get-consumer-data?export=${true}&ageStartValue=${filters?.ageStartValue}&ageEndValue=${
+        filters?.ageEndValue
+      }&age=${filters?.age}&firstName=${filters?.firstName}&firstNameValue=${
+        filters?.firstNameValue
+      }&lastName=${filters?.lastName}&lastNameValue=${
+        filters?.lastNameValue
+      }&email=${filters?.email}&emailValue=${
+        filters?.emailValue
+      }&companyPhone=${filters?.companyPhone}&companyPhoneValue=${
+        filters?.companyPhoneValue
+      }&mobilePhone=${filters?.mobilePhone}&mobilePhoneValue=${
+        filters?.mobilePhoneValue
+      }&city=${filters?.city}&cityValue=${JSON.stringify(
+        filters?.cityValue
+      )}&state=${filters?.state}&stateValue=${filters?.stateValue}&jobTitle=${
+        filters?.jobTitle
+      }&jobTitleValue=${JSON.stringify(filters?.jobTitleValue)}&address=${
+        filters?.address
+      }&addressValue=${filters?.addressValue}&companyName=${
+        filters?.companyName
+      }&companyNameValue=${JSON.stringify(
         filters?.companyNameValue
-      }`;
+      )}&optionSource=${
+        filters?.optionSource
+      }&optionSourceValue=${JSON.stringify(
+        filters?.optionSourceValue
+      )}&ownRent=${filters?.ownRent}`;
 
       axios
         .get(url, {
