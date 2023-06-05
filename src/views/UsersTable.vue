@@ -438,7 +438,9 @@ export default {
       };
       let url = `${
         process.env.VUE_APP_API_URL
-      }api/dashboard?export=${true}&ageStartValue=${
+      }api/dashboard?export=${true}&itemsPerPage=${
+        this.pagination.itemPerPage
+      }&page=${this.pagination.page}&ageStartValue=${
         filters?.ageStartValue
       }&ageEndValue=${filters?.ageEndValue}&age=${filters?.age}&firstName=${
         filters?.firstName
@@ -452,15 +454,15 @@ export default {
         filters?.mobilePhone
       }&mobilePhoneValue=${filters?.mobilePhoneValue}&city=${
         filters?.city
-      }&cityValue=${filters?.cityValue}&state=${filters?.state}&stateValue=${
-        filters?.stateValue
-      }&jobTitle=${filters?.jobTitle}&jobTitleValue=${
-        filters?.jobTitleValue
-      }&address=${filters?.address}&addressValue=${
-        filters?.addressValue
-      }&companyName=${filters?.companyName}&companyNameValue=${
-        filters?.companyNameValue
-      }`;
+      }&cityValue=${JSON.stringify(filters?.cityValue)}&state=${
+        filters?.state
+      }&stateValue=${filters?.stateValue}&jobTitle=${
+        filters?.jobTitle
+      }&jobTitleValue=${JSON.stringify(filters?.jobTitleValue)}&address=${
+        filters?.address
+      }&addressValue=${filters?.addressValue}&companyName=${
+        filters?.companyName
+      }&companyNameValue=${JSON.stringify(filters?.companyNameValue)}`;
 
       axios
         .get(url, {
