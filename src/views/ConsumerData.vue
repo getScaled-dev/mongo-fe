@@ -359,7 +359,7 @@ export default {
         stateValue: this.filtersData?.stateValue || null,
         zipCode: this.filtersData?.zipCodes || null,
         optionSource: this.filtersData?.optionSource || null,
-        optionSourceValue: this.filtersData?.optionSourceValue || null,
+        optionSourceValue: this.filtersData?.optionSources || null,
         ownRent: this.filtersData?.ownRent || null,
       };
 
@@ -389,9 +389,11 @@ export default {
         filters?.companyName
       }&companyNameValue=${JSON.stringify(
         filters?.companyNameValue
-      )}&optionSource=${filters?.optionSource}&optionSourceValue=${
+      )}&optionSource=${
+        filters?.optionSource
+      }&optionSourceValue=${JSON.stringify(
         filters?.optionSourceValue
-      }&ownRent=${filters?.ownRent}`;
+      )}&ownRent=${filters?.ownRent}`;
       axios
         .get(url, {
           headers: {

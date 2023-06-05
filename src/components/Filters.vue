@@ -667,10 +667,10 @@
           <!-- option source  -->
           <v-col md="3">
             <div class="d-flex flex-column">
-              <label for="firstName">Option Source</label>
+              <label for="firstName">Option in Source</label>
               <v-select
                 :menu-props="{ bottom: true }"
-                :items="filterItems"
+                :items="jobTitleFilters"
                 outlined
                 dense
                 v-model="filters.optionSource"
@@ -682,6 +682,89 @@
           </v-col>
 
           <v-col md="3">
+            <v-combobox
+              v-if="
+                filters.optionSource == 'like' ||
+                filters.optionSource == 'not' ||
+                filters.optionSource == 'in'
+              "
+              class="mt-7"
+              v-model="filters.optionSources"
+              :filter="filter"
+              :hide-no-data="!searchOptionSource"
+              :items="items"
+              :search-input.sync="searchOptionSource"
+              hide-selected
+              label="Search for an option"
+              multiple
+              small-chips
+              solo
+              dense
+            >
+              <template v-slot:no-data>
+                <v-list-item>
+                  <span class="subheading">Create</span>
+                  <v-chip
+                    :color="`${colors[nonceOptionSource - 1]} lighten-3`"
+                    label
+                    small
+                  >
+                    {{ searchOptionSource }}
+                  </v-chip>
+                </v-list-item>
+              </template>
+              <template v-slot:selection="{ attrs, item, parent, selected }">
+                <v-chip
+                  v-if="item === Object(item)"
+                  v-bind="attrs"
+                  :color="`${item.color} lighten-3`"
+                  :input-value="selected"
+                  label
+                  small
+                >
+                  <span class="pr-2">
+                    {{ item.optionSourceValue }}
+                  </span>
+                  <v-icon small @click="parent.selectItem(item)">
+                    $delete
+                  </v-icon>
+                </v-chip>
+              </template>
+              <template v-slot:item="{ index, item }">
+                <v-text-field
+                  v-if="editingOptionSource === item"
+                  v-model="editingOptionSource.optionSourceValue"
+                  autofocus
+                  flat
+                  background-color="transparent"
+                  hide-details
+                  solo
+                  @keyup.enter="editOptionSource(index, item)"
+                ></v-text-field>
+                <v-chip
+                  v-else
+                  :color="`${item.color} lighten-3`"
+                  dark
+                  label
+                  small
+                >
+                  {{ item.optionSourceValue }}
+                </v-chip>
+                <v-spacer></v-spacer>
+                <v-list-item-action @click.stop>
+                  <v-btn
+                    icon
+                    @click.stop.prevent="editOptionSource(index, item)"
+                  >
+                    <v-icon>{{
+                      editingOptionSource !== item ? "mdi-pencil" : "mdi-check"
+                    }}</v-icon>
+                  </v-btn>
+                </v-list-item-action>
+              </template>
+            </v-combobox>
+          </v-col>
+          <!-- <v-col md="3">
             <v-text-field
               class="mt-5"
               outlined
@@ -696,7 +779,7 @@
               "
               v-model="filters.optionSourceValue"
             ></v-text-field>
-          </v-col>
+          </v-col> -->
         </v-row>
       </v-form>
     </v-card-text>
@@ -731,6 +814,7 @@ export default {
       edtingJobTitle: null,
       editingCity: null,
       editingCompany: null,
+      editingOptionSource: null,
       editingIndexJobTitle: -1,
       editingIndexCity: -1,
       editingIndexCompany: -1,
@@ -738,10 +822,12 @@ export default {
       nonceJobTitle: 1,
       nonceCity: 1,
       nonceCompany: 1,
+      nonceOptionSource: 1,
 
       searchJobTitle: null,
       searchCity: null,
       searchCompany: null,
+      searchOptionSource: null,
 
       cityItems: [],
       jobTitleItems: [],
@@ -776,6 +862,8 @@ export default {
         mobilePhoneValue: "",
         companyPhoneValue: "",
         companies: [],
+        optionSources: [],
+
         ownRent: "",
         dobValue: "",
         stateValue: "",
@@ -873,6 +961,25 @@ export default {
           this.companyItems.push(v);
 
           this.nonceCompany++;
+        }
+
+        return v;
+      });
+    },
+
+    "filters.optionSources"(val, prev) {
+      console.log(val, prev);
+      if (val.length === prev.length) return;
+
+      this.filters.optionSources = val.map((v) => {
+        if (typeof v === "string") {
+          v = {
+            optionSourceValue: v,
+          };
+
+          this.companyItems.push(v);
+
+          this.nonceOptionSource++;
         }
 
         return v;
