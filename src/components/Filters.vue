@@ -644,6 +644,25 @@
             </v-col> -->
         </v-row>
         <v-row class="mt-4" v-if="dataType == 'consumerData'">
+             <!-- gender  -->
+          <v-col md="3">
+            <div class="d-flex flex-column">
+              <label for="firstName">Gender</label>
+              <v-select
+                :menu-props="{ bottom: true }"
+                :items="genderFilters"
+                outlined
+                dense
+                v-model="filters.gender"
+                item-text="name"
+                item-value="key"
+                placeholder="Select gender"
+                @change="checkIsAny(filters.gender, 'gender')"
+              ></v-select>
+            </div>
+          </v-col>
+          <!-- gender  -->
+          <v-col md="3"> </v-col>
           <!-- own rent  -->
           <v-col md="3">
             <div class="d-flex flex-column">
@@ -863,7 +882,7 @@ export default {
         companyPhoneValue: "",
         companies: [],
         optionSources: [],
-
+  gender: "all",
         ownRent: "",
         dobValue: "",
         stateValue: "",
@@ -899,6 +918,11 @@ export default {
         { name: "greater than and equal", key: "gte" },
         { name: "less than and equal", key: "lte" },
         { name: "between", key: "between" },
+      ],
+      genderFilters: [
+        { name: "is any", key: null },
+        { name: "Male", key: "M" },
+        { name: "Female", key: "F" },
       ],
       ownRentFilter: [
         { name: "Own", key: "own" },

@@ -119,6 +119,9 @@
             <template v-slot:item.age="{ item }">
               {{ item.age == "null" ? "" : item.age }}
             </template>
+             <template v-slot:item.gender="{ item }">
+              {{ item.gender == "F" ? "Female" : "Male" }}
+            </template>
             <template v-slot:item.dob="{ item }">
               {{ item.dob == "null" ? "" : item.dob }}
             </template>
@@ -222,7 +225,7 @@ export default {
         { text: "Job Title", value: "jobTitle", width: "100px" },
         { text: "Date Of Birth", value: "dob", width: "150px" },
         { text: "Age", value: "age", width: "80px" },
-
+   { text: "Gender", value: "gender", width: "80px" },
         { text: "Address Line 1", value: "address", width: "150px" },
         { text: "Address Line 2", value: "address2", width: "150px" },
         { text: "City", value: "city", width: "150px" },
@@ -361,6 +364,7 @@ export default {
         optionSource: this.filtersData?.optionSource || null,
         optionSourceValue: this.filtersData?.optionSources || null,
         ownRent: this.filtersData?.ownRent || null,
+           gender: this.filtersData?.gender || null,
       };
 
       let url = `${
@@ -393,7 +397,7 @@ export default {
         filters?.optionSource
       }&optionSourceValue=${JSON.stringify(
         filters?.optionSourceValue
-      )}&ownRent=${filters?.ownRent}`;
+      )}&ownRent=${filters?.ownRent}&gender=${filters?.gender}`;
       axios
         .get(url, {
           headers: {
@@ -448,6 +452,7 @@ export default {
         optionSource: this.filtersData?.optionSource || null,
         optionSourceValue: this.filtersData?.optionSources || null,
         ownRent: this.filtersData?.ownRent || null,
+         gender: this.filtersData?.gender || null,
       };
         let url = `${
         process.env.VUE_APP_API_URL
@@ -477,7 +482,7 @@ export default {
         filters?.optionSource
       }&optionSourceValue=${JSON.stringify(
         filters?.optionSourceValue
-      )}&ownRent=${filters?.ownRent}`;
+      )}&ownRent=${filters?.ownRent}&gender=${filters?.gender}`;
 
       axios
         .get(url, {
