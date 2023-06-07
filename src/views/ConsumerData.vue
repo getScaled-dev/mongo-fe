@@ -360,7 +360,8 @@ export default {
         companyNameValue: this.filtersData?.companies || null,
 
         stateValue: this.filtersData?.stateValue || null,
-        zipCode: this.filtersData?.zipCodes || null,
+        zipCodeValue: this.filtersData?.zipCodes || null,
+        zipCode: this.filtersData?.zipCode || null,
         optionSource: this.filtersData?.optionSource || null,
         optionSourceValue: this.filtersData?.optionSources || null,
         ownRent: this.filtersData?.ownRent || null,
@@ -397,7 +398,7 @@ export default {
         filters?.optionSource
       }&optionSourceValue=${JSON.stringify(
         filters?.optionSourceValue
-      )}&ownRent=${filters?.ownRent}&gender=${filters?.gender}`;
+      )}&ownRent=${filters?.ownRent}&gender=${filters?.gender}&zipCodeValue=${JSON.stringify(filters?.zipCodeValue)}&zipCode=${filters?.zipCode}`;
       axios
         .get(url, {
           headers: {
@@ -448,7 +449,8 @@ export default {
         companyNameValue: this.filtersData?.companies || null,
 
         stateValue: this.filtersData?.stateValue || null,
-        zipCode: this.filtersData?.zipCodes || null,
+       zipCodeValue: this.filtersData?.zipCodes || null,
+        zipCode: this.filtersData?.zipCode || null,
         optionSource: this.filtersData?.optionSource || null,
         optionSourceValue: this.filtersData?.optionSources || null,
         ownRent: this.filtersData?.ownRent || null,
@@ -482,7 +484,7 @@ export default {
         filters?.optionSource
       }&optionSourceValue=${JSON.stringify(
         filters?.optionSourceValue
-      )}&ownRent=${filters?.ownRent}&gender=${filters?.gender}`;
+      )}&ownRent=${filters?.ownRent}&gender=${filters?.gender}&zipCodeValue=${JSON.stringify(filters?.zipCodeValue)}&zipCode=${filters?.zipCode}`;
 
       axios
         .get(url, {

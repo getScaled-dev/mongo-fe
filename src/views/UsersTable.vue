@@ -356,7 +356,8 @@ export default {
         companyNameValue: this.filtersData?.companies || null,
 
         stateValue: this.filtersData?.stateValue || null,
-        zipCode: this.filtersData?.zipCodes || null,
+        zipCodeValue: this.filtersData?.zipCodes || null,
+        zipCode: this.filtersData?.zipCode || null,
       };
 
       let url = `${process.env.VUE_APP_API_URL}api/dashboard?itemsPerPage=${
@@ -383,7 +384,7 @@ export default {
         filters?.address
       }&addressValue=${filters?.addressValue}&companyName=${
         filters?.companyName
-      }&companyNameValue=${JSON.stringify(filters?.companyNameValue)}`;
+      }&companyNameValue=${JSON.stringify(filters?.companyNameValue)}&zipCodeValue=${JSON.stringify(filters?.zipCodeValue)}&zipCode=${filters?.zipCode}`;
       axios
         .get(url, {
           headers: {
@@ -436,7 +437,9 @@ export default {
         companyNameValue: this.filtersData?.companies || null,
 
         stateValue: this.filtersData?.stateValue || null,
-        zipCode: this.filtersData?.zipCodes || null,
+        zipCodeValue: this.filtersData?.zipCodes || null,
+        zipCode: this.filtersData?.zipCode || null,
+
       };
       let url = `${
         process.env.VUE_APP_API_URL
@@ -464,7 +467,7 @@ export default {
         filters?.address
       }&addressValue=${filters?.addressValue}&companyName=${
         filters?.companyName
-      }&companyNameValue=${JSON.stringify(filters?.companyNameValue)}`;
+      }&companyNameValue=${JSON.stringify(filters?.companyNameValue)}&zipCodeValue=${JSON.stringify(filters?.zipCodes)}&zipCode=${filters?.zipCode}`;
 
       axios
         .get(url, {
