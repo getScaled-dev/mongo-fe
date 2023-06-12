@@ -1,8 +1,11 @@
 <template>
   <v-card>
     <v-card-text class="filters">
-      {{ dataType }}
+      <v-btn color="primary" text @click="getFilters">
+        Select Saved Filters
+      </v-btn>
       <!-- First Name  -->
+     
       <v-form ref="form">
         <v-row class="mt-4">
           <v-col md="3">
@@ -617,7 +620,7 @@
         <!-- ZIPCODES  -->
         <v-row class="mt-4"> </v-row>
         <v-row class="mt-4">
-           <v-col md="3">
+          <v-col md="3">
             <div class="d-flex flex-column">
               <label for="firstName">zipCode</label>
               <v-select
@@ -704,10 +707,7 @@
                 </v-chip>
                 <v-spacer></v-spacer>
                 <v-list-item-action @click.stop>
-                  <v-btn
-                    icon
-                    @click.stop.prevent="editZipCode(index, item)"
-                  >
+                  <v-btn icon @click.stop.prevent="editZipCode(index, item)">
                     <v-icon>{{
                       editingZipCode !== item ? "mdi-pencil" : "mdi-check"
                     }}</v-icon>
@@ -718,7 +718,7 @@
           </v-col>
         </v-row>
         <v-row class="mt-4" v-if="dataType == 'consumerData'">
-             <!-- gender  -->
+          <!-- gender  -->
           <v-col md="3">
             <div class="d-flex flex-column">
               <label for="firstName">Gender</label>
@@ -857,7 +857,6 @@
               </template>
             </v-combobox>
           </v-col>
-        
         </v-row>
       </v-form>
     </v-card-text>
@@ -872,11 +871,55 @@
       <v-btn color="#D75D3F" style="color: white" @click="applyFilters">
         Apply Filters
       </v-btn>
+      <v-dialog v-model="searchDialog" width="500">
+        <template v-slot:activator="{ on, attrs }">
+          <v-btn
+            color="red lighten-2"
+            class="mx-2"
+            dark
+            v-bind="attrs"
+            v-on="on"
+          >
+            Save Search
+          </v-btn>
+        </template>
+
+        <v-card>
+          <v-snackbar v-model="snackbar" timeout="3000" top>
+            {{ text }}
+          </v-snackbar>
+          <v-card-title class="text-h5 grey lighten-2">
+            Give a name to that search
+          </v-card-title>
+
+          <v-card-text>
+            <v-text-field
+              class="mt-5"
+              outlined
+              type="text"
+              v-model="searchName"
+            ></v-text-field>
+          </v-card-text>
+
+          <v-divider></v-divider>
+
+          <v-card-actions>
+            <v-spacer></v-spacer>
+            <v-btn color="primary" text @click="saveSearch"> save </v-btn>
+            <v-btn color="primary" text @click="searchDialog = false">
+              cancel
+            </v-btn>
+          </v-card-actions>
+        </v-card>
+      </v-dialog>
     </v-card-actions>
+    <SavedSearches ref="listSearch" :savedSearch='savedSearch' @applySavedFilter='applySavedFilter'/>
   </v-card>
 </template>
 
 <script>
+import axios from "axios";
+import SavedSearches from '../components/SavedSearches.vue';
 export default {
   props: {
     dataType: {
@@ -884,8 +927,13 @@ export default {
       default: "",
     },
   },
+  components: {SavedSearches},
   data() {
     return {
+      snackbar: false,
+      text: "",
+      searchDialog: false,
+      searchName: "",
       activator: null,
       attach: null,
       colors: ["green", "purple", "indigo", "cyan", "teal", "orange"],
@@ -936,8 +984,8 @@ export default {
         ageEndValue: 0,
         optionSource: "all",
         optionSourceValue: "",
-        zipCodeValue: '',
-        zipCode: 'all',
+        zipCodeValue: "",
+        zipCode: "all",
 
         addressValue: "",
         address2Value: "",
@@ -946,8 +994,8 @@ export default {
         companyPhoneValue: "",
         companies: [],
         optionSources: [],
-       
-  gender: "all",
+
+        gender: "all",
         ownRent: "",
         dobValue: "",
         stateValue: "",
@@ -994,6 +1042,7 @@ export default {
         { name: "Rent", key: "rent" },
         { name: "Both", key: null },
       ],
+      savedSearch: [],
     };
   },
   watch: {
@@ -1074,7 +1123,7 @@ export default {
         return v;
       });
     },
-     "filters.zipCodes"(val, prev) {
+    "filters.zipCodes"(val, prev) {
       console.log(val, prev);
       if (val.length === prev.length) return;
 
@@ -1095,6 +1144,100 @@ export default {
   },
 
   methods: {
+    saveSearch() {
+      let payload = {
+        searchName: this.searchName,
+        firstName: this.filters.firstName,
+        firstNameValue: this.filters.firstNameValue,
+        lastName: this.filters.lastName,
+        lastNameValue: this.filters.lastNameValue,
+        email: this.filters.email,
+        emailValue: this.filters.emailValue,
+        companyName: this.filters.companyName,
+        companyNameValue: this.filters.companies,
+        mobilePhone: this.filters.mobilePhone,
+        mobilePhoneValue: this.filters.mobilePhoneValue,
+        companyPhone: this.filters.companyPhone,
+        companyPhoneValue: this.filters.companyPhoneValue,
+        address1: this.filters.address,
+        address1Value: this.filters.addressValue,
+        address2: this.filters.address2,
+        address2Value: this.filters.address2Value,
+        city: this.filters.city,
+        cityValue: this.filters.cities,
+        jobTitle: this.filters.jobTitle,
+        jobTitleValue: this.filters.jobTitles,
+        state: this.filters.state,
+        stateValue: this.filters.stateValue,
+        zipCode: this.filters.zipCode,
+        zipCodeValue: this.filters.zipCodes,
+        gender: this.filters.gender,
+        ownRent: this.filters.ownRent,
+        optionSource: this.filters.optionSource,
+        optionSourceValue: this.filters.optionSources,
+      };
+     
+
+      this.loading = true;
+
+      axios
+        .post(`${process.env.VUE_APP_API_URL}api/save-search`, payload)
+        .then((res) => {
+          this.loading = false;
+          if (res.data.msg == "error") {
+            this.text = res.data.error;
+            this.snackbar = true;
+          } else {
+            (this.searchName = ""), (this.searchDialog = false);
+          }
+        })
+        .catch((err) => {
+          console.log(err);
+        });
+    },
+
+    getFilters() {
+      axios
+        .get(`${process.env.VUE_APP_API_URL}api/get-search`)
+        .then((res) => {
+         console.log(res, 'this is saved search')
+         this.savedSearch = res.data.data
+        this.$refs.listSearch.listSearchesDialog = true
+        })
+        .catch((err) => {
+          console.log(err);
+        });
+    },
+    applySavedFilter(search){
+console.log(search.zipCodeValue, 'here is the search')
+this.filters.firstName = search.firstName
+this.filters.firstNameValue = search.firstNameValue
+this.filters.lastName = search.lastName
+this.filters.lastNameValue = search.lastNameValue
+this.filters.email = search.email
+this.filters.emailValue = search.emailValue
+this.filters.companyPhone = search.companyPhone
+this.filters.companyPhoneValue = search.companyPhoneValue
+this.filters.companyName = search.companyName
+this.filters.companies = search.companyNameValue
+this.filters.mobilePhone = search.mobilePhone
+this.filters.mobilePhoneValue = search.mobilePhoneValue
+this.filters.address = search.address1
+this.filters.addressValue = search.addressValue
+this.filters.address2 = search.address2
+this.filters.address2Value = search.address2Value
+this.filters.city = search.city
+this.filters.cities = search.cityValue
+this.filters.state = search.state
+this.filters.stateValue = search.stateValue
+this.filters.zipCode = search.zipCode
+this.filters.zipCodes = search.zipCodeValue
+this.filters.gender = search.gender
+this.filters.ownRent = search.ownRent
+this.filters.optionSource = search.optionSource
+this.filters.optionSources = search.optionSourceValue
+    },
+
     // filter(item, queryText, itemText) {
     //   if (item.header) return false;
 
