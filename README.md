@@ -1,4 +1,4 @@
-# fe_getscaled
+# GetScaled
 
 ## Project setup
 ```
