@@ -871,6 +871,7 @@
       <v-btn color="#D75D3F" style="color: white" @click="applyFilters">
         Apply Filters
       </v-btn>
+     
       <v-dialog v-model="searchDialog" width="500">
         <template v-slot:activator="{ on, attrs }">
           <v-btn
@@ -879,6 +880,7 @@
             dark
             v-bind="attrs"
             v-on="on"
+            :disabled='!isFilterApplied'
           >
             Save Search
           </v-btn>
@@ -930,6 +932,7 @@ export default {
   components: {SavedSearches},
   data() {
     return {
+      isFilterApplied: false,
       snackbar: false,
       text: "",
       searchDialog: false,
@@ -1236,6 +1239,7 @@ this.filters.gender = search.gender
 this.filters.ownRent = search.ownRent
 this.filters.optionSource = search.optionSource
 this.filters.optionSources = search.optionSourceValue
+
     },
 
     // filter(item, queryText, itemText) {
@@ -1255,6 +1259,7 @@ this.filters.optionSources = search.optionSourceValue
     // },
     applyFilters() {
       this.$emit("apply-filter", this.filters);
+      this.isFilterApplied = true
     },
 
     removeJobTitle(index) {
