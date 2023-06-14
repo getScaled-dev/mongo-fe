@@ -1148,7 +1148,11 @@ export default {
 
   methods: {
     saveSearch() {
-      let payload = {
+      if(this.searchName == ''){
+this.snackbar = true
+this.text = 'Search name cannot be empty'
+      }else{
+         let payload = {
         searchName: this.searchName,
         firstName: this.filters.firstName,
         firstNameValue: this.filters.firstNameValue,
@@ -1197,6 +1201,8 @@ export default {
         .catch((err) => {
           console.log(err);
         });
+      }
+     
     },
 
     getFilters() {
