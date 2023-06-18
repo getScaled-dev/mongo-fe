@@ -320,8 +320,8 @@ export default {
         this.filtersData.stateValue = "";
       }
       if (type == "age") {
-        this.filtersData.ageEndValue = "";
-        this.filtersData.ageStartValue = "";
+        this.filtersData.dobEndValue = "";
+        this.filtersData.dobStartValue = "";
       }
     },
 
@@ -332,7 +332,7 @@ export default {
       let filters = {
         lastName: this.filtersData?.lastName || null,
         firstName: this.filtersData?.firstName || null,
-        age: this.filtersData?.age || null,
+        dob: this.filtersData?.dob || null,
         city: this.filtersData?.city || null,
         state: this.filtersData?.state || null,
         address: this.filtersData?.address || null,
@@ -341,8 +341,8 @@ export default {
         companyPhone: this.filtersData?.companyPhone || null,
         mobilePhone: this.filtersData?.mobilePhone || null,
         mobilePhoneValue: this.filtersData?.mobilePhoneValue || null,
-        ageStartValue: this.filtersData?.ageStartValue || null,
-        ageEndValue: this.filtersData?.ageEndValue || null,
+        dobStartValue: this.filtersData?.dobStartValue || null,
+        dobEndValue: this.filtersData?.dobEndValue || null,
 
         companyName: this.filtersData?.companyName || null,
         jobTitle: this.filtersData?.jobTitle || null,
@@ -372,9 +372,9 @@ export default {
         process.env.VUE_APP_API_URL
       }api/get-consumer-data?itemsPerPage=${this.pagination.itemPerPage}&page=${
         this.pagination.page
-      }&ageStartValue=${filters?.ageStartValue}&ageEndValue=${
-        filters?.ageEndValue
-      }&age=${filters?.age}&firstName=${filters?.firstName}&firstNameValue=${
+      }&dobStartValue=${filters?.dobStartValue}&dobEndValue=${
+        filters?.dobEndValue
+      }&dob=${filters?.dob}&firstName=${filters?.firstName}&firstNameValue=${
         filters?.firstNameValue
       }&lastName=${filters?.lastName}&lastNameValue=${
         filters?.lastNameValue
@@ -421,7 +421,7 @@ export default {
         let filters = {
         lastName: this.filtersData?.lastName || null,
         firstName: this.filtersData?.firstName || null,
-        age: this.filtersData?.age || null,
+        dob: this.filtersData?.dob || null,
         city: this.filtersData?.city || null,
         state: this.filtersData?.state || null,
         address: this.filtersData?.address || null,
@@ -430,8 +430,8 @@ export default {
         companyPhone: this.filtersData?.companyPhone || null,
         mobilePhone: this.filtersData?.mobilePhone || null,
         mobilePhoneValue: this.filtersData?.mobilePhoneValue || null,
-        ageStartValue: this.filtersData?.ageStartValue || null,
-        ageEndValue: this.filtersData?.ageEndValue || null,
+        dobStartValue: this.filtersData?.dobStartValue || null,
+        dobEndValue: this.filtersData?.dobEndValue || null,
 
         companyName: this.filtersData?.companyName || null,
         jobTitle: this.filtersData?.jobTitle || null,
@@ -458,9 +458,9 @@ export default {
       };
         let url = `${
         process.env.VUE_APP_API_URL
-      }api/get-consumer-data?export=${true}&ageStartValue=${filters?.ageStartValue}&ageEndValue=${
-        filters?.ageEndValue
-      }&age=${filters?.age}&firstName=${filters?.firstName}&firstNameValue=${
+      }api/get-consumer-data?export=${true}&dobStartValue=${filters?.dobStartValue}&dobEndValue=${
+        filters?.dobEndValue
+      }&dob=${filters?.dob}&firstName=${filters?.firstName}&firstNameValue=${
         filters?.firstNameValue
       }&lastName=${filters?.lastName}&lastNameValue=${
         filters?.lastNameValue

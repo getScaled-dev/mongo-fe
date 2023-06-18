@@ -285,36 +285,51 @@
         <v-row class="mt-4">
           <v-col md="3">
             <div class="d-flex flex-column">
-              <label for="firstName">Age</label>
+              <label for="firstName">Date of birth</label>
               <v-select
-                :items="ageFilters"
+                :items="dobFilters"
                 :menu-props="{ bottom: true }"
                 outlined
                 dense
-                v-model="filters.age"
+                v-model="filters.dob"
                 item-text="name"
                 item-value="key"
-                @change="checkIsAny(filters.age, 'age')"
+                @change="checkIsAny(filters.dob, 'dob')"
               ></v-select>
             </div>
           </v-col>
 
           <v-col md="3" class="d-flex">
-            <v-text-field
+            <!-- <v-text-field
               class="mt-5"
               outlined
-              v-if="filters.age != 'all'"
+              v-if="filters.dob != 'all'"
               type="number"
-              v-model="filters.ageStartValue"
-            ></v-text-field>
-            <span v-if="filters.age == 'between'" class="mt-9 mx-2">To</span>
-            <v-text-field
-              class="mt-5"
-              outlined
-              v-if="filters.age == 'between'"
-              type="number"
-              v-model="filters.ageEndValue"
-            ></v-text-field>
+              v-model="filters.statDate"
+            ></v-text-field> -->
+            <v-menu v-if="filters.dob != 'all'" ref="menu" v-model="menu" :close-on-content-click="false"
+              transition="scale-transition" offset-y min-width="auto">
+              <template v-slot:activator="{ on, attrs }">
+                <v-text-field class="mt-5" outlined v-model="filters.dobStartValue" label="Birthday date"
+                  prepend-icon="mdi-calendar" readonly v-bind="attrs" v-on="on"></v-text-field>
+              </template>
+              <v-date-picker v-model="filters.dobStartValue" :active-picker.sync="activePicker" :max="new Date(Date.now() - new Date().getTimezoneOffset() * 60000)
+                .toISOString()
+                .substr(0, 10)
+                " min="1900-01-01" @change="save"></v-date-picker>
+            </v-menu>
+            <span v-if="filters.dob == 'between'" class="mt-9 mx-2">To</span>
+            <v-menu v-if="filters.dob == 'between'" ref="menu1" v-model="menu1" :close-on-content-click="false"
+              transition="scale-transition" offset-y min-width="auto">
+              <template v-slot:activator="{ on, attrs }">
+                <v-text-field class="mt-5" outlined v-model="filters.dobEndValue" label="Birthday date"
+                  prepend-icon="mdi-calendar" readonly v-bind="attrs" v-on="on"></v-text-field>
+              </template>
+              <v-date-picker v-model="filters.dobEndValue" :active-picker.sync="activePicker" :max="new Date(Date.now() - new Date().getTimezoneOffset() * 60000)
+                .toISOString()
+                .substr(0, 10)
+                " min="1900-01-01" @change="save"></v-date-picker>
+            </v-menu>
           </v-col>
 
           <v-col md="3">
@@ -932,6 +947,8 @@ export default {
   components: {SavedSearches},
   data() {
     return {
+         menu: false,
+      menu1: false,
       isFilterApplied: false,
       snackbar: false,
       text: "",
@@ -968,7 +985,7 @@ export default {
       filters: {
         lastName: "all",
         firstName: "all",
-        age: "all",
+        dob: "all",
         city: "all",
         state: "all",
         address: "all",
@@ -983,8 +1000,8 @@ export default {
         dob: "all",
         firstNameValue: "",
         lastNameValue: "",
-        agrStartValue: 0,
-        ageEndValue: 0,
+        dobStartValue: 0,
+        dobEndValue: 0,
         optionSource: "all",
         optionSourceValue: "",
         zipCodeValue: "",
@@ -1029,7 +1046,7 @@ export default {
         { name: "is blank", key: "isBlank" },
         { name: "is not blank", key: "notBlank" },
       ],
-      ageFilters: [
+      dobFilters: [
         { name: "is any", key: "all" },
         { name: "greater than and equal", key: "gte" },
         { name: "less than and equal", key: "lte" },
