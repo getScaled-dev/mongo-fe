@@ -1199,6 +1199,9 @@ this.text = 'Search name cannot be empty'
         ownRent: this.filters.ownRent,
         optionSource: this.filters.optionSource,
         optionSourceValue: this.filters.optionSources,
+        dob: this.filters.dob,
+        dobStartValue: this.filters.dobStartValue,
+        dobEndValue: this.filters.dobEndValue
       };
      
 
@@ -1264,6 +1267,9 @@ this.filters.gender = search.gender
 this.filters.ownRent = search.ownRent
 this.filters.optionSource = search.optionSource
 this.filters.optionSources = search.optionSourceValue
+this.filters.dob = search.dob
+this.filters.dobStartValue = search.dobStartValue
+this.filters.dobEndValue = search.dobEndValue
 
     },
 
