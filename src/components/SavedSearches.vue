@@ -9,10 +9,17 @@
         <v-card-title class="text-h5 grey lighten-2">
           Select Your Saved Search
         </v-card-title>
-
-        <v-card-text>
+<v-text-field
+              class="mt-5"
+              outlined
+              type="text"
+             
+              v-model="search"
+              
+            ></v-text-field>
+        <!-- <v-card-text> -->
            
-          <v-select
+          <!-- <v-select
           class="mt-4"
                 :items="savedSearch"
                 dense
@@ -24,7 +31,27 @@
                 return-object
               
               ></v-select>
-        </v-card-text>
+        </v-card-text> -->
+         
+      <v-list dense>
+    
+      <v-list-item-group
+        v-model="selectedItem"
+        color="primary"
+      >
+        <v-list-item
+          v-for="(item, i) in filteredItems"
+          :key="i"
+        >
+          <v-list-item-icon>
+           
+          </v-list-item-icon>
+          <v-list-item-content>
+            <v-list-item-title v-text="item.searchName"></v-list-item-title>
+          </v-list-item-content>
+        </v-list-item>
+      </v-list-item-group>
+    </v-list>
 
         <v-divider></v-divider>
 
@@ -59,9 +86,19 @@ savedSearch: {
     data(){
         return{
             listSearchesDialog: false,
-            selectedSearch: {}
+            selectedSearch: {},
+            search: "",
+           
         }
     },
+    computed: {
+    filteredItems() {
+      // Apply the filter based on the search input
+      return this.savedSearch.filter((item) =>
+        item.searchName.toLowerCase().includes(this.search.toLowerCase())
+      );
+    },
+  },
     methods: {
 applySearch(){
     this.$emit('applySavedFilter', this.selectedSearch)
