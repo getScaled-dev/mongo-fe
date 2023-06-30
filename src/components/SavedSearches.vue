@@ -33,7 +33,7 @@
               ></v-select>
         </v-card-text> -->
          
-      <v-list dense>
+      <v-list dense style="height: 300px; overflow: auto">
     
       <v-list-item-group
         v-model="selectedItem"
@@ -46,7 +46,7 @@
           <v-list-item-icon>
            
           </v-list-item-icon>
-          <v-list-item-content>
+          <v-list-item-content @click="setSerchItem(item)">
             <v-list-item-title v-text="item.searchName"></v-list-item-title>
           </v-list-item-content>
         </v-list-item>
@@ -100,6 +100,9 @@ savedSearch: {
     },
   },
     methods: {
+        setSerchItem(search){
+this.selectedSearch = search
+        },
 applySearch(){
     this.$emit('applySavedFilter', this.selectedSearch)
     this.listSearchesDialog = false
