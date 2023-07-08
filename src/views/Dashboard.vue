@@ -30,6 +30,11 @@
                 <router-link to="/linkedin2">LinkedIn Data 2</router-link>
               </v-list-item-title>
             </v-list-item>
+             <v-list-item>
+              <v-list-item-title>
+                <router-link to="/gpt">Chat GPT</router-link>
+              </v-list-item-title>
+            </v-list-item>
           </v-list>
         </v-menu>
 

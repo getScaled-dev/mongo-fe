@@ -46,6 +46,13 @@ const routes = [
 
     component: () => import(/* webpackChunkName: "about" */ '../views/mautic/Mautic.vue'),
     meta: { requiresAuth: true },
+  },
+  {
+    path: '/gpt',
+    name: 'GPT',
+
+    component: () => import(/* webpackChunkName: "about" */ '../views/gpt/Chat.vue'),
+    meta: { requiresAuth: true },
   }
 ]
 

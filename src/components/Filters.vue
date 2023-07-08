@@ -1238,7 +1238,7 @@ this.text = 'Search name cannot be empty'
         });
     },
     applySavedFilter(search){
-console.log(search.zipCodeValue, 'here is the search')
+console.log(search, 'here is the search')
 this.filters.firstName = search.firstName
 this.filters.firstNameValue = search.firstNameValue
 this.filters.lastName = search.lastName

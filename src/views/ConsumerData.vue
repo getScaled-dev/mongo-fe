@@ -57,6 +57,15 @@
           </v-btn>
         </div>
       </div>
+      <div style="display: flex">
+        <span>
+          Total Emails: {{totalEmails}}
+        </span>
+        <span>
+          Verified Emails: {{verifiedEmails}}
+        </span>
+      <!-- <v-progress-linear :model-value="percentage" v-if="verifyEmail"></v-progress-linear> -->
+      </div>
       <v-expansion-panels class="mt-5">
         <v-expansion-panel>
           <v-expansion-panel-header> Apply Filters </v-expansion-panel-header>
@@ -119,7 +128,7 @@
             <template v-slot:item.age="{ item }">
               {{ item.age == "null" ? "" : item.age }}
             </template>
-             <template v-slot:item.gender="{ item }">
+            <template v-slot:item.gender="{ item }">
               {{ item.gender == "F" ? "Female" : "Male" }}
             </template>
             <template v-slot:item.dob="{ item }">
@@ -191,6 +200,9 @@ export default {
   },
   data() {
     return {
+      verifyEmail: false,
+     totalEmails: 0,
+     verifiedEmails: 0,
       deletedText: "Data has been deleted successfully!",
       dataDeleted: false,
       timeout: 5000,
@@ -225,7 +237,7 @@ export default {
         { text: "Job Title", value: "jobTitle", width: "100px" },
         { text: "Date Of Birth", value: "dob", width: "150px" },
         { text: "Age", value: "age", width: "80px" },
-   { text: "Gender", value: "gender", width: "80px" },
+        { text: "Gender", value: "gender", width: "80px" },
         { text: "Address Line 1", value: "address", width: "150px" },
         { text: "Address Line 2", value: "address2", width: "150px" },
         { text: "City", value: "city", width: "150px" },
@@ -365,7 +377,7 @@ export default {
         optionSource: this.filtersData?.optionSource || null,
         optionSourceValue: this.filtersData?.optionSources || null,
         ownRent: this.filtersData?.ownRent || null,
-           gender: this.filtersData?.gender || null,
+        gender: this.filtersData?.gender || null,
       };
 
       let url = `${
@@ -398,7 +410,11 @@ export default {
         filters?.optionSource
       }&optionSourceValue=${JSON.stringify(
         filters?.optionSourceValue
-      )}&ownRent=${filters?.ownRent}&gender=${filters?.gender}&zipCodeValue=${JSON.stringify(filters?.zipCodeValue)}&zipCode=${filters?.zipCode}`;
+      )}&ownRent=${filters?.ownRent}&gender=${
+        filters?.gender
+      }&zipCodeValue=${JSON.stringify(filters?.zipCodeValue)}&zipCode=${
+        filters?.zipCode
+      }`;
       axios
         .get(url, {
           headers: {
@@ -418,7 +434,7 @@ export default {
     exportCSV() {
       this.exportLoader = true;
       // let pagination = `?itemsPerPage=${this.pagination.itemPerPage}&page=${this.pagination.page}`
-        let filters = {
+      let filters = {
         lastName: this.filtersData?.lastName || null,
         firstName: this.filtersData?.firstName || null,
         dob: this.filtersData?.dob || null,
@@ -449,30 +465,32 @@ export default {
         companyNameValue: this.filtersData?.companies || null,
 
         stateValue: this.filtersData?.stateValue || null,
-       zipCodeValue: this.filtersData?.zipCodes || null,
+        zipCodeValue: this.filtersData?.zipCodes || null,
         zipCode: this.filtersData?.zipCode || null,
         optionSource: this.filtersData?.optionSource || null,
         optionSourceValue: this.filtersData?.optionSources || null,
         ownRent: this.filtersData?.ownRent || null,
-         gender: this.filtersData?.gender || null,
+        gender: this.filtersData?.gender || null,
       };
-        let url = `${
+      let url = `${
         process.env.VUE_APP_API_URL
-      }api/get-consumer-data?export=${true}&dobStartValue=${filters?.dobStartValue}&dobEndValue=${
-        filters?.dobEndValue
-      }&dob=${filters?.dob}&firstName=${filters?.firstName}&firstNameValue=${
-        filters?.firstNameValue
-      }&lastName=${filters?.lastName}&lastNameValue=${
-        filters?.lastNameValue
-      }&email=${filters?.email}&emailValue=${
-        filters?.emailValue
-      }&companyPhone=${filters?.companyPhone}&companyPhoneValue=${
-        filters?.companyPhoneValue
-      }&mobilePhone=${filters?.mobilePhone}&mobilePhoneValue=${
-        filters?.mobilePhoneValue
-      }&city=${filters?.city}&cityValue=${JSON.stringify(
-        filters?.cityValue
-      )}&state=${filters?.state}&stateValue=${filters?.stateValue}&jobTitle=${
+      }api/get-consumer-data?export=${true}&dobStartValue=${
+        filters?.dobStartValue
+      }&dobEndValue=${filters?.dobEndValue}&dob=${filters?.dob}&firstName=${
+        filters?.firstName
+      }&firstNameValue=${filters?.firstNameValue}&lastName=${
+        filters?.lastName
+      }&lastNameValue=${filters?.lastNameValue}&email=${
+        filters?.email
+      }&emailValue=${filters?.emailValue}&companyPhone=${
+        filters?.companyPhone
+      }&companyPhoneValue=${filters?.companyPhoneValue}&mobilePhone=${
+        filters?.mobilePhone
+      }&mobilePhoneValue=${filters?.mobilePhoneValue}&city=${
+        filters?.city
+      }&cityValue=${JSON.stringify(filters?.cityValue)}&state=${
+        filters?.state
+      }&stateValue=${filters?.stateValue}&jobTitle=${
         filters?.jobTitle
       }&jobTitleValue=${JSON.stringify(filters?.jobTitleValue)}&address=${
         filters?.address
@@ -484,8 +502,12 @@ export default {
         filters?.optionSource
       }&optionSourceValue=${JSON.stringify(
         filters?.optionSourceValue
-      )}&ownRent=${filters?.ownRent}&gender=${filters?.gender}&zipCodeValue=${JSON.stringify(filters?.zipCodeValue)}&zipCode=${filters?.zipCode}`;
-
+      )}&ownRent=${filters?.ownRent}&gender=${
+        filters?.gender
+      }&zipCodeValue=${JSON.stringify(filters?.zipCodeValue)}&zipCode=${
+        filters?.zipCode
+      }`;
+      const key = "lxxzhhJB1iCpKE5Uvzw5D";
       axios
         .get(url, {
           headers: {
@@ -496,9 +518,35 @@ export default {
         .then((response) => {
           console.log(response);
 
-          this.exportLoader = false;
+         
+         
+          let myInterval = setInterval(function () {
+            axios
+              .get(
+                `https://apps.emaillistverify.com/api/getApiFileInfo?secret=${key}&id=${response.data}`
+              )
+              .then((res) => {
+                const inputString = res.data;
+                const splitString = inputString.split("|");
 
-          window.open(url, "_blank");
+                // Access the desired URL, which is the 8th element in the splitString array
+                const url = splitString[7];
+
+                const finished = splitString[5];
+
+               this.totalEmails = splitString[3];
+                this.verifiedEmails = splitString[4];
+              
+                if (finished == "finished") {
+                  this.exportLoader = false;
+                  window.open(url, "_blank");
+                  clearInterval(myInterval);
+                }
+
+                console.log(res.data);
+              });
+            // window.open(url, "_blank");
+          }, 5000);
         })
         .catch((error) => {
           this.exportLoader = false;
@@ -514,6 +562,7 @@ export default {
     checkDuplicates() {
       this.$refs.duplicates.dialog = true;
     },
+   
   },
   watch: {
     "pagination.page"() {
@@ -524,8 +573,12 @@ export default {
       this.getUsers();
     },
   },
+  beforeDestroy() {
+    clearInterval(this.interval);
+  },
   mounted() {
     this.getUsers();
+    
     console.log(process.env.VUE_APP_API_URL);
 
     let wrapper_1 = document.querySelector(
