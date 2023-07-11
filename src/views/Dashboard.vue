@@ -32,7 +32,7 @@
             </v-list-item>
              <v-list-item>
               <v-list-item-title>
-                <router-link to="/gpt">Chat GPT</router-link>
+                <router-link to="/ai-campaign">AI Campaign Generation</router-link>
               </v-list-item-title>
             </v-list-item>
           </v-list>
