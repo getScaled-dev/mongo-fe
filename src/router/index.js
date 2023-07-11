@@ -48,8 +48,8 @@ const routes = [
     meta: { requiresAuth: true },
   },
   {
-    path: '/gpt',
-    name: 'GPT',
+    path: '/ai-campaign',
+    name: 'AI-Campaign',
 
     component: () => import(/* webpackChunkName: "about" */ '../views/gpt/Chat.vue'),
     meta: { requiresAuth: true },
