@@ -47,7 +47,7 @@
       ></v-textarea>
       <div class="d-flex justify-space-between">
         <div>
-          <v-btn small color="rgb(7, 2, 83)" dark>Submit to chat GPT</v-btn>
+          <v-btn small color="rgb(7, 2, 83)" dark>Generate AI Campaign</v-btn>
           <v-btn small class="ml-3" @click="gptPrompt = ''">Clear</v-btn>
           <v-btn small class="ml-3" @click="gptPrompt = ''">Save</v-btn>
 
