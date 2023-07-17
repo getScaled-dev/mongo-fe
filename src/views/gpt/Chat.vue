@@ -20,7 +20,7 @@
     </div>
     <v-divider vertical class="ml-2" inset></v-divider>
     <div style="width: 70%" class="ml-8">
-      <v-card style="height: 80%;" class="mb-4">
+      <v-card style="height: 80%;" class="mb-4" v-if="isResponse">
         <v-expand-transition>
           <v-card
             class="transition-fast-in-fast-out v-card--reveal"
@@ -28,28 +28,30 @@
             color="blue-grey lighten-5"
           >
             <v-card-text class="pb-0">
-            
-              <p style="color: black">
-                late 16th century (as a noun denoting a place where alms were
-                distributed): from medieval Latin eleemosynarius, from late
-                Latin eleemosyna ‘alms’, from Greek eleēmosunē ‘compassion’
-              </p>
+              <div class="d-flex justify-center align-items-center" v-if="isLoading">
+<img src="@/assets/loaders/3-dots.svg" alt="" >
+              </div>
+             
+              <pre class="formatted-text" style="color: black" v-else>
+               {{response}}
+              </pre>
             </v-card-text>
           </v-card>
         </v-expand-transition>
       </v-card>
+     
       <h4 class="mb-3">What would you like to work on?</h4>
       <v-textarea
         outlined
         name="input-7-4"
         label="Write Prompt Here..."
-        v-model="gptPrompt"
+        v-model="prompt"
       ></v-textarea>
       <div class="d-flex justify-space-between">
         <div>
-          <v-btn small color="rgb(7, 2, 83)" dark>Enter Here</v-btn>
+          <v-btn small color="rgb(7, 2, 83)" :loading='isLoading' dark @click="sendPrompt">Enter Here</v-btn>
           <v-btn small class="ml-3" @click="gptPrompt = ''">Clear</v-btn>
-          <v-btn small class="ml-3" @click="gptPrompt = ''">Save</v-btn>
+          <v-btn small class="ml-3" >Save</v-btn>
 
         </div>
         <div>
@@ -63,17 +65,49 @@
 </template>
 
 <script>
+import axios from "axios";
+
 export default {
   data() {
     return {
-      gptPrompt: "",
+      prompt: "",
+      response: '',
+      isResponse: false,
+      isLoading: false
     };
   },
+  methods: {
+    sendPrompt(){
+      this.isResponse = true
+      this.isLoading = true
+      let payload = {prompt: this.prompt}
+       axios
+        .post(`${process.env.VUE_APP_API_URL}generate-email`,payload, {
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${localStorage.getItem("token")}`,
+          },
+       
+        }).then((res) => {
+          console.log(res)
+          let data = res.data.data
+          this.response = data
+          this.isLoading = false
+         
+        })
+
+    }
+  }
 };
 </script>
 
 <style scoped>
 ::v-deep .v-input__slot {
   background: white !important;
+}
+.formatted-text {
+  white-space: pre-wrap;
+  max-height: 300px;
+  overflow: auto;
 }
 </style>
