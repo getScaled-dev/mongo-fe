@@ -1,5 +1,6 @@
 <template>
-  <div class="mx-10">
+  <div >
+    <!-- <NavbarVue /> -->
     <div class="d-flex justify-space-between mt-8 mb-4">
       <img
         src="../assets/logo_scaled_falcqb.png"
@@ -55,19 +56,24 @@
         </v-menu>
       </div>
     </div>
-
+<div class="mt-6">
     <router-view></router-view>
+
+</div>
   </div>
 </template>
 
 <script>
+import NavbarVue from '@/components/common/Navbar.vue';
 import UsersTable from "./UsersTable.vue";
+
 
 export default {
   name: "Home",
 
   components: {
     UsersTable,
+    NavbarVue
   },
   computed: {
     currentRoute() {

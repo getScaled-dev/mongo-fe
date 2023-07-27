@@ -598,7 +598,106 @@
               </template>
             </v-combobox>
           </v-col>
+          <!-- state  -->
+            <v-col md="3">
+            <div class="d-flex flex-column">
+              <label for="firstName">State</label>
 
+              <v-select
+                :items="jobTitleFilters"
+                :menu-props="{ bottom: true }"
+                outlined
+                dense
+                v-model="filters.state"
+                item-text="name"
+                item-value="key"
+                @change="checkIsAny(filters.state, 'state')"
+              ></v-select>
+            </div>
+          </v-col>
+
+          <v-col md="3">
+            <v-combobox
+              v-if="
+                filters.state == 'like' ||
+                filters.state == 'not' ||
+                filters.state == 'in'
+              "
+              class="mt-7"
+              v-model="filters.states"
+              :filter="filter"
+              :hide-no-data="!searchState"
+              :items="items"
+              :search-input.sync="searchState"
+              hide-selected
+              label="Search for an option"
+              multiple
+              small-chips
+              solo
+              dense
+            >
+              <template v-slot:no-data>
+                <v-list-item>
+                  <span class="subheading">Create</span>
+                  <v-chip
+                    :color="`${colors[nonceState - 1]} lighten-3`"
+                    label
+                    small
+                  >
+                    {{ searchState }}
+                  </v-chip>
+                </v-list-item>
+              </template>
+              <template v-slot:selection="{ attrs, item, parent, selected }">
+                <v-chip
+                  v-if="item === Object(item)"
+                  v-bind="attrs"
+                  :color="`${item.color} lighten-3`"
+                  :input-value="selected"
+                  label
+                  small
+                >
+                  <span class="pr-2">
+                    {{ item.stateValue }}
+                  </span>
+                  <v-icon small @click="parent.selectItem(item)">
+                    $delete
+                  </v-icon>
+                </v-chip>
+              </template>
+
+              <template v-slot:item="{ index, item }">
+                <v-text-field
+                  v-if="edtingState === item"
+                  v-model="edtingState.stateValue"
+                  autofocus
+                  flat
+                  background-color="transparent"
+                  hide-details
+                  solo
+                  @keyup.enter="editState(index, item)"
+                ></v-text-field>
+                <v-chip
+                  v-else
+                  :color="`${item.color} lighten-3`"
+                  dark
+                  label
+                  small
+                >
+                  {{ item.stateValue }}
+                </v-chip>
+                <v-spacer></v-spacer>
+                <v-list-item-action @click.stop>
+                  <v-btn icon @click.stop.prevent="editState(index, item)">
+                    <v-icon>{{
+                      edtingState !== item ? "mdi-pencil" : "mdi-check"
+                    }}</v-icon>
+                  </v-btn>
+                </v-list-item-action>
+              </template>
+            </v-combobox>
+          </v-col>
+<!-- 
           <v-col md="3">
             <div class="d-flex flex-column">
               <label for="firstName">State</label>
@@ -630,7 +729,7 @@
               "
               v-model="filters.stateValue"
             ></v-text-field>
-          </v-col>
+          </v-col> -->
         </v-row>
         <!-- ZIPCODES  -->
         <v-row class="mt-4"> </v-row>
@@ -958,6 +1057,7 @@ export default {
       attach: null,
       colors: ["green", "purple", "indigo", "cyan", "teal", "orange"],
       edtingJobTitle: null,
+      edtingState: null,
       editingCity: null,
       editingCompany: null,
       editingOptionSource: null,
@@ -967,12 +1067,14 @@ export default {
       editingIndexCompany: -1,
 
       nonceJobTitle: 1,
+      nonceState: 1,
       nonceCity: 1,
       nonceCompany: 1,
       nonceOptionSource: 1,
       nonceZipCode: 1,
 
       searchJobTitle: null,
+      searchState: null,
       searchCity: null,
       searchCompany: null,
       searchOptionSource: null,
@@ -996,6 +1098,7 @@ export default {
         companyName: "all",
         jobTitle: "all",
         jobTitles: [],
+        states: [],
         cities: [],
         dob: "all",
         firstNameValue: "",
@@ -1079,6 +1182,25 @@ export default {
           this.jobTitleItems.push(v);
 
           this.nonceJobTitle++;
+        }
+
+        return v;
+      });
+    },
+    // watch for states 
+    "filters.states"(val, prev) {
+      console.log(val, prev);
+      if (val.length === prev.length) return;
+
+      this.filters.states = val.map((v) => {
+        if (typeof v === "string") {
+          v = {
+            stateValue: v,
+          };
+
+          this.jobTitleItems.push(v);
+
+          this.nonceJobState++;
         }
 
         return v;
@@ -1192,7 +1314,7 @@ this.text = 'Search name cannot be empty'
         jobTitle: this.filters.jobTitle,
         jobTitleValue: this.filters.jobTitles,
         state: this.filters.state,
-        stateValue: this.filters.stateValue,
+        stateValue: this.filters.states,
         zipCode: this.filters.zipCode,
         zipCodeValue: this.filters.zipCodes,
         gender: this.filters.gender,
@@ -1260,7 +1382,7 @@ this.filters.address2Value = search.address2Value
 this.filters.city = search.city
 this.filters.cities = search.cityValue
 this.filters.state = search.state
-this.filters.stateValue = search.stateValue
+this.filters.states = search.stateValue
 this.filters.zipCode = search.zipCode
 this.filters.zipCodes = search.zipCodeValue
 this.filters.gender = search.gender

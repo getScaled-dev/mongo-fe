@@ -24,7 +24,7 @@
           ><v-icon> mdi-filter-outline </v-icon> Add Filters
         </v-btn> -->
 
-          <v-btn
+          <!-- <v-btn
             class="ma-2"
             color="#D75D3F"
             :loading="exportLoader"
@@ -32,15 +32,15 @@
           >
             <v-icon color="white"> mdi-database-export-outline </v-icon>
             <span style="color: white">Launch To Campaign</span>
-          </v-btn>
+          </v-btn> -->
 
           <v-btn class="ma-2" color="Primary" @click="uploadCSV">
             <v-icon> mdi-database-import-outline </v-icon> Import CSV
           </v-btn>
-          <v-btn class="ma-2" color="Primary" @click="checkDuplicates">
+          <!-- <v-btn class="ma-2" color="Primary" @click="checkDuplicates">
             <v-icon> mdi-database-import-outline </v-icon> Check Duplicates
           </v-btn>
-          <DuplicateDataModal ref="duplicates" />
+          <DuplicateDataModal ref="duplicates" /> -->
           <UploadFile
             ref="uploadFile"
             @file-uploaded="fileUploaded = true"
@@ -57,15 +57,15 @@
           </v-btn>
         </div>
       </div>
-      <div style="display: flex">
+      <!-- <div style="display: flex">
         <span>
           Total Emails: {{totalEmails}}
         </span>
         <span>
           Verified Emails: {{verifiedEmails}}
         </span>
-      <!-- <v-progress-linear :model-value="percentage" v-if="verifyEmail"></v-progress-linear> -->
-      </div>
+      <v-progress-linear :model-value="percentage" v-if="verifyEmail"></v-progress-linear>
+      </div> -->
       <v-expansion-panels class="mt-5">
         <v-expansion-panel>
           <v-expansion-panel-header> Apply Filters </v-expansion-panel-header>
@@ -346,7 +346,7 @@ export default {
         firstName: this.filtersData?.firstName || null,
         dob: this.filtersData?.dob || null,
         city: this.filtersData?.city || null,
-        state: this.filtersData?.state || null,
+       
         address: this.filtersData?.address || null,
         address2: this.filtersData?.address2 || null,
         email: this.filtersData?.email || null,
@@ -359,6 +359,8 @@ export default {
         companyName: this.filtersData?.companyName || null,
         jobTitle: this.filtersData?.jobTitle || null,
         jobTitleValue: this.filtersData?.jobTitles || null,
+         state: this.filtersData?.state || null,
+        stateValue: this.filtersData?.states || null,
         dob: this.filtersData?.dob || null,
         firstNameValue: this.filtersData?.firstNameValue || null,
         lastNameValue: this.filtersData?.lastNameValue || null,
@@ -371,7 +373,7 @@ export default {
         companyPhoneValue: this.filtersData?.companyPhoneValue || null,
         companyNameValue: this.filtersData?.companies || null,
 
-        stateValue: this.filtersData?.stateValue || null,
+       
         zipCodeValue: this.filtersData?.zipCodes || null,
         zipCode: this.filtersData?.zipCode || null,
         optionSource: this.filtersData?.optionSource || null,
@@ -398,7 +400,7 @@ export default {
         filters?.mobilePhoneValue
       }&city=${filters?.city}&cityValue=${JSON.stringify(
         filters?.cityValue
-      )}&state=${filters?.state}&stateValue=${filters?.stateValue}&jobTitle=${
+      )}&state=${filters?.state}&stateValue=${JSON.stringify(filters?.stateValue)}&jobTitle=${
         filters?.jobTitle
       }&jobTitleValue=${JSON.stringify(filters?.jobTitleValue)}&address=${
         filters?.address
@@ -439,7 +441,7 @@ export default {
         firstName: this.filtersData?.firstName || null,
         dob: this.filtersData?.dob || null,
         city: this.filtersData?.city || null,
-        state: this.filtersData?.state || null,
+      
         address: this.filtersData?.address || null,
         address2: this.filtersData?.address2 || null,
         email: this.filtersData?.email || null,
@@ -464,7 +466,8 @@ export default {
         companyPhoneValue: this.filtersData?.companyPhoneValue || null,
         companyNameValue: this.filtersData?.companies || null,
 
-        stateValue: this.filtersData?.stateValue || null,
+         state: this.filtersData?.state || null,
+        stateValue: this.filtersData?.states || null,
         zipCodeValue: this.filtersData?.zipCodes || null,
         zipCode: this.filtersData?.zipCode || null,
         optionSource: this.filtersData?.optionSource || null,
@@ -488,9 +491,7 @@ export default {
         filters?.mobilePhone
       }&mobilePhoneValue=${filters?.mobilePhoneValue}&city=${
         filters?.city
-      }&cityValue=${JSON.stringify(filters?.cityValue)}&state=${
-        filters?.state
-      }&stateValue=${filters?.stateValue}&jobTitle=${
+      }&cityValue=${JSON.stringify(filters?.cityValue)}&state=${filters?.state}&stateValue=${JSON.stringify(filters?.stateValue)}&jobTitle=${
         filters?.jobTitle
       }&jobTitleValue=${JSON.stringify(filters?.jobTitleValue)}&address=${
         filters?.address

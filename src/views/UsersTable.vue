@@ -330,7 +330,7 @@ export default {
         firstName: this.filtersData?.firstName || null,
         age: this.filtersData?.age || null,
         city: this.filtersData?.city || null,
-        state: this.filtersData?.state || null,
+       
         address: this.filtersData?.address || null,
         address2: this.filtersData?.address2 || null,
         email: this.filtersData?.email || null,
@@ -355,7 +355,8 @@ export default {
         companyPhoneValue: this.filtersData?.companyPhoneValue || null,
         companyNameValue: this.filtersData?.companies || null,
 
-        stateValue: this.filtersData?.stateValue || null,
+        state: this.filtersData?.state || null,
+        stateValue: this.filtersData?.states || null,
         zipCodeValue: this.filtersData?.zipCodes || null,
         zipCode: this.filtersData?.zipCode || null,
       };
@@ -376,9 +377,7 @@ export default {
         filters?.mobilePhone
       }&mobilePhoneValue=${filters?.mobilePhoneValue}&city=${
         filters?.city
-      }&cityValue=${JSON.stringify(filters?.cityValue)}&state=${
-        filters?.state
-      }&stateValue=${filters?.stateValue}&jobTitle=${
+      }&cityValue=${JSON.stringify(filters?.cityValue)}&state=${filters?.state}&stateValue=${JSON.stringify(filters?.stateValue)}&jobTitle=${
         filters?.jobTitle
       }&jobTitleValue=${JSON.stringify(filters?.jobTitleValue)}&address=${
         filters?.address
@@ -411,7 +410,7 @@ export default {
         firstName: this.filtersData?.firstName || null,
         age: this.filtersData?.age || null,
         city: this.filtersData?.city || null,
-        state: this.filtersData?.state || null,
+       
         address: this.filtersData?.address || null,
         address2: this.filtersData?.address2 || null,
         email: this.filtersData?.email || null,
@@ -436,7 +435,8 @@ export default {
         companyPhoneValue: this.filtersData?.companyPhoneValue || null,
         companyNameValue: this.filtersData?.companies || null,
 
-        stateValue: this.filtersData?.stateValue || null,
+      state: this.filtersData?.state || null,
+        stateValue: this.filtersData?.states || null,
         zipCodeValue: this.filtersData?.zipCodes || null,
         zipCode: this.filtersData?.zipCode || null,
 
@@ -459,9 +459,7 @@ export default {
         filters?.mobilePhone
       }&mobilePhoneValue=${filters?.mobilePhoneValue}&city=${
         filters?.city
-      }&cityValue=${JSON.stringify(filters?.cityValue)}&state=${
-        filters?.state
-      }&stateValue=${filters?.stateValue}&jobTitle=${
+      }&cityValue=${JSON.stringify(filters?.cityValue)}&state=${filters?.state}&stateValue=${JSON.stringify(filters?.stateValue)}&jobTitle=${
         filters?.jobTitle
       }&jobTitleValue=${JSON.stringify(filters?.jobTitleValue)}&address=${
         filters?.address
