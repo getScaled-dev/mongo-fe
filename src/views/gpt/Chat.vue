@@ -31,7 +31,7 @@
 
         <v-list-item-action>
           <div class="d-flex">
-            <v-btn icon>
+            <v-btn icon @click="showChat(chat)">
               <v-icon color="grey lighten-1">mdi-information</v-icon>
             </v-btn>
             <v-btn icon>
@@ -180,6 +180,11 @@ export default {
      
   },
   methods: {
+    showChat(chat){
+this.isResponse = true;
+this.prompt = chat.prompt
+this.response = chat.template
+    },
     sendPrompt() {
       this.isResponse = true;
       this.isLoading = true;
