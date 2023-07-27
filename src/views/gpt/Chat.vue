@@ -176,7 +176,7 @@ export default {
     this.getAiSearches();
   },
   methods: {
-    createEmail() {
+    sendPrompt() {
       this.isResponse = true;
       this.isLoading = true;
       let payload = { prompt: this.prompt };
@@ -245,7 +245,9 @@ export default {
           console.log(err);
         });
     },
-   
+    createEmail(){
+      this.$refs.form.validate()
+    }
   },
 };
 </script>
