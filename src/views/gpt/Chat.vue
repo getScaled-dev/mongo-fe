@@ -1,7 +1,7 @@
 <template>
   <div class="d-flex justify-spac-between">
     <div style="width: 20%">
-      <h4>Previous Chats</h4>
+      <h4>Previous Campaigns</h4>
       <v-divider></v-divider>
       <!-- <div class="mt-3 mb-3 d-flex justify-space-between" v-for="chats in previousChats" :key="chats">
       
@@ -110,24 +110,24 @@
     outlined
       v-model="name"
       :counter="10"
-      :rules="required"
+     
       label="Enter name of email"
-      required
+     
     ></v-text-field>
 
     <v-text-field
     outlined
       v-model="subject"
-      :rules="required"
+      
       label="Enter subject line"
-      required
+     
     ></v-text-field>
  <v-textarea
     outlined
       v-model="plainText"
-      :rules="required"
+   
       label="Enter email body"
-      required
+  
     ></v-textarea>
    
 
@@ -135,7 +135,7 @@
       v-model="isPublished"
       
       label="is published"
-      required
+    
     ></v-checkbox>
 
     <v-btn
@@ -143,6 +143,7 @@
       color="success"
       class="mr-4"
       @click="createEmail"
+      :loading='emailLoading'
     >
       Send
     </v-btn>
@@ -156,6 +157,7 @@
 <script>
 import axios from "axios";
 import moment from "moment";
+import { EventBus } from '../../main';
 export default {
   data() {
     return {
@@ -163,6 +165,7 @@ export default {
       response: "",
       isResponse: false,
       isLoading: false,
+      emailLoading: false,
       moment: moment,
       previousChats: [],
      valid: true,
@@ -174,6 +177,7 @@ export default {
   },
   mounted() {
     this.getAiSearches();
+     
   },
   methods: {
     sendPrompt() {
@@ -222,6 +226,7 @@ export default {
         .then((res) => {
           console.log(res);
           this.getAiSearches();
+          EventBus.$emit('showSnackbar', 'Campaign has been saved successfully', 'success');
         });
     },
     clearData() {
@@ -239,6 +244,7 @@ export default {
 
           // this.$refs.confirmation.dialog = false;
           // this.dataDeleted = true;
+           EventBus.$emit('showSnackbar', 'Campaign has been deleted', 'success');
           this.getAiSearches();
         })
         .catch((err) => {
@@ -246,7 +252,35 @@ export default {
         });
     },
     createEmail(){
-      this.$refs.form.validate()
+      if(this.name.trim() == ''){
+  EventBus.$emit('showSnackbar', 'Email Name is required', 'error');
+  return
+      }
+      if(this.subject == ''){
+  EventBus.$emit('showSnackbar', 'Email Subject is required', 'error');
+return
+      }
+      this.emailLoading = true
+      const payload = {
+        name: this.name,
+       subject: this.subject,
+       plainText:this.plainText,
+       isPublished :this.isPublished
+      };
+      axios
+        .post(`${process.env.VUE_APP_API_URL}api/create-email`, payload, {
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${localStorage.getItem("token")}`,
+          },
+        })
+        .then((res) => {
+          this.emailLoading = false
+          console.log(res);
+         EventBus.$emit('showSnackbar', 'Email has been created successfully!', 'success');
+          this.$refs.form.reset()
+        
+        });
     }
   },
 };

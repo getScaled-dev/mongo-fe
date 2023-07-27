@@ -1,6 +1,7 @@
 <template>
   <v-app>
     <v-main>
+    
       <Dashboard />
     </v-main>
   </v-app>
@@ -8,6 +9,7 @@
 
 <script>
 import Dashboard from "./views/Dashboard.vue";
+
 export default {
   name: "App",
   components: { Dashboard },

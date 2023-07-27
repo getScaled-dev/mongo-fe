@@ -57,6 +57,7 @@
       </div>
     </div>
 <div class="mt-6">
+  <SnakeBarVue />
     <router-view></router-view>
 
 </div>
@@ -66,6 +67,8 @@
 <script>
 import NavbarVue from '@/components/common/Navbar.vue';
 import UsersTable from "./UsersTable.vue";
+import SnakeBarVue from '@/components/common/SnakeBar.vue';
+
 
 
 export default {
@@ -73,7 +76,8 @@ export default {
 
   components: {
     UsersTable,
-    NavbarVue
+    NavbarVue,
+    SnakeBarVue
   },
   computed: {
     currentRoute() {

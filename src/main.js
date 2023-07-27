@@ -6,6 +6,7 @@ import vuetify from './plugins/vuetify'
 import axios from 'axios'
 import './Vee-validate'
 
+export const EventBus = new Vue();
 Vue.config.productionTip = false
 new Vue({
   router,
