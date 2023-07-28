@@ -92,11 +92,11 @@
             >Save</v-btn
           >
         </div>
-        <div>
+        <!-- <div>
           <v-btn small color="rgb(215, 93, 63)" dark v-if="isResponse"
             >Approve and send to GetScaled account</v-btn
           >
-        </div>
+        </div> -->
       </div>
     </div>
  
@@ -186,11 +186,15 @@ this.prompt = chat.prompt
 this.response = chat.template
     },
     sendPrompt() {
+      if(this.prompt.trim() == ''){
+          EventBus.$emit('showSnackbar', 'Please enter prompt!!!', 'error');
+          return
+      }
       this.isResponse = true;
       this.isLoading = true;
-      let payload = { prompt: this.prompt };
+      let payload = { message: this.prompt, sessionId: '5432' };
       axios
-        .post(`${process.env.VUE_APP_API_URL}generate-email`, payload, {
+        .post(`${process.env.VUE_APP_API_URL}api/generate-email`, payload, {
           headers: {
             "Content-Type": "application/json",
             Authorization: `Bearer ${localStorage.getItem("token")}`,
@@ -198,7 +202,7 @@ this.response = chat.template
         })
         .then((res) => {
           console.log(res);
-          let data = res.data.data;
+          let data = res.data.reply;
           this.response = data;
           this.isLoading = false;
         });
