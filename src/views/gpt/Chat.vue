@@ -20,9 +20,8 @@
             mdi-folder
           </v-icon>
         </v-list-item-avatar> -->
-
         <v-list-item-content>
-          <v-list-item-title v-text="chat.prompt"></v-list-item-title>
+          <v-list-item-title v-text="chat.template[0].prompt"></v-list-item-title>
 
           <v-list-item-subtitle>{{
             moment(chat.createdAt).format("MM-DD-YYYY")
@@ -45,7 +44,7 @@
     </div>
     <v-divider vertical class="ml-2" inset></v-divider>
     <div :style="isResponse ? 'width: 40%' : 'width: 80%'" class="ml-8">
-      <v-card style="height: 80%" class="mb-4" v-if="isResponse">
+      <v-card  class="mb-4" v-if="isResponse">
         <v-expand-transition>
           <v-card
             class="transition-fast-in-fast-out v-card--reveal"
@@ -59,23 +58,31 @@
               >
                 <img src="@/assets/loaders/3-dots.svg" alt="" />
               </div>
-
-              <pre class="formatted-text" style="color: black" v-else>
-               {{ response }}
-              </pre>
+              <div v-else>
+              
+                <div  v-for="(data, index) in response" :key="index">
+                  <h3>Q:{{index +1}}  {{data.prompt}}</h3>
+                  <pre class="formatted-text" style="color: black">
+                    {{data.res}}
+                  </pre>
+              
+              </div
+                >
+              </div>
             </v-card-text>
           </v-card>
         </v-expand-transition>
       </v-card>
 
-      <h4 class="mb-3">What would you like to work on?</h4>
+      <h4 v-if="isSearchable" class="mb-3">What would you like to work on?</h4>
       <v-textarea
+      v-if="isSearchable"
         outlined
         name="input-7-4"
         label="Write Prompt Here..."
         v-model="prompt"
       ></v-textarea>
-      <div class="d-flex justify-space-between">
+      <div class="d-flex justify-space-between" >
         <div>
           <v-btn
             small
@@ -83,12 +90,13 @@
             :loading="isLoading"
             dark
             @click="sendPrompt"
+            v-if="isSearchable"
             >Enter Here</v-btn
           >
           <v-btn small class="ml-3" @click="clearData" v-if="isResponse"
-            >Clear</v-btn
+            >New Campaign</v-btn
           >
-          <v-btn small class="ml-3" @click="saveAiEmail" v-if="isResponse"
+          <v-btn small class="ml-3" @click="saveAiEmail" v-if="isResponse && isSearchable"
             >Save</v-btn
           >
         </div>
@@ -99,100 +107,105 @@
         </div> -->
       </div>
     </div>
- 
- <div class="ml-4 mt-8"  style="width: 40%" v-if="isResponse">
-  <v-form
-    ref="form"
-    v-model="valid"
-    lazy-validation
-  >
-    <v-text-field
-    outlined
-      v-model="name"
-      :counter="10"
-     
-      label="Enter name of email"
-     
-    ></v-text-field>
 
-    <v-text-field
-    outlined
-      v-model="subject"
-      
-      label="Enter subject line"
-     
-    ></v-text-field>
- <v-textarea
-    outlined
-      v-model="plainText"
-   
-      label="Enter email body"
-  
-    ></v-textarea>
-   
+    <div class="ml-4 mt-8" style="width: 40%" v-if="isResponse">
+      <v-form ref="form" v-model="valid" lazy-validation>
+        <v-text-field
+          outlined
+          v-model="name"
+          :counter="10"
+          label="Enter name of email"
+        ></v-text-field>
 
-    <v-checkbox
-      v-model="isPublished"
-      
-      label="is published"
-    
-    ></v-checkbox>
+        <v-text-field
+          outlined
+          v-model="subject"
+          label="Enter subject line"
+        ></v-text-field>
+        <v-textarea
+          outlined
+          v-model="plainText"
+          label="Enter email body"
+        ></v-textarea>
 
-    <v-btn
-      :disabled="!valid"
-      color="success"
-      class="mr-4"
-      @click="createEmail"
-      :loading='emailLoading'
-    >
-      Send
-    </v-btn>
+        <v-checkbox v-model="isPublished" label="is published"></v-checkbox>
 
-   
-  </v-form>
- </div>
+        <v-btn
+          :disabled="!valid"
+          color="success"
+          class="mr-4"
+          @click="createEmail"
+          :loading="emailLoading"
+        >
+          Send
+        </v-btn>
+      </v-form>
+    </div>
   </div>
 </template>
 
 <script>
 import axios from "axios";
 import moment from "moment";
-import { EventBus } from '../../main';
+import { EventBus } from "../../main";
 export default {
   data() {
     return {
-      prompt: "",
-      response: "",
+     
+      response: [
+      ],
       isResponse: false,
       isLoading: false,
       emailLoading: false,
       moment: moment,
       previousChats: [],
-     valid: true,
-      name: '',
-      subject: '',
-      plainText: '',
-      isPublished: true
-      };
+      valid: true,
+      name: "",
+      subject: "",
+      plainText: "",
+      isPublished: true,
+      sessionId: "",
+      prompt: '',
+      isSearchable: true
+    };
   },
   mounted() {
     this.getAiSearches();
-     
+    this.newChat();
   },
   methods: {
-    showChat(chat){
-this.isResponse = true;
-this.prompt = chat.prompt
-this.response = chat.template
+    newChat() {
+      axios
+        .post(`${process.env.VUE_APP_API_URL}api/start-new-chat`, {
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${localStorage.getItem("token")}`,
+          },
+        })
+        .then((res) => {
+          console.log(res.data.sessionId, "session id");
+          this.sessionId = res.data.sessionId;
+        });
+    },
+    showChat(chat) {
+      console.log(chat.template)
+
+      this.isResponse = true;
+    
+      this.response = chat.template;
+      this.isSearchable = false
     },
     sendPrompt() {
-      if(this.prompt.trim() == ''){
-          EventBus.$emit('showSnackbar', 'Please enter prompt!!!', 'error');
-          return
+      if (this.prompt.trim() == "") {
+        EventBus.$emit("showSnackbar", "Please enter prompt!!!", "error");
+        return;
       }
-      this.isResponse = true;
+      
+ this.isResponse = true;
+      
+     
       this.isLoading = true;
-      let payload = { message: this.prompt, sessionId: '5432' };
+      let payload = { message: this.prompt, sessionId: this.sessionId };
       axios
         .post(`${process.env.VUE_APP_API_URL}api/generate-email`, payload, {
           headers: {
@@ -203,8 +216,10 @@ this.response = chat.template
         .then((res) => {
           console.log(res);
           let data = res.data.reply;
-          this.response = data;
+          this.response.push({prompt: this.prompt, res: data})
+
           this.isLoading = false;
+          this.prompt = ''
         });
     },
     getAiSearches() {
@@ -221,12 +236,9 @@ this.response = chat.template
         });
     },
     saveAiEmail() {
-      const payload = {
-        prompt: this.prompt,
-        template: this.response,
-      };
+      
       axios
-        .post(`${process.env.VUE_APP_API_URL}api/save-template`, payload, {
+        .post(`${process.env.VUE_APP_API_URL}api/save-template`, this.response, {
           headers: {
             "Content-Type": "application/json",
             Authorization: `Bearer ${localStorage.getItem("token")}`,
@@ -235,11 +247,20 @@ this.response = chat.template
         .then((res) => {
           console.log(res);
           this.getAiSearches();
-          EventBus.$emit('showSnackbar', 'Campaign has been saved successfully', 'success');
+          EventBus.$emit(
+            "showSnackbar",
+            "Campaign has been saved successfully",
+            "success"
+          );
         });
     },
     clearData() {
-      (this.prompt = ""), (this.response = ""), (this.isResponse = false);
+      this.newChat()
+      this.response = []
+      this.isResponse = false
+      this.isSearchable = true
+    
+
     },
     deleteChat(id) {
       console.log(id);
@@ -253,28 +274,32 @@ this.response = chat.template
 
           // this.$refs.confirmation.dialog = false;
           // this.dataDeleted = true;
-           EventBus.$emit('showSnackbar', 'Campaign has been deleted', 'success');
+          EventBus.$emit(
+            "showSnackbar",
+            "Campaign has been deleted",
+            "success"
+          );
           this.getAiSearches();
         })
         .catch((err) => {
           console.log(err);
         });
     },
-    createEmail(){
-      if(this.name.trim() == ''){
-  EventBus.$emit('showSnackbar', 'Email Name is required', 'error');
-  return
+    createEmail() {
+      if (this.name.trim() == "") {
+        EventBus.$emit("showSnackbar", "Email Name is required", "error");
+        return;
       }
-      if(this.subject == ''){
-  EventBus.$emit('showSnackbar', 'Email Subject is required', 'error');
-return
+      if (this.subject == "") {
+        EventBus.$emit("showSnackbar", "Email Subject is required", "error");
+        return;
       }
-      this.emailLoading = true
+      this.emailLoading = true;
       const payload = {
         name: this.name,
-       subject: this.subject,
-       plainText:this.plainText,
-       isPublished :this.isPublished
+        subject: this.subject,
+        plainText: this.plainText,
+        isPublished: this.isPublished,
       };
       axios
         .post(`${process.env.VUE_APP_API_URL}api/create-email`, payload, {
@@ -284,13 +309,16 @@ return
           },
         })
         .then((res) => {
-          this.emailLoading = false
+          this.emailLoading = false;
           console.log(res);
-         EventBus.$emit('showSnackbar', 'Email has been created successfully!', 'success');
-          this.$refs.form.reset()
-        
+          EventBus.$emit(
+            "showSnackbar",
+            "Email has been created successfully!",
+            "success"
+          );
+          this.$refs.form.reset();
         });
-    }
+    },
   },
 };
 </script>
@@ -301,7 +329,7 @@ return
 }
 .formatted-text {
   white-space: pre-wrap;
-  max-height: 300px;
+  
   overflow: auto;
 }
 </style>
