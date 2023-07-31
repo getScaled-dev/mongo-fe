@@ -163,7 +163,7 @@ export default {
       name: "",
       subject: "",
       plainText: "",
-      isPublished: true,
+      isPublished: false,
       sessionId: "",
       prompt: '',
       isSearchable: true
