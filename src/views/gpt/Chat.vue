@@ -4,7 +4,7 @@
       <h4>Previous Campaigns</h4>
       <v-divider></v-divider>
        <v-text-field
-      v-if="isSearchable"
+     
         
         name="input-7-4"
         label="Search previous Capmaigns"
