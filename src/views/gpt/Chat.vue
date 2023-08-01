@@ -1,8 +1,16 @@
 <template>
-  <div class="d-flex justify-spac-between">
+  <div class="d-flex justify-spac-between mt-4 mx-4">
     <div style="width: 20%">
       <h4>Previous Campaigns</h4>
       <v-divider></v-divider>
+       <v-text-field
+      v-if="isSearchable"
+        
+        name="input-7-4"
+        label="Search previous Capmaigns"
+         v-model="search"
+      
+      ></v-text-field>
       <!-- <div class="mt-3 mb-3 d-flex justify-space-between" v-for="chats in previousChats" :key="chats">
       
         <div>{{chats.prompt}}</div>
@@ -11,7 +19,7 @@
         </div>
          <v-divider></v-divider>
       </div> -->
-      <v-list-item v-for="chat in previousChats" :key="chat.id">
+      <v-list-item v-for="chat in filteredItems" :key="chat.id">
         <!-- <v-list-item-avatar>
           <v-icon
             class="grey lighten-1"
@@ -21,7 +29,7 @@
           </v-icon>
         </v-list-item-avatar> -->
         <v-list-item-content>
-          <v-list-item-title v-text="chat.template[0].prompt"></v-list-item-title>
+          <v-list-item-title v-text="chat.campaignName"></v-list-item-title>
 
           <v-list-item-subtitle>{{
             moment(chat.createdAt).format("MM-DD-YYYY")
@@ -51,7 +59,7 @@
             style="height: 100%"
             color="blue-grey lighten-5"
           >
-            <v-card-text class="pb-0">
+            <v-card-text class="pb-0" style="height: 300px; overflow: auto">
               <div
                 class="d-flex justify-center align-items-center"
                 v-if="isLoading"
@@ -81,6 +89,7 @@
         name="input-7-4"
         label="Write Prompt Here..."
         v-model="prompt"
+        rows=3
       ></v-textarea>
       <div class="d-flex justify-space-between" >
         <div>
@@ -96,9 +105,60 @@
           <v-btn small class="ml-3" @click="clearData" v-if="isResponse"
             >New Campaign</v-btn
           >
-          <v-btn small class="ml-3" @click="saveAiEmail" v-if="isResponse && isSearchable"
+          <v-btn small class="ml-3"  @click="dialog = true" v-if="isResponse && isSearchable"
             >Save</v-btn
           >
+         <v-dialog
+      v-model="dialog"
+      width="500"
+    >
+      <!-- <template v-slot:activator="{ on, attrs }">
+        <v-btn small class="ml-3"  v-if="isResponse && isSearchable"
+          v-bind="attrs"
+          v-on="on"
+        >
+          Save
+        </v-btn>
+      </template> -->
+
+      <v-card>
+        <v-card-title class="text-h5 grey lighten-2">
+         Give a name to this campaign.
+        </v-card-title>
+
+        <v-card-text class="mt-3">
+           <v-text-field
+      v-if="isSearchable"
+        outlined
+        name="input-7-4"
+        label="Write Campaing Name"
+        v-model="campaignName"
+      
+      ></v-text-field>
+        </v-card-text>
+
+        <v-divider></v-divider>
+
+        <v-card-actions>
+          <v-spacer></v-spacer>
+          <v-btn
+            color="primary"
+            text
+            @click="dialog = false"
+          >
+            Cancel
+          </v-btn>
+          
+          <v-btn
+            color="primary"
+            
+            @click="saveAiEmail"
+          >
+            Save
+          </v-btn>
+        </v-card-actions>
+      </v-card>
+    </v-dialog>
         </div>
         <!-- <div>
           <v-btn small color="rgb(215, 93, 63)" dark v-if="isResponse"
@@ -108,7 +168,7 @@
       </div>
     </div>
 
-    <div class="ml-4 mt-8" style="width: 40%" v-if="isResponse">
+    <div class="ml-4 " style="width: 40%" v-if="isResponse">
       <v-form ref="form" v-model="valid" lazy-validation>
         <v-text-field
           outlined
@@ -166,7 +226,10 @@ export default {
       isPublished: false,
       sessionId: "",
       prompt: '',
-      isSearchable: true
+      isSearchable: true,
+      dialog: false,
+      campaignName: '',
+         search: "",
     };
   },
   mounted() {
@@ -236,9 +299,20 @@ export default {
         });
     },
     saveAiEmail() {
-      
+      if(this.campaignName.trim() == ''){
+         EventBus.$emit(
+            "showSnackbar",
+            "Please give a name to that campaign",
+            "error"
+          );
+          return
+      }
+      let payload = {
+       campaignName: this.campaignName,
+       campaign: this.response
+      }
       axios
-        .post(`${process.env.VUE_APP_API_URL}api/save-template`, this.response, {
+        .post(`${process.env.VUE_APP_API_URL}api/save-template`, payload, {
           headers: {
             "Content-Type": "application/json",
             Authorization: `Bearer ${localStorage.getItem("token")}`,
@@ -247,6 +321,7 @@ export default {
         .then((res) => {
           console.log(res);
           this.getAiSearches();
+          this.dialog = false
           EventBus.$emit(
             "showSnackbar",
             "Campaign has been saved successfully",
@@ -320,6 +395,14 @@ export default {
         });
     },
   },
+  computed: {
+     filteredItems() {
+      // Apply the filter based on the search input
+      return this.previousChats.filter((item) =>
+        item.campaignName.toLowerCase().includes(this.search.toLowerCase())
+      );
+    },
+  }
 };
 </script>
 
