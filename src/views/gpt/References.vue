@@ -8,7 +8,7 @@
 <span style="font-size: 12px">
     {{ref.referenceName}} = <span id="copy">{{ref.referenceValue}}</span> 
 </span>
-<v-icon small style="cursor: pointer"  @click="copyToClipboard(ref.value)">mdi-content-copy</v-icon>
+<v-icon small style="cursor: pointer"  @click="copyToClipboard(ref.referenceValue)">mdi-content-copy</v-icon>
 
 </div>
 <v-dialog
@@ -91,6 +91,7 @@ this.getReferencs()
             this.dialog = true
         },
         copyToClipboard(text) {
+         
       if (!text) return; // If no text is provided, don't proceed
 
       // Create a temporary textarea element
