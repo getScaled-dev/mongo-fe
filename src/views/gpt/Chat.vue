@@ -49,7 +49,10 @@
           </div>
         </v-list-item-action>
       </v-list-item>
+      <v-divider></v-divider>
+       <References />
     </div>
+   
     <v-divider vertical class="ml-2" inset></v-divider>
     <div :style="isResponse ? 'width: 40%' : 'width: 80%'" class="ml-8">
       <v-card  class="mb-4" v-if="isResponse">
@@ -208,7 +211,10 @@
 import axios from "axios";
 import moment from "moment";
 import { EventBus } from "../../main";
+
+import References from './References.vue';
 export default {
+  components: {References},
   data() {
     return {
      
