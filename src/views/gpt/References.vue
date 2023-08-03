@@ -183,6 +183,33 @@ export default {
         this.editDialog = true
         this.referenceName = ref.referenceName
       this.referenceValue = ref.referenceValue
+    },
+    updateReference(){
+ if (this.referenceName.trim() == "" || this.referenceValue.trim() == "") {
+        EventBus.$emit("showSnackbar", "All fields are required", "error");
+        return;
+      }
+      let payload = {
+        referenceName: this.referenceName,
+        referenceValue: this.referenceValue,
+      };
+      axios
+        .post(`${process.env.VUE_APP_API_URL}api/save-reference`, payload, {
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${localStorage.getItem("token")}`,
+          },
+        })
+        .then((res) => {
+          console.log(res);
+          this.getReferencs();
+          this.dialog = false;
+          EventBus.$emit(
+            "showSnackbar",
+            "Campaign has been saved successfully",
+            "success"
+          );
+        });
     }
   },
 };
