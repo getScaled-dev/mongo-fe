@@ -62,7 +62,7 @@
             style="height: 100%"
             color="blue-grey lighten-5"
           >
-            <v-card-text class="pb-0" style="height: 300px; overflow: auto">
+            <v-card-text class="pb-0" style="height: 300px; overflow: auto"  ref="scrollContainer">
               <div
                 class="d-flex justify-center align-items-center"
                 v-if="isLoading"
@@ -211,6 +211,7 @@
 import axios from "axios";
 import moment from "moment";
 import { EventBus } from "../../main";
+import VueScrollTo from 'vue-scrollto';
 
 import References from './References.vue';
 export default {
@@ -288,7 +289,11 @@ export default {
           this.response.push({prompt: this.prompt, res: data})
 
           this.isLoading = false;
+          const container = this.$refs.scrollContainer;
+          console.log(container.clientHeight)
+      container.scrollTop = 19;
           this.prompt = ''
+        
         });
     },
     getAiSearches() {
