@@ -124,6 +124,8 @@ export default {
   methods: {
     showDialog() {
       this.dialog = true;
+      this.referenceName = '',
+      this.referenceValue = ''
     },
     copyToClipboard(text) {
       if (!text) return; // If no text is provided, don't proceed
