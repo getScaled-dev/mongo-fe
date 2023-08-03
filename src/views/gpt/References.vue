@@ -19,7 +19,7 @@
             <v-list-item style="cursor-pointer" @click="editReference(ref)">
               <v-list-item-title >Edit</v-list-item-title>
             </v-list-item>
-             <v-list-item style="cursor-pointer" @click="deleteReference(ref)">
+             <v-list-item style="cursor-pointer" @click="deleteReference(ref._id)">
               <v-list-item-title>Delete</v-list-item-title>
             </v-list-item>
           </v-list>
@@ -210,7 +210,30 @@ export default {
             "success"
           );
         });
-    }
+    },
+     deleteReference(id) {
+      console.log(id);
+      const data = {
+        id: id,
+      };
+      axios
+        .delete(`${process.env.VUE_APP_API_URL}api/delete-reference`, { data })
+        .then((res) => {
+          this.loading = false;
+
+          // this.$refs.confirmation.dialog = false;
+          // this.dataDeleted = true;
+          EventBus.$emit(
+            "showSnackbar",
+            "Variable has been deleted",
+            "success"
+          );
+          this.getReferencs();
+        })
+        .catch((err) => {
+          console.log(err);
+        });
+    },
   },
 };
 </script>
