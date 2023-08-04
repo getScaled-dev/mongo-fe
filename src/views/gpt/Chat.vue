@@ -290,8 +290,7 @@ export default {
 
           this.isLoading = false;
           const container = this.$refs.scrollContainer;
-          console.log(container.clientHeight)
-      container.scrollTop = 19;
+         container.scrollTop = container.scrollHeight;
           this.prompt = ''
         
         });

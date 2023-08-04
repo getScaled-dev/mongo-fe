@@ -46,6 +46,10 @@
       </v-list-item-group>
     </v-list> -->
       <v-list dense style="height: 300px; overflow: auto">
+        <v-list-item-group
+        v-model="selectedItem"
+        color="primary"
+      >
         <v-list-item v-for="(item, i) in filteredItems" :key="i">
           <v-list-item-content @click="setSerchItem(item)">
             <v-list-item-title v-text="item.searchName"></v-list-item-title>
@@ -61,6 +65,7 @@
             </div>
           </v-list-item-action>
         </v-list-item>
+        </v-list-item-group>
       </v-list>
       <v-divider></v-divider>
 
@@ -101,6 +106,7 @@ export default {
   },
   methods: {
     setSerchItem(search) {
+      
       this.selectedSearch = search;
     },
     applySearch() {
