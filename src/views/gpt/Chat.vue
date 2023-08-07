@@ -55,7 +55,21 @@
    
     <v-divider vertical class="ml-2" inset></v-divider>
     <div :style="isResponse ? 'width: 40%' : 'width: 80%'" class="ml-8">
-      <v-card  class="mb-4" v-if="isResponse">
+       <v-expansion-panels>
+    <v-expansion-panel
+     v-for="(data, index) in response" :key="index"
+    >
+      <v-expansion-panel-header>
+        Q:{{index +1}}  {{data.prompt}}
+      </v-expansion-panel-header>
+      <v-expansion-panel-content>
+         <pre class="formatted-text" style="color: black">
+                    {{data.res}}
+                  </pre>
+      </v-expansion-panel-content>
+    </v-expansion-panel>
+  </v-expansion-panels>
+      <!-- <v-card  class="mb-4" v-if="isResponse">
         <v-expand-transition>
           <v-card
             class="transition-fast-in-fast-out v-card--reveal"
@@ -83,7 +97,7 @@
             </v-card-text>
           </v-card>
         </v-expand-transition>
-      </v-card>
+      </v-card> -->
 
       <h4 v-if="isSearchable" class="mb-3">What would you like to work on?</h4>
       <v-textarea
@@ -115,14 +129,7 @@
       v-model="dialog"
       width="500"
     >
-      <!-- <template v-slot:activator="{ on, attrs }">
-        <v-btn small class="ml-3"  v-if="isResponse && isSearchable"
-          v-bind="attrs"
-          v-on="on"
-        >
-          Save
-        </v-btn>
-      </template> -->
+      
 
       <v-card>
         <v-card-title class="text-h5 grey lighten-2">
@@ -237,6 +244,7 @@ export default {
       dialog: false,
       campaignName: '',
          search: "",
+        
     };
   },
   mounted() {
@@ -289,8 +297,7 @@ export default {
           this.response.push({prompt: this.prompt, res: data})
 
           this.isLoading = false;
-          const container = this.$refs.scrollContainer;
-         container.scrollTop = container.scrollHeight;
+          
           this.prompt = ''
         
         });
@@ -422,7 +429,7 @@ export default {
 }
 .formatted-text {
   white-space: pre-wrap;
-  
+  height: 400px;
   overflow: auto;
 }
 </style>

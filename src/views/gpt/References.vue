@@ -71,7 +71,7 @@
      <v-dialog v-model="editDialog" width="500">
       <v-card>
         <v-card-title class="text-h5 grey lighten-2">
-          Update the vreiable.
+          Update the variable.
         </v-card-title>
 
         <v-card-text class="mt-3">
@@ -95,7 +95,7 @@
           <v-spacer></v-spacer>
           <v-btn color="primary" text @click="editDialog = false"> Cancel </v-btn>
 
-          <v-btn color="primary" @click="UpdateVariable"> Save </v-btn>
+          <v-btn color="primary" @click="updateReference"> Save </v-btn>
         </v-card-actions>
       </v-card>
     </v-dialog>
@@ -115,7 +115,8 @@ export default {
       referenceName: "",
       referenceValue: "",
       references: [],
-      editDialog: false
+      editDialog: false,
+       referenceID: ''
     };
   },
   mounted() {
@@ -185,6 +186,7 @@ export default {
         this.editDialog = true
         this.referenceName = ref.referenceName
       this.referenceValue = ref.referenceValue
+      this.referenceID = ref._id
     },
     updateReference(){
  if (this.referenceName.trim() == "" || this.referenceValue.trim() == "") {
@@ -194,9 +196,10 @@ export default {
       let payload = {
         referenceName: this.referenceName,
         referenceValue: this.referenceValue,
+        id: this.referenceID
       };
       axios
-        .post(`${process.env.VUE_APP_API_URL}api/save-reference`, payload, {
+        .put(`${process.env.VUE_APP_API_URL}api/update-reference`, payload, {
           headers: {
             "Content-Type": "application/json",
             Authorization: `Bearer ${localStorage.getItem("token")}`,
@@ -205,10 +208,10 @@ export default {
         .then((res) => {
           console.log(res);
           this.getReferencs();
-          this.dialog = false;
+          this.editDialog = false;
           EventBus.$emit(
             "showSnackbar",
-            "Campaign has been saved successfully",
+            "Variable has been updated successfully",
             "success"
           );
         });
