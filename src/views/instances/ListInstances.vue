@@ -129,6 +129,13 @@
       </v-toolbar>
     </template>
     <template v-slot:item.actions="{ item }">
+       <v-icon
+        small
+        class="mr-2"
+        @click="editItemDialog(item)"
+      >
+        mdi-eys
+      </v-icon>
       <v-icon
         small
         class="mr-2"
