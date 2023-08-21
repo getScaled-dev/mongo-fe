@@ -27,6 +27,7 @@
               class="mb-2"
               v-bind="attrs"
               v-on="on"
+              @click="clearForm"
             >
               Add New Instance
             </v-btn>
@@ -35,8 +36,8 @@
             <v-card-title>
               <span class="text-h5">Add New Instance</span>
             </v-card-title>
-
-            <v-card-text>
+<v-form ref="createForm">
+  <v-card-text>
               <v-container>
                 <v-row>
                   <v-col
@@ -92,6 +93,8 @@
                 </v-row>
               </v-container>
             </v-card-text>
+</v-form>
+            
 
             <v-card-actions>
               <v-spacer></v-spacer>
@@ -335,6 +338,7 @@ this.instanceID = item._id
         });
      },
      createInstance() {
+    
       let payload = {
        instanceName: this.instanceName,
        userName: this.userName,
@@ -356,6 +360,9 @@ this.instanceID = item._id
           console.log(res);
          
         });
+    },
+    clearForm(){
+        this.$refs.createForm.reset()
     },
     deleteItem(id){
 this.dialogDelete = true
