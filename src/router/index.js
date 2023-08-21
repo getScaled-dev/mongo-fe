@@ -53,6 +53,13 @@ const routes = [
 
     component: () => import(/* webpackChunkName: "about" */ '../views/gpt/Chat.vue'),
     meta: { requiresAuth: true },
+  },
+  {
+    path: '/instances',
+    name: 'Instances',
+
+    component: () => import(/* webpackChunkName: "about" */ '../views/instances/ListInstances.vue'),
+    meta: { requiresAuth: true },
   }
 ]
 

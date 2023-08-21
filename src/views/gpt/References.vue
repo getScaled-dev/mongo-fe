@@ -40,7 +40,7 @@
     <v-dialog v-model="dialog" width="500">
       <v-card>
         <v-card-title class="text-h5 grey lighten-2">
-          Give a name to the vreiable.
+          Give a name to the variable.
         </v-card-title>
 
         <v-card-text class="mt-3">

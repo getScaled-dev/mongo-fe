@@ -36,6 +36,11 @@
                 <router-link to="/ai-campaign">AI Campaign Generation</router-link>
               </v-list-item-title>
             </v-list-item>
+             <v-list-item>
+              <v-list-item-title>
+                <router-link to="/instances">GetScaled Instances</router-link>
+              </v-list-item-title>
+            </v-list-item>
           </v-list>
         </v-menu>
 
