@@ -365,6 +365,7 @@ this.instanceID = item._id
         })
         .then((res) => {
           console.log(res);
+          this.createInstanceDialog = false
          
         });
     },

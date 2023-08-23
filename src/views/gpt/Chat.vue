@@ -180,6 +180,13 @@
 
     <div class="ml-4 " style="width: 40%" v-if="isResponse">
       <v-form ref="form" v-model="valid" lazy-validation>
+        <v-select
+          :items="instances"
+          label="Select Instance"
+          outlined
+          item-text='instanceName'
+          return-object
+        ></v-select>
         <v-text-field
           outlined
           v-model="name"
@@ -233,6 +240,7 @@ export default {
       emailLoading: false,
       moment: moment,
       previousChats: [],
+      instances: [],
       valid: true,
       name: "",
       subject: "",
@@ -250,8 +258,22 @@ export default {
   mounted() {
     this.getAiSearches();
     this.newChat();
+    this.listInstances();
   },
   methods: {
+    listInstances() {
+      axios
+        .get(`${process.env.VUE_APP_API_URL}api/get-instances`, {
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${localStorage.getItem("token")}`,
+          },
+        })
+        .then((res) => {
+          console.log(res);
+          this.instances = res.data.data;
+        });
+    },
     newChat() {
       axios
         .post(`${process.env.VUE_APP_API_URL}api/start-new-chat`, {
