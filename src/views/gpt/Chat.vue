@@ -180,14 +180,17 @@
 
     <div class="ml-4 " style="width: 40%" v-if="isResponse">
       <v-form ref="form" v-model="valid" lazy-validation>
+       
         <v-select
           :items="instances"
           label="Select Instance"
           outlined
           item-text='instanceName'
           return-object
+          v-model="instanceData"
         ></v-select>
         <v-text-field
+      
           outlined
           v-model="name"
           :counter="10"
@@ -232,7 +235,8 @@ export default {
   components: {References},
   data() {
     return {
-     
+     instanceData: null,
+   
       response: [
       ],
       isResponse: false,
@@ -400,8 +404,12 @@ export default {
         });
     },
     createEmail() {
+      if(this.instanceData == null){
+        EventBus.$emit("showSnackbar", "Please select the instance", "error");
+        return;
+      }
       if (this.name.trim() == "") {
-        EventBus.$emit("showSnackbar", "Email Name is required", "error");
+        EventBus.$emit("showSnackbar", "Email name is required", "error");
         return;
       }
       if (this.subject == "") {
@@ -414,6 +422,7 @@ export default {
         subject: this.subject,
         plainText: this.plainText,
         isPublished: this.isPublished,
+        instance:this.instanceData
       };
       axios
         .post(`${process.env.VUE_APP_API_URL}api/create-email`, payload, {
