@@ -27,7 +27,7 @@
               class="mb-2"
               v-bind="attrs"
               v-on="on"
-              @click="clearForm"
+           
             >
               Add New Instance
             </v-btn>
@@ -132,9 +132,9 @@
        <v-icon
         small
         class="mr-2"
-        @click="editItemDialog(item)"
+        @click="openDetailsDialog(item)"
       >
-        mdi-eys
+        mdi-eye
       </v-icon>
       <v-icon
         small
@@ -245,15 +245,20 @@
               </v-btn>
             </v-card-actions>
           </v-card>
-        </v-dialog></div>
+        </v-dialog>
+        <InstanceDetails ref="instanceDetails" :instance='instanceDetails'/>
+        </div>
    
 </template>
 <script>
 import axios from "axios";
 import { EventBus } from "../../main";
 
+import InstanceDetails from './InstanceDetails.vue';
+
 
   export default {
+    components: {InstanceDetails},
     data: () => ({
       createInstanceDialog: false,
       dialogDelete: false,
@@ -290,6 +295,14 @@ this.listInstances()
     },
 
     methods: {
+      openDetailsDialog(item){
+this.$refs.instanceDetails.instanceDetails = item
+this.$refs.instanceDetails.listEmails(item)
+this.$refs.instanceDetails.listCampaigns(item)
+
+this.$refs.instanceDetails.dialog = true
+console.log(item)
+      },
       listInstances() {
       axios
         .get(`${process.env.VUE_APP_API_URL}api/get-instances`, {
