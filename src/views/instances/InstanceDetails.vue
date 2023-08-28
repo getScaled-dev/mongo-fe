@@ -56,7 +56,13 @@
                 <div class="instance-card pl-3">Instance Actions</div>
                 <div class="d-flex justify-space-around py-7">
                   <v-btn small color="primary" width='185px'>Create Campaign</v-btn>
-                  <v-btn small color="primary" width='185px'>Create Email</v-btn>
+                   <router-link to="/ai-campaign">
+                  <v-btn small color="primary" width='185px' link>
+                   
+ Create Email
+                   
+                   </v-btn>
+                    </router-link>
                 </div>
                 <div class="d-flex justify-space-around">
                   <v-btn small color="primary" width='185px'>Customer Info</v-btn>
