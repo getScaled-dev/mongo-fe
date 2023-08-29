@@ -40,12 +40,26 @@
               <v-card class="instance-card" elevation="0" height="200">
                 <div class="instance-card pl-3">Instance Overview</div>
                 <div class="pl-3 py-3">
-                   
-                  <div class=""><span class="font-weight-bold"> Instance Name: </span> {{instanceDetails.instanceName}}</div>
-                  <div> <span class="font-weight-bold">Instance URL:</span> {{instanceDetails.instanceName}}</div>
-                  <div> <span class="font-weight-bold">User Name:</span> {{instanceDetails.userName}}</div>
-                  <div> <span class="font-weight-bold">Password:</span> {{instanceDetails.instancePassword}}</div>
-                  <div> <span class="font-weight-bold">API Key:</span> {{instanceDetails.apiKey}}</div>
+                  <div class="">
+                    <span class="font-weight-bold"> Instance Name: </span>
+                    {{ instanceDetails.instanceName }}
+                  </div>
+                  <div>
+                    <span class="font-weight-bold">Instance URL:</span>
+                    {{ instanceDetails.instanceName }}
+                  </div>
+                  <div>
+                    <span class="font-weight-bold">User Name:</span>
+                    {{ instanceDetails.userName }}
+                  </div>
+                  <div>
+                    <span class="font-weight-bold">Password:</span>
+                    {{ instanceDetails.instancePassword }}
+                  </div>
+                  <div>
+                    <span class="font-weight-bold">API Key:</span>
+                    {{ instanceDetails.apiKey }}
+                  </div>
                 </div>
 
                 <!-- {{instanceDetails}} -->
@@ -55,18 +69,20 @@
               <v-card class="instance-card" elevation="0" height="200">
                 <div class="instance-card pl-3">Instance Actions</div>
                 <div class="d-flex justify-space-around py-7">
-                  <v-btn small color="primary" width='185px'>Create Campaign</v-btn>
-                   <router-link to="/ai-campaign">
-                  <v-btn small color="primary" width='185px' link>
-                   
- Create Email
-                   
-                   </v-btn>
-                    </router-link>
+                  <v-btn small color="primary" width="185px"
+                    >Create Campaign</v-btn
+                  >
+                  <router-link to="/ai-campaign">
+                    <v-btn small color="primary" width="185px" link>
+                      Create Email
+                    </v-btn>
+                  </router-link>
                 </div>
                 <div class="d-flex justify-space-around">
-                  <v-btn small color="primary" width='185px'>Customer Info</v-btn>
-                  <v-btn small color="primary" width='185px'>Reporting</v-btn>
+                  <v-btn small color="primary" width="185px"
+                    >Customer Info</v-btn
+                  >
+                  <v-btn small color="primary" width="185px">Reporting</v-btn>
                 </div>
                 <div></div>
                 <!-- {{instanceDetails}} -->
@@ -75,7 +91,7 @@
           </v-row>
           <v-row class="mx-5">
             <v-col>
-                <v-card class="instance-card" elevation="0">
+              <v-card class="instance-card" elevation="0">
                 <div class="instance-card pl-3">Instance Emails Overview</div>
                 <div class="table">
                   <v-simple-table dense>
@@ -90,21 +106,25 @@
 
                           <th class="text-left">Created By</th>
                           <th class="text-left">Created At</th>
-
-
                         </tr>
                       </thead>
                       <tbody>
                         <tr v-for="item in emails" :key="item.id">
                           <td>{{ item.name }}</td>
-                          
-                          <td> <v-icon color="blue darken-2" v-if="item.isPublished">mdi-check</v-icon> </td>
+
+                          <td>
+                            <v-icon
+                              color="blue darken-2"
+                              v-if="item.isPublished"
+                              >mdi-check</v-icon
+                            >
+                          </td>
                           <td>{{ item.readCount }}</td>
                           <td>{{ item.sentCount }}</td>
                           <td>{{ item.createdByUser }}</td>
-                          <td>{{ moment(item.dateAdded).format("MM-DD-YYYY") }}</td>
-
-
+                          <td>
+                            {{ moment(item.dateAdded).format("MM-DD-YYYY") }}
+                          </td>
                         </tr>
                       </tbody>
                     </template>
@@ -126,18 +146,22 @@
                           <th class="text-left">Published</th>
                           <th class="text-left">Created By</th>
                           <th class="text-left">Created At</th>
-
-
                         </tr>
                       </thead>
                       <tbody>
                         <tr v-for="item in campaigns" :key="item.id">
                           <td>{{ item.name }}</td>
-                          <td> <v-icon color="blue darken-2" v-if="item.isPublished">mdi-check</v-icon> </td>
+                          <td>
+                            <v-icon
+                              color="blue darken-2"
+                              v-if="item.isPublished"
+                              >mdi-check</v-icon
+                            >
+                          </td>
                           <td>{{ item.createdByUser }}</td>
-                          <td>{{ moment(item.dateAdded).format("MM-DD-YYYY") }}</td>
-
-
+                          <td>
+                            {{ moment(item.dateAdded).format("MM-DD-YYYY") }}
+                          </td>
                         </tr>
                       </tbody>
                     </template>
@@ -153,7 +177,7 @@
 </template>
 
 <script>
-import axios from 'axios';
+import axios from "axios";
 import moment from "moment";
 export default {
   data() {
@@ -163,7 +187,7 @@ export default {
       sound: true,
       widgets: false,
       instanceDetails: {},
-         moment: moment,
+      moment: moment,
       tab: null,
       desserts: [
         {
@@ -212,14 +236,14 @@ export default {
       text: "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.",
     };
   },
-  mounted(){
-// this.listEmails()
+  mounted() {
+    // this.listEmails()
   },
   methods: {
-    listEmails(item){
-        console.log('req body ====>', item)
-       axios
-        .post(`${process.env.VUE_APP_API_URL}api/list-emails`,item, {
+    listEmails(item) {
+      console.log("req body ====>", item);
+      axios
+        .post(`${process.env.VUE_APP_API_URL}api/list-emails`, item, {
           headers: {
             "Content-Type": "application/json",
             Authorization: `Bearer ${localStorage.getItem("token")}`,
@@ -227,14 +251,13 @@ export default {
         })
         .then((res) => {
           console.log(res);
-          this.emails = res.data.emails
-         
-        });  
+          this.emails = res.data.emails;
+        });
     },
-     listCampaigns(item){
-        console.log('req body ====>', item)
-       axios
-        .post(`${process.env.VUE_APP_API_URL}api/list-campaigns`,item, {
+    listCampaigns(item) {
+      console.log("req body ====>", item);
+      axios
+        .post(`${process.env.VUE_APP_API_URL}api/list-campaigns`, item, {
           headers: {
             "Content-Type": "application/json",
             Authorization: `Bearer ${localStorage.getItem("token")}`,
@@ -242,11 +265,10 @@ export default {
         })
         .then((res) => {
           console.log(res.data);
-          this.campaigns = res.data.campaigns
-         
-        });  
-    }
-  }
+          this.campaigns = res.data.campaigns;
+        });
+    },
+  },
 };
 </script>
 
@@ -258,10 +280,10 @@ export default {
   height: 300px;
   overflow: auto;
 }
-::v-deep .v-toolbar{
-    height: 42px !important;
+::v-deep .v-toolbar {
+  height: 42px !important;
 }
 ::v-deep .v-toolbar__content {
-     height: 42px !important;
+  height: 42px !important;
 }
 </style>

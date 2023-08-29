@@ -24,7 +24,7 @@
           ><v-icon> mdi-filter-outline </v-icon> Add Filters
         </v-btn> -->
 
-          <!-- <v-btn
+          <v-btn
             class="ma-2"
             color="#D75D3F"
             :loading="exportLoader"
@@ -32,7 +32,7 @@
           >
             <v-icon color="white"> mdi-database-export-outline </v-icon>
             <span style="color: white">Launch To Campaign</span>
-          </v-btn> -->
+          </v-btn>
 
           <v-btn class="ma-2" color="Primary" @click="uploadCSV">
             <v-icon> mdi-database-import-outline </v-icon> Import CSV
@@ -509,7 +509,7 @@ export default {
         filters?.zipCode
       }`;
       const key = "lxxzhhJB1iCpKE5Uvzw5D";
-      axios
+       axios
         .get(url, {
           headers: {
             "Content-Type": "application/json",
@@ -519,39 +519,56 @@ export default {
         .then((response) => {
           console.log(response);
 
-         
-         
-          let myInterval = setInterval(function () {
-            axios
-              .get(
-                `https://apps.emaillistverify.com/api/getApiFileInfo?secret=${key}&id=${response.data}`
-              )
-              .then((res) => {
-                const inputString = res.data;
-                const splitString = inputString.split("|");
+          this.exportLoader = false;
 
-                // Access the desired URL, which is the 8th element in the splitString array
-                const url = splitString[7];
-
-                const finished = splitString[5];
-
-               this.totalEmails = splitString[3];
-                this.verifiedEmails = splitString[4];
-              
-                if (finished == "finished") {
-                  this.exportLoader = false;
-                  window.open(url, "_blank");
-                  clearInterval(myInterval);
-                }
-
-                console.log(res.data);
-              });
-            // window.open(url, "_blank");
-          }, 5000);
+          window.open(url, "_blank");
         })
         .catch((error) => {
           this.exportLoader = false;
         });
+      // axios
+      //   .get(url, {
+      //     headers: {
+      //       "Content-Type": "application/json",
+      //       Authorization: `Bearer ${localStorage.getItem("token")}`,
+      //     },
+      //   })
+      //   .then((response) => {
+      //     console.log(response);
+
+         
+         
+      //     let myInterval = setInterval(function () {
+      //       axios
+      //         .get(
+      //           `https://apps.emaillistverify.com/api/getApiFileInfo?secret=${key}&id=${response.data}`
+      //         )
+      //         .then((res) => {
+      //           const inputString = res.data;
+      //           const splitString = inputString.split("|");
+
+      //           // Access the desired URL, which is the 8th element in the splitString array
+      //           const url = splitString[7];
+
+      //           const finished = splitString[5];
+
+      //          this.totalEmails = splitString[3];
+      //           this.verifiedEmails = splitString[4];
+              
+      //           if (finished == "finished") {
+      //             this.exportLoader = false;
+      //             window.open(url, "_blank");
+      //             clearInterval(myInterval);
+      //           }
+
+      //           console.log(res.data);
+      //         });
+      //       // window.open(url, "_blank");
+      //     }, 5000);
+      //   })
+      //   .catch((error) => {
+      //     this.exportLoader = false;
+      //   });
     },
     applyFilters(filters) {
       this.filtersData = filters;
