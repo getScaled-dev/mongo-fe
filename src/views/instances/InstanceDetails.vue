@@ -17,11 +17,6 @@
       <v-tabs v-model="tab" centered icons-and-text>
         <v-tabs-slider></v-tabs-slider>
 
-        <v-tab href="#tab-1">
-          Leads Database
-          <v-icon>mdi-phone</v-icon>
-        </v-tab>
-
         <v-tab href="#tab-2">
           Email System Admin
           <v-icon>mdi-heart</v-icon>
@@ -52,13 +47,26 @@
                     <span class="font-weight-bold">User Name:</span>
                     {{ instanceDetails.userName }}
                   </div>
-                  <div>
+                 
+                   <div v-if="isShowPassword">
                     <span class="font-weight-bold">Password:</span>
                     {{ instanceDetails.instancePassword }}
+                    <v-icon small class="mr-2 cursor-pointer" @click="isShowPassword = false"> mdi-eye-off </v-icon>
                   </div>
-                  <div>
+                   <div v-else>
+                    <span class="font-weight-bold">Password:</span>
+                    {{passwordString}}
+                    <v-icon small class="mr-2 cursor-pointer" @click="isShowPassword = true"> mdi-eye </v-icon>
+                  </div>
+                  <div v-if="isShowApiKey">
                     <span class="font-weight-bold">API Key:</span>
                     {{ instanceDetails.apiKey }}
+                    <v-icon small class="mr-2 cursor-pointer" @click="isShowApiKey = false"> mdi-eye-off </v-icon>
+                  </div>
+                  <div v-else>
+                    <span class="font-weight-bold">API Key:</span>
+                    **********************************************
+                    <v-icon small class="mr-2 cursor-pointer" @click="isShowApiKey = true"> mdi-eye </v-icon>
                   </div>
                 </div>
 
@@ -106,6 +114,7 @@
 
                           <th class="text-left">Created By</th>
                           <th class="text-left">Created At</th>
+                          <th class="text-left">Actions</th>
                         </tr>
                       </thead>
                       <tbody>
@@ -124,6 +133,16 @@
                           <td>{{ item.createdByUser }}</td>
                           <td>
                             {{ moment(item.dateAdded).format("MM-DD-YYYY") }}
+                          </td>
+                          <td>
+                            <v-icon
+                              small
+                              class="mr-2"
+                              @click="openEmailDialog(item)"
+                            >
+                              mdi-pencil
+                            </v-icon>
+                            <v-icon small class="mr-2"> mdi-delete </v-icon>
                           </td>
                         </tr>
                       </tbody>
@@ -146,6 +165,7 @@
                           <th class="text-left">Published</th>
                           <th class="text-left">Created By</th>
                           <th class="text-left">Created At</th>
+                          <th class="text-left">Actions</th>
                         </tr>
                       </thead>
                       <tbody>
@@ -162,6 +182,16 @@
                           <td>
                             {{ moment(item.dateAdded).format("MM-DD-YYYY") }}
                           </td>
+                          <td>
+                            <v-icon
+                              small
+                              class="mr-2"
+                              @click="openCampaignDialog(item)"
+                            >
+                              mdi-pencil
+                            </v-icon>
+                            <v-icon small class="mr-2"> mdi-delete </v-icon>
+                          </td>
                         </tr>
                       </tbody>
                     </template>
@@ -173,12 +203,104 @@
         </v-tab-item>
       </v-tabs-items>
     </v-card>
+    <!-- edit campaign dialog  -->
+    <v-dialog v-model="editCampaignDialog" max-width="500px">
+      <v-card>
+        <v-card-title>
+          <span class="text-h5">Edit Campaign</span>
+        </v-card-title>
+
+        <v-card-text>
+          <v-container>
+            <v-row>
+              <v-col cols="12">
+                <v-text-field
+                  v-model="campaignDetails.name"
+                  label="Campaign name"
+                ></v-text-field>
+              </v-col>
+              <v-col cols="12">
+                <v-text-field
+                  v-model="campaignDetails.description"
+                  label="Campaign Description"
+                ></v-text-field>
+              </v-col>
+
+              <v-col cols="12" sm="6" md="4">
+                <v-checkbox
+                  v-model="campaignDetails.isPublished"
+                  label="Is Published"
+                ></v-checkbox>
+              </v-col>
+            </v-row>
+          </v-container>
+        </v-card-text>
+
+        <v-card-actions>
+          <v-spacer></v-spacer>
+          <v-btn color="blue darken-1" text @click="editCampaignDialog = false">
+            Cancel
+          </v-btn>
+          <v-btn color="blue darken-1" text @click="eidtCampaign"> Update </v-btn>
+        </v-card-actions>
+      </v-card>
+    </v-dialog>
+    <!-- edit email dialog  -->
+    <v-dialog v-model="editEmailDialog" max-width="500px">
+      <v-card>
+        <v-card-title>
+          <span class="text-h5">Edit Email</span>
+        </v-card-title>
+
+        <v-card-text>
+          <v-container>
+            <v-row>
+              <v-col cols="12">
+                <v-text-field
+                  v-model="emailDetails.name"
+                  label="Email Name"
+                ></v-text-field>
+              </v-col>
+              <v-col cols="12">
+                <v-text-field
+                  v-model="emailDetails.subject"
+                  label="Email Subject"
+                ></v-text-field>
+              </v-col>
+              <v-col cols="12">
+                <v-text-field
+                  v-model="emailDetails.plainText"
+                  label="Email Body"
+                ></v-text-field>
+              </v-col>
+
+              <v-col cols="12" sm="6" md="4">
+                <v-checkbox
+                  v-model="emailDetails.isPublished"
+                  label="Is Published"
+                ></v-checkbox>
+              </v-col>
+            </v-row>
+          </v-container>
+        </v-card-text>
+
+        <v-card-actions>
+          <v-spacer></v-spacer>
+          <v-btn color="blue darken-1" text @click="editEmailDialog = false">
+            Cancel
+          </v-btn>
+          <v-btn color="blue darken-1" text @click="eidtEmail"> Update </v-btn>
+        </v-card-actions>
+      </v-card>
+    </v-dialog>
   </v-dialog>
 </template>
 
 <script>
 import axios from "axios";
 import moment from "moment";
+import { EventBus } from "../../main";
+
 export default {
   data() {
     return {
@@ -187,7 +309,13 @@ export default {
       sound: true,
       widgets: false,
       instanceDetails: {},
+      editCampaignDialog: false,
+      campaignDetails: {},
+      editEmailDialog: false,
+      emailDetails: {},
       moment: moment,
+      isShowPassword: false,
+      isShowApiKey: false,
       tab: null,
       desserts: [
         {
@@ -233,11 +361,15 @@ export default {
       ],
       emails: [],
       campaigns: [],
-      text: "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.",
     };
   },
   mounted() {
     // this.listEmails()
+  },
+  computed:{
+     passwordString() {
+      return '*'.repeat(this.instanceDetails.instancePassword.length);
+    }
   },
   methods: {
     listEmails(item) {
@@ -268,6 +400,70 @@ export default {
           this.campaigns = res.data.campaigns;
         });
     },
+    openCampaignDialog(item) {
+      (this.editCampaignDialog = true), console.log(item);
+      this.campaignDetails = item;
+    },
+    openEmailDialog(item) {
+      (this.editEmailDialog = true), console.log(item);
+      this.emailDetails = item;
+    },
+    showPassword(){
+        this.isShowPassword = true
+    },
+    eidtCampaign(){
+ let payload = {
+        instanceDetails: this.instanceDetails,
+        
+        campaignDetails: this.campaignDetails
+      };
+      axios
+        .post(`${process.env.VUE_APP_API_URL}api/edit-campaign`, payload, {
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${localStorage.getItem("token")}`,
+          },
+        })
+        .then((res) => {
+          console.log(res);
+        
+          this.editCampaignDialog = false;
+          
+          EventBus.$emit(
+            "showSnackbar",
+            "Campaign has been updated successfully",
+            "success"
+          );
+
+        });
+     },
+     // edit email from mautic
+     eidtEmail(){
+ let payload = {
+        instanceDetails: this.instanceDetails,
+        
+        emailDetails: this.emailDetails
+      };
+      axios
+        .post(`${process.env.VUE_APP_API_URL}api/edit-email`, payload, {
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${localStorage.getItem("token")}`,
+          },
+        })
+        .then((res) => {
+          console.log(res);
+        
+          this.editEmailDialog = false;
+          
+          EventBus.$emit(
+            "showSnackbar",
+            "Email has been updated successfully",
+            "success"
+          );
+
+        });
+     },
   },
 };
 </script>
