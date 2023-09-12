@@ -26,7 +26,8 @@
 
           <v-btn
             class="ma-2"
-           color="rgb(124 155 211)"
+           
+            color="#D75D3F"
             :loading="exportLoader"
             @click="exportCSV"
           >
@@ -35,7 +36,7 @@
           </v-btn>
           <v-btn
             class="ma-2"
-            color="#D75D3F"
+           color="rgb(124 155 211)"
             :loading="verifyLoader"
             @click="verifyEmail"
           >
