@@ -1,10 +1,34 @@
 <template>
-<div><v-data-table
+<div>
+  
+  <v-data-table
     :headers="headers"
     :items="instances"
    
     class="elevation-1"
   >
+  
+  <!-- <template v-slot:item.instancePassword="{ item }">
+    <span v-if="!showPassword">***********
+       <v-icon
+        small
+        class="mr-2"
+        @click="showPassword = true"
+      >
+        mdi-eye
+      </v-icon></span>
+      <span v-else>{{item.instancePassword}} 
+       <v-icon
+        small
+        class="mr-2"
+        @click="showPassword = false"
+      >
+        mdi-eye-off
+      </v-icon></span>
+    
+     
+     
+    </template> -->
     <template v-slot:top>
       <v-toolbar
         flat
@@ -263,6 +287,7 @@ import InstanceDetails from './InstanceDetails.vue';
       createInstanceDialog: false,
       dialogDelete: false,
       editDialog: false,
+      showPassword: false,
       headers: [
         {
           text: 'Instance Name',
@@ -272,8 +297,8 @@ import InstanceDetails from './InstanceDetails.vue';
         },
          { text: 'User Name', value: 'userName' },
         { text: 'Instance URL', value: 'instanceUrl' },
-        { text: 'API Key', value: 'apiKey' },
-        { text: 'Password', value: 'instancePassword' },
+       
+        // { text: 'Password', value: 'instancePassword' },
         { text: 'Actions', value: 'actions', sortable: false }
        
        
@@ -299,6 +324,7 @@ this.listInstances()
 this.$refs.instanceDetails.instanceDetails = item
 this.$refs.instanceDetails.listEmails(item)
 this.$refs.instanceDetails.listCampaigns(item)
+this.$refs.instanceDetails.listReport(item)
 
 this.$refs.instanceDetails.dialog = true
 console.log(item)
@@ -364,7 +390,7 @@ this.instanceID = item._id
        userName: this.userName,
        instanceUrl :this.instanceUrl,
        instancePassword: this.instancePassword,
-       apiKey: this.apiKey,
+       
 
 
 

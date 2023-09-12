@@ -32,6 +32,15 @@
             @click="exportCSV"
           >
             <v-icon color="white"> mdi-database-export-outline </v-icon>
+            <span style="color: white">Export to CSV</span>
+          </v-btn>
+          <v-btn
+            class="ma-2"
+            color="rgb(124 155 211)"
+            :loading="verifyLoader"
+            
+          >
+            <v-icon color="white"> mdi-database-export-outline </v-icon>
             <span style="color: white">Launch To Campaign</span>
           </v-btn>
 

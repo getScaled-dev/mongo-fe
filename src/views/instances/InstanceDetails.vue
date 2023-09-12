@@ -39,26 +39,26 @@
                     <span class="font-weight-bold"> Instance Name: </span>
                     {{ instanceDetails.instanceName }}
                   </div>
-                  <div>
+                  <div class="my-4">
                     <span class="font-weight-bold">Instance URL:</span>
-                    {{ instanceDetails.instanceName }}
+                     <a :href="instanceDetails.instanceUrl"  target="_blank">{{instanceDetails.instanceUrl}}</a>
                   </div>
                   <div>
                     <span class="font-weight-bold">User Name:</span>
                     {{ instanceDetails.userName }}
                   </div>
                  
-                   <div v-if="isShowPassword">
+                   <div v-if="isShowPassword" class="my-4">
                     <span class="font-weight-bold">Password:</span>
                     {{ instanceDetails.instancePassword }}
                     <v-icon small class="mr-2 cursor-pointer" @click="isShowPassword = false"> mdi-eye-off </v-icon>
                   </div>
-                   <div v-else>
+                   <div v-else class="my-4">
                     <span class="font-weight-bold">Password:</span>
                     {{passwordString}}
                     <v-icon small class="mr-2 cursor-pointer" @click="isShowPassword = true"> mdi-eye </v-icon>
                   </div>
-                  <div v-if="isShowApiKey">
+                  <!-- <div v-if="isShowApiKey">
                     <span class="font-weight-bold">API Key:</span>
                     {{ instanceDetails.apiKey }}
                     <v-icon small class="mr-2 cursor-pointer" @click="isShowApiKey = false"> mdi-eye-off </v-icon>
@@ -67,7 +67,7 @@
                     <span class="font-weight-bold">API Key:</span>
                     **********************************************
                     <v-icon small class="mr-2 cursor-pointer" @click="isShowApiKey = true"> mdi-eye </v-icon>
-                  </div>
+                  </div> -->
                 </div>
 
                 <!-- {{instanceDetails}} -->
@@ -76,7 +76,7 @@
             <v-col md="4">
               <v-card class="instance-card" elevation="0" height="200">
                 <div class="instance-card pl-3">Instance Actions</div>
-                <div class="d-flex justify-space-around py-7">
+                <!-- <div class="d-flex justify-space-around py-7">
                   <v-btn small color="primary" width="185px"
                     >Create Campaign</v-btn
                   >
@@ -85,10 +85,12 @@
                       Create Email
                     </v-btn>
                   </router-link>
-                </div>
-                <div class="d-flex justify-space-around">
+                </div> -->
+                <div class="d-flex justify-space-around mt-7">
                   <v-btn small color="primary" width="185px"
-                    >Customer Info</v-btn
+                    >
+                    <a :href="instanceDetails.instanceUrl" class="link" target="_blank">Login to instance</a>
+                    </v-btn
                   >
                   <v-btn small color="primary" width="185px">Reporting</v-btn>
                 </div>
@@ -201,6 +203,9 @@
             </v-col>
           </v-row>
         </v-tab-item>
+<v-tab-item value="tab-3">
+    <InstanceReports :reports='reports'/>
+</v-tab-item>
       </v-tabs-items>
     </v-card>
     <!-- edit campaign dialog  -->
@@ -301,7 +306,10 @@ import axios from "axios";
 import moment from "moment";
 import { EventBus } from "../../main";
 
+import InstanceReports from './InstanceReports.vue';
+
 export default {
+    components: {InstanceReports},
   data() {
     return {
       dialog: false,
@@ -361,6 +369,7 @@ export default {
       ],
       emails: [],
       campaigns: [],
+      reports: []
     };
   },
   mounted() {
@@ -374,8 +383,11 @@ export default {
   methods: {
     listEmails(item) {
       console.log("req body ====>", item);
+      const payload = {
+        id: item._id
+      }
       axios
-        .post(`${process.env.VUE_APP_API_URL}api/list-emails`, item, {
+        .post(`${process.env.VUE_APP_API_URL}api/list-emails`, payload, {
           headers: {
             "Content-Type": "application/json",
             Authorization: `Bearer ${localStorage.getItem("token")}`,
@@ -387,9 +399,12 @@ export default {
         });
     },
     listCampaigns(item) {
+        const payload = {
+        id: item._id
+      }
       console.log("req body ====>", item);
       axios
-        .post(`${process.env.VUE_APP_API_URL}api/list-campaigns`, item, {
+        .post(`${process.env.VUE_APP_API_URL}api/list-campaigns`, payload, {
           headers: {
             "Content-Type": "application/json",
             Authorization: `Bearer ${localStorage.getItem("token")}`,
@@ -440,7 +455,7 @@ export default {
      // edit email from mautic
      eidtEmail(){
  let payload = {
-        instanceDetails: this.instanceDetails,
+        instanceId: this.instanceDetails._id,
         
         emailDetails: this.emailDetails
       };
@@ -464,6 +479,25 @@ export default {
 
         });
      },
+    //  list reports
+    listReport(item) {
+      console.log("req body ====>", item);
+      const payload = {
+        id: item._id
+      }
+      axios
+        .post(`${process.env.VUE_APP_API_URL}api/list-reports`, payload, {
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${localStorage.getItem("token")}`,
+          },
+        })
+        .then((res) => {
+          console.log(res.data);
+          this.reports = res.data
+        
+        });
+    },
   },
 };
 </script>
@@ -481,5 +515,9 @@ export default {
 }
 ::v-deep .v-toolbar__content {
   height: 42px !important;
+}
+.link{
+    color: white !important;
+    text-decoration: none !important;
 }
 </style>

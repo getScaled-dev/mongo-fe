@@ -139,7 +139,7 @@
               <v-btn class="ma-2" @click="openUserDetails(item)">
                 View Details
               </v-btn>
-              <UserDetailsModal
+              <UserDetailsModal 
                 ref="userDetails"
                 :userData="userData"
                 dataType="add-data"
