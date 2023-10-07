@@ -578,6 +578,7 @@ export default {
         })
         .then((response) => {
           console.log(response)
+          this.verifyLoader = false;
           let myInterval = setInterval(function () {
             axios
               .get(
@@ -596,11 +597,12 @@ export default {
                 this.verifiedEmails = splitString[4];
 
                 if (finished == "finished") {
-                  this.verifyLoader = false;
+                 
                   window.open(url, "_blank");
                   clearInterval(myInterval);
+                  
                 }
-
+ 
                 console.log(res.data);
               });
             // window.open(url, "_blank");
