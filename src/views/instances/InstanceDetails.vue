@@ -1,10 +1,5 @@
 <template>
-  <v-dialog
-    v-model="dialog"
-    fullscreen
-    hide-overlay
-    transition="dialog-bottom-transition"
-  >
+  <v-dialog v-model="dialog" fullscreen hide-overlay transition="dialog-bottom-transition">
     <v-card>
       <v-toolbar dark color="primary" class="pa-0">
         <v-btn icon dark @click="dialog = false">
@@ -17,19 +12,23 @@
       <v-tabs v-model="tab" centered icons-and-text>
         <v-tabs-slider></v-tabs-slider>
 
-        <v-tab href="#tab-2">
-          Email System Admin
+        <v-tab href="#tab-1">
+          Instance Overview
           <v-icon>mdi-heart</v-icon>
         </v-tab>
 
+        <v-tab href="#tab-2">
+          Emails Listing
+          <v-icon>mdi-account-box</v-icon>
+        </v-tab>
         <v-tab href="#tab-3">
-          Campaign Reporting
+          Campains Listing
           <v-icon>mdi-account-box</v-icon>
         </v-tab>
       </v-tabs>
 
       <v-tabs-items v-model="tab">
-        <v-tab-item value="tab-2">
+        <v-tab-item value="tab-1">
           <v-row class="mx-5">
             <v-col>
               <v-card class="instance-card" elevation="0" height="200">
@@ -41,21 +40,25 @@
                   </div>
                   <div class="my-4">
                     <span class="font-weight-bold">Instance URL:</span>
-                     <a :href="instanceDetails.instanceUrl"  target="_blank">{{instanceDetails.instanceUrl}}</a>
+                    <a :href="instanceDetails.instanceUrl" target="_blank">{{
+                      instanceDetails.instanceUrl }}</a>
+
                   </div>
                   <div>
-                    <span class="font-weight-bold">User Name:</span>
+                    <span class="font-weight-bold" id="copy1">User Name:</span>
                     {{ instanceDetails.userName }}
+                    <v-icon class="ml-2 cursor-pointer" @click="copyTextToClipboard(instanceDetails.userName)">
+                      mdi-content-copy </v-icon>
                   </div>
-                 
-                   <div v-if="isShowPassword" class="my-4">
+
+                  <div v-if="isShowPassword" class="my-4">
                     <span class="font-weight-bold">Password:</span>
                     {{ instanceDetails.instancePassword }}
                     <v-icon small class="mr-2 cursor-pointer" @click="isShowPassword = false"> mdi-eye-off </v-icon>
                   </div>
-                   <div v-else class="my-4">
+                  <div v-else class="my-4">
                     <span class="font-weight-bold">Password:</span>
-                    {{passwordString}}
+                    {{ passwordString }}
                     <v-icon small class="mr-2 cursor-pointer" @click="isShowPassword = true"> mdi-eye </v-icon>
                   </div>
                   <!-- <div v-if="isShowApiKey">
@@ -87,11 +90,9 @@
                   </router-link>
                 </div> -->
                 <div class="d-flex justify-space-around mt-7">
-                  <v-btn small color="primary" width="185px"
-                    >
+                  <v-btn small color="primary" width="185px">
                     <a :href="instanceDetails.instanceUrl" class="link" target="_blank">Login to instance</a>
-                    </v-btn
-                  >
+                  </v-btn>
                   <v-btn small color="primary" width="185px">Reporting</v-btn>
                 </div>
                 <div></div>
@@ -99,7 +100,7 @@
               </v-card>
             </v-col>
           </v-row>
-          <v-row class="mx-5">
+          <!-- <v-row class="mx-5">
             <v-col>
               <v-card class="instance-card" elevation="0">
                 <div class="instance-card pl-3">Instance Emails Overview</div>
@@ -124,11 +125,7 @@
                           <td>{{ item.name }}</td>
 
                           <td>
-                            <v-icon
-                              color="blue darken-2"
-                              v-if="item.isPublished"
-                              >mdi-check</v-icon
-                            >
+                            <v-icon color="blue darken-2" v-if="item.isPublished">mdi-check</v-icon>
                           </td>
                           <td>{{ item.readCount }}</td>
                           <td>{{ item.sentCount }}</td>
@@ -137,11 +134,7 @@
                             {{ moment(item.dateAdded).format("MM-DD-YYYY") }}
                           </td>
                           <td>
-                            <v-icon
-                              small
-                              class="mr-2"
-                              @click="openEmailDialog(item)"
-                            >
+                            <v-icon small class="mr-2" @click="openEmailDialog(item)">
                               mdi-pencil
                             </v-icon>
                             <v-icon small class="mr-2"> mdi-delete </v-icon>
@@ -153,7 +146,7 @@
                 </div>
               </v-card>
             </v-col>
-          </v-row>
+          </v-row> -->
           <v-row class="mx-5">
             <v-col>
               <v-card class="instance-card" elevation="0">
@@ -174,22 +167,14 @@
                         <tr v-for="item in campaigns" :key="item.id">
                           <td>{{ item.name }}</td>
                           <td>
-                            <v-icon
-                              color="blue darken-2"
-                              v-if="item.isPublished"
-                              >mdi-check</v-icon
-                            >
+                            <v-icon color="blue darken-2" v-if="item.isPublished">mdi-check</v-icon>
                           </td>
                           <td>{{ item.createdByUser }}</td>
                           <td>
                             {{ moment(item.dateAdded).format("MM-DD-YYYY") }}
                           </td>
                           <td>
-                            <v-icon
-                              small
-                              class="mr-2"
-                              @click="openCampaignDialog(item)"
-                            >
+                            <v-icon small class="mr-2" @click="openCampaignDialog(item)">
                               mdi-pencil
                             </v-icon>
                             <v-icon small class="mr-2"> mdi-delete </v-icon>
@@ -203,9 +188,12 @@
             </v-col>
           </v-row>
         </v-tab-item>
-<v-tab-item value="tab-3">
-    <InstanceReports :reports='reports'/>
-</v-tab-item>
+        <v-tab-item value="tab-2">
+          <EmailListing :instanceDetails="instanceDetails" />
+        </v-tab-item>
+        <v-tab-item value="tab-3">
+          <CampaignListing />
+        </v-tab-item>
       </v-tabs-items>
     </v-card>
     <!-- edit campaign dialog  -->
@@ -219,23 +207,14 @@
           <v-container>
             <v-row>
               <v-col cols="12">
-                <v-text-field
-                  v-model="campaignDetails.name"
-                  label="Campaign name"
-                ></v-text-field>
+                <v-text-field v-model="campaignDetails.name" label="Campaign name"></v-text-field>
               </v-col>
               <v-col cols="12">
-                <v-text-field
-                  v-model="campaignDetails.description"
-                  label="Campaign Description"
-                ></v-text-field>
+                <v-text-field v-model="campaignDetails.description" label="Campaign Description"></v-text-field>
               </v-col>
 
               <v-col cols="12" sm="6" md="4">
-                <v-checkbox
-                  v-model="campaignDetails.isPublished"
-                  label="Is Published"
-                ></v-checkbox>
+                <v-checkbox v-model="campaignDetails.isPublished" label="Is Published"></v-checkbox>
               </v-col>
             </v-row>
           </v-container>
@@ -261,29 +240,17 @@
           <v-container>
             <v-row>
               <v-col cols="12">
-                <v-text-field
-                  v-model="emailDetails.name"
-                  label="Email Name"
-                ></v-text-field>
+                <v-text-field v-model="emailDetails.name" label="Email Name"></v-text-field>
               </v-col>
               <v-col cols="12">
-                <v-text-field
-                  v-model="emailDetails.subject"
-                  label="Email Subject"
-                ></v-text-field>
+                <v-text-field v-model="emailDetails.subject" label="Email Subject"></v-text-field>
               </v-col>
               <v-col cols="12">
-                <v-text-field
-                  v-model="emailDetails.plainText"
-                  label="Email Body"
-                ></v-text-field>
+                <v-text-field v-model="emailDetails.plainText" label="Email Body"></v-text-field>
               </v-col>
 
               <v-col cols="12" sm="6" md="4">
-                <v-checkbox
-                  v-model="emailDetails.isPublished"
-                  label="Is Published"
-                ></v-checkbox>
+                <v-checkbox v-model="emailDetails.isPublished" label="Is Published"></v-checkbox>
               </v-col>
             </v-row>
           </v-container>
@@ -305,11 +272,12 @@
 import axios from "axios";
 import moment from "moment";
 import { EventBus } from "../../main";
-
+import EmailListing from "./EmailListing.vue";
+import CampaignListing from "./CampaignListing.vue";
 import InstanceReports from './InstanceReports.vue';
 
 export default {
-    components: {InstanceReports},
+  components: { InstanceReports, EmailListing, CampaignListing },
   data() {
     return {
       dialog: false,
@@ -375,12 +343,20 @@ export default {
   mounted() {
     // this.listEmails()
   },
-  computed:{
-     passwordString() {
+  computed: {
+    passwordString() {
       return '*'.repeat(this.instanceDetails.instancePassword.length);
     }
   },
   methods: {
+    copyTextToClipboard(text) {
+      console.log(this.$clipboard)
+      this.$clipboard.copy(text).then(() => {
+        alert('Text copied to clipboard: ' + text);
+      });
+
+    },
+
     listEmails(item) {
       console.log("req body ====>", item);
       const payload = {
@@ -399,7 +375,7 @@ export default {
         });
     },
     listCampaigns(item) {
-        const payload = {
+      const payload = {
         id: item._id
       }
       console.log("req body ====>", item);
@@ -423,13 +399,13 @@ export default {
       (this.editEmailDialog = true), console.log(item);
       this.emailDetails = item;
     },
-    showPassword(){
-        this.isShowPassword = true
+    showPassword() {
+      this.isShowPassword = true
     },
-    eidtCampaign(){
- let payload = {
+    eidtCampaign() {
+      let payload = {
         instanceDetails: this.instanceDetails,
-        
+
         campaignDetails: this.campaignDetails
       };
       axios
@@ -441,9 +417,9 @@ export default {
         })
         .then((res) => {
           console.log(res);
-        
+
           this.editCampaignDialog = false;
-          
+
           EventBus.$emit(
             "showSnackbar",
             "Campaign has been updated successfully",
@@ -451,12 +427,12 @@ export default {
           );
 
         });
-     },
-     // edit email from mautic
-     eidtEmail(){
- let payload = {
+    },
+    // edit email from mautic
+    eidtEmail() {
+      let payload = {
         instanceId: this.instanceDetails._id,
-        
+
         emailDetails: this.emailDetails
       };
       axios
@@ -468,9 +444,9 @@ export default {
         })
         .then((res) => {
           console.log(res);
-        
+
           this.editEmailDialog = false;
-          
+
           EventBus.$emit(
             "showSnackbar",
             "Email has been updated successfully",
@@ -478,7 +454,7 @@ export default {
           );
 
         });
-     },
+    },
     //  list reports
     listReport(item) {
       console.log("req body ====>", item);
@@ -495,7 +471,7 @@ export default {
         .then((res) => {
           console.log(res.data);
           this.reports = res.data
-        
+
         });
     },
   },
@@ -506,18 +482,22 @@ export default {
 .instance-card {
   border: 1px solid gray;
 }
+
 .table {
   height: 300px;
   overflow: auto;
 }
+
 ::v-deep .v-toolbar {
   height: 42px !important;
 }
+
 ::v-deep .v-toolbar__content {
   height: 42px !important;
 }
-.link{
-    color: white !important;
-    text-decoration: none !important;
+
+.link {
+  color: white !important;
+  text-decoration: none !important;
 }
 </style>
