@@ -400,6 +400,30 @@ export default {
           this.isLoading = false;
         });
     },
+    // exportCSV() {
+    //   this.exportLoader = true;
+    //   // let pagination = `?itemsPerPage=${this.pagination.itemPerPage}&page=${this.pagination.page}`
+    
+    //   let url = `${process.env.VUE_APP_API_URL}api/get-company-data`;
+
+    //   axios
+    //     .get(url, {
+    //       headers: {
+    //         "Content-Type": "application/json",
+    //         Authorization: `Bearer ${localStorage.getItem("token")}`,
+    //       },
+    //     })
+    //     .then((response) => {
+    //       console.log(response);
+
+    //       this.exportLoader = false;
+
+    //       window.open(url, "_blank");
+    //     })
+    //     .catch((error) => {
+    //       this.exportLoader = false;
+    //     });
+    // },
     exportCSV() {
       this.exportLoader = true;
       // let pagination = `?itemsPerPage=${this.pagination.itemPerPage}&page=${this.pagination.page}`

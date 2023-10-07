@@ -37,8 +37,11 @@
               </v-list-item-title>
             </v-list-item>
              <v-list-item>
-              <v-list-item-title>
+              <!-- <v-list-item-title>
                 <router-link to="/instances">GetScaled Instances</router-link>
+              </v-list-item-title> -->
+               <v-list-item-title>
+                <router-link to="/customers">GetScaled Customers</router-link>
               </v-list-item-title>
             </v-list-item>
           </v-list>
