@@ -1,278 +1,133 @@
 <template>
-<div>
-  
-  <v-data-table
-    :headers="headers"
-    :items="instances"
-   
-    class="elevation-1"
-  >
-  
-  <!-- <template v-slot:item.instancePassword="{ item }">
-    <span v-if="!showPassword">***********
-       <v-icon
-        small
-        class="mr-2"
-        @click="showPassword = true"
-      >
-        mdi-eye
-      </v-icon></span>
-      <span v-else>{{item.instancePassword}} 
-       <v-icon
-        small
-        class="mr-2"
-        @click="showPassword = false"
-      >
-        mdi-eye-off
-      </v-icon></span>
-    
-     
-     
-    </template> -->
-    <template v-slot:top>
-      <v-toolbar
-        flat
-      >
-        <v-toolbar-title>Instances List</v-toolbar-title>
-        <v-divider
-          class="mx-4"
-          inset
-          vertical
-        ></v-divider>
-        <v-spacer></v-spacer>
-        <v-dialog
-          v-model="createInstanceDialog"
-          max-width="500px"
-        >
-          <template v-slot:activator="{ on, attrs }">
-            <v-btn
-              color="primary"
-              dark
-              class="mb-2"
-              v-bind="attrs"
-              v-on="on"
-           
-            >
-              Add New Instance
-            </v-btn>
-          </template>
-          <v-card>
-            <v-card-title>
-              <span class="text-h5">Add New Instance</span>
-            </v-card-title>
-<v-form ref="createForm">
-  <v-card-text>
-              <v-container>
-                <v-row>
-                  <v-col
-                    cols="12"
-                    sm="6"
-                    md="4"
-                  >
-                    <v-text-field
-                      v-model="instanceName"
-                      label="Instance name"
-                    ></v-text-field>
-                  </v-col>
-                  <v-col
-                    cols="12"
-                    sm="6"
-                    md="4"
-                  >
-                    <v-text-field
-                      v-model="userName"
-                      label="User name"
-                    ></v-text-field>
-                  </v-col>
-                  <v-col
-                    cols="12"
-                    sm="6"
-                    md="4"
-                  >
-                    <v-text-field
-                      v-model="instanceUrl"
-                      label="Instance URL"
-                    ></v-text-field>
-                  </v-col>
-                  <v-col
-                    cols="12"
-                    sm="6"
-                    md="4"
-                  >
-                    <v-text-field
-                      v-model="instancePassword"
-                      label="Instance password"
-                    ></v-text-field>
-                  </v-col>
-                  <v-col
-                    cols="12"
-                    sm="6"
-                    md="4"
-                  >
-                    <v-text-field
-                      v-model="apiKey"
-                      label="Instance API key"
-                    ></v-text-field>
-                  </v-col>
-                </v-row>
-              </v-container>
-            </v-card-text>
-</v-form>
-            
+  <div>
 
-            <v-card-actions>
-              <v-spacer></v-spacer>
-              <v-btn
-                color="blue darken-1"
-                text
-                @click="createInstanceDialog = false"
-              >
-                Cancel
-              </v-btn>
-              <v-btn
-                color="blue darken-1"
-                text
-                @click="createInstance"
-              >
-                Save
-              </v-btn>
-            </v-card-actions>
-          </v-card>
-        </v-dialog>
-        <v-dialog v-model="dialogDelete" max-width="500px">
-          <v-card>
-            <v-card-title class="text-h6">Are you sure you want to delete this Instance?</v-card-title>
-            <v-card-actions>
-              <v-spacer></v-spacer>
-              <v-btn color="blue darken-1" text @click="dialogDelete = false">Cancel</v-btn>
-              <v-btn color="blue darken-1" text @click="deleteInstance">OK</v-btn>
-              <v-spacer></v-spacer>
-            </v-card-actions>
-          </v-card>
-        </v-dialog>
-      </v-toolbar>
-    </template>
-    <template v-slot:item.actions="{ item }">
-       <v-icon
-        small
-        class="mr-2"
-        @click="openDetailsDialog(item)"
-      >
-        mdi-eye
-      </v-icon>
-      <v-icon
-        small
-        class="mr-2"
-        @click="editItemDialog(item)"
-      >
-        mdi-pencil
-      </v-icon>
-      <v-icon
-        small
-        @click="deleteItem(item)"
-      >
-        mdi-delete
-      </v-icon>
-    </template>
-    <template v-slot:no-data>
-      <v-btn
-        color="primary"
-        @click="initialize"
-      >
-        Reset
-      </v-btn>
-    </template>
-    
-  </v-data-table>
-   <v-dialog
-          v-model="editDialog"
-          max-width="500px"
-        >
-          
-          <v-card>
-            <v-card-title>
-              <span class="text-h5">Edit Instance</span>
-            </v-card-title>
+    <v-data-table :headers="headers" :items="instances" class="elevation-1">
 
-            <v-card-text>
-              <v-container>
-                <v-row>
-                  <v-col
-                    cols="12"
-                    sm="6"
-                    md="4"
-                  >
-                    <v-text-field
-                      v-model="instanceName"
-                      label="Instance name"
-                    ></v-text-field>
-                  </v-col>
-                  <v-col
-                    cols="12"
-                    sm="6"
-                    md="4"
-                  >
-                    <v-text-field
-                      v-model="userName"
-                      label="User name"
-                    ></v-text-field>
-                  </v-col>
-                  <v-col
-                    cols="12"
-                    sm="6"
-                    md="4"
-                  >
-                    <v-text-field
-                      v-model="instanceUrl"
-                      label="Instance URL"
-                    ></v-text-field>
-                  </v-col>
-                  <v-col
-                    cols="12"
-                    sm="6"
-                    md="4"
-                  >
-                    <v-text-field
-                      v-model="instancePassword"
-                      label="Instance password"
-                    ></v-text-field>
-                  </v-col>
-                  <v-col
-                    cols="12"
-                    sm="6"
-                    md="4"
-                  >
-                    <v-text-field
-                      v-model="apiKey"
-                      label="Instance API key"
-                    ></v-text-field>
-                  </v-col>
-                </v-row>
-              </v-container>
-            </v-card-text>
 
-            <v-card-actions>
-              <v-spacer></v-spacer>
-              <v-btn
-                color="blue darken-1"
-                text
-                @click="editDialog = false"
-              >
-                Cancel
+      <template v-slot:top>
+        <v-toolbar flat>
+          <v-toolbar-title>Instances List</v-toolbar-title>
+          <v-divider class="mx-4" inset vertical></v-divider>
+          <v-spacer></v-spacer>
+          <v-dialog v-model="createInstanceDialog" max-width="500px">
+            <template v-slot:activator="{ on, attrs }">
+              <v-btn color="primary" dark class="mb-2" v-bind="attrs" v-on="on">
+                Add New Instance
               </v-btn>
-              <v-btn
-                color="blue darken-1"
-                text
-                @click="eidtItem"
-              >
-                Update
-              </v-btn>
-            </v-card-actions>
-          </v-card>
-        </v-dialog>
-        <InstanceDetails ref="instanceDetails" :instance='instanceDetails'/>
-        </div>
-   
+            </template>
+            <v-card>
+              <v-card-title>
+                <span class="text-h5">Add New Instance</span>
+              </v-card-title>
+              <v-form ref="createForm">
+                <v-card-text>
+                  <v-container>
+                    <v-row>
+                      <v-col cols="12" sm="6" md="4">
+                        <v-text-field v-model="instanceName" label="Instance name"></v-text-field>
+                      </v-col>
+                      <v-col cols="12" sm="6" md="4">
+                        <v-text-field v-model="userName" label="User name"></v-text-field>
+                      </v-col>
+                      <v-col cols="12" sm="6" md="4">
+                        <v-text-field v-model="instanceUrl" label="Instance URL"></v-text-field>
+                      </v-col>
+                      <v-col cols="12" sm="6" md="4">
+                        <v-text-field v-model="instancePassword" label="Instance password"></v-text-field>
+                      </v-col>
+                      <v-col cols="12" sm="6" md="4">
+                        <v-text-field v-model="apiKey" label="Instance API key"></v-text-field>
+                      </v-col>
+                    </v-row>
+                  </v-container>
+                </v-card-text>
+              </v-form>
+
+
+              <v-card-actions>
+                <v-spacer></v-spacer>
+                <v-btn color="blue darken-1" text @click="createInstanceDialog = false">
+                  Cancel
+                </v-btn>
+                <v-btn color="blue darken-1" text @click="createInstance">
+                  Save
+                </v-btn>
+              </v-card-actions>
+            </v-card>
+          </v-dialog>
+          <v-dialog v-model="dialogDelete" max-width="500px">
+            <v-card>
+              <v-card-title class="text-h6">Are you sure you want to delete this Instance?</v-card-title>
+              <v-card-actions>
+                <v-spacer></v-spacer>
+                <v-btn color="blue darken-1" text @click="dialogDelete = false">Cancel</v-btn>
+                <v-btn color="blue darken-1" text @click="deleteInstance">OK</v-btn>
+                <v-spacer></v-spacer>
+              </v-card-actions>
+            </v-card>
+          </v-dialog>
+        </v-toolbar>
+      </template>
+      <template v-slot:item.actions="{ item }">
+        <v-icon small class="mr-2" @click="openDetailsDialog(item)">
+          mdi-eye
+        </v-icon>
+        <v-icon small class="mr-2" @click="editItemDialog(item)">
+          mdi-pencil
+        </v-icon>
+        <v-icon small @click="deleteItem(item)">
+          mdi-delete
+        </v-icon>
+      </template>
+      <template v-slot:no-data>
+        <v-btn color="primary" @click="initialize">
+          Reset
+        </v-btn>
+      </template>
+
+    </v-data-table>
+    <v-dialog v-model="editDialog" max-width="500px">
+
+      <v-card>
+        <v-card-title>
+          <span class="text-h5">Edit Instance</span>
+        </v-card-title>
+
+        <v-card-text>
+          <v-container>
+            <v-row>
+              <v-col cols="12" sm="6" md="4">
+                <v-text-field v-model="instanceName" label="Instance name"></v-text-field>
+              </v-col>
+              <v-col cols="12" sm="6" md="4">
+                <v-text-field v-model="userName" label="User name"></v-text-field>
+              </v-col>
+              <v-col cols="12" sm="6" md="4">
+                <v-text-field v-model="instanceUrl" label="Instance URL"></v-text-field>
+              </v-col>
+              <v-col cols="12" sm="6" md="4">
+                <v-text-field v-model="instancePassword" label="Instance password"></v-text-field>
+              </v-col>
+              <v-col cols="12" sm="6" md="4">
+                <v-text-field v-model="apiKey" label="Instance API key"></v-text-field>
+              </v-col>
+            </v-row>
+          </v-container>
+        </v-card-text>
+
+        <v-card-actions>
+          <v-spacer></v-spacer>
+          <v-btn color="blue darken-1" text @click="editDialog = false">
+            Cancel
+          </v-btn>
+          <v-btn color="blue darken-1" text @click="eidtItem">
+            Update
+          </v-btn>
+        </v-card-actions>
+      </v-card>
+    </v-dialog>
+    <InstanceDetails ref="instanceDetails" :instance='instanceDetails' />
+  </div>
 </template>
 <script>
 import axios from "axios";
@@ -281,55 +136,55 @@ import { EventBus } from "../../main";
 import InstanceDetails from './InstanceDetails.vue';
 
 
-  export default {
-    components: {InstanceDetails},
-    data: () => ({
-      createInstanceDialog: false,
-      dialogDelete: false,
-      editDialog: false,
-      showPassword: false,
-      headers: [
-        {
-          text: 'Instance Name',
-          align: 'start',
-          sortable: false,
-          value: 'instanceName',
-        },
-         { text: 'User Name', value: 'userName' },
-        { text: 'Instance URL', value: 'instanceUrl' },
-       
-        // { text: 'Password', value: 'instancePassword' },
-        { text: 'Actions', value: 'actions', sortable: false }
-       
-       
-      ],
-     instanceName: '',
-     userName: '',
-     instanceUrl: '',
-     instancePassword: '',
-     apiKey: '',
-      instances: [],
-      instanceID: null
-    
-     
-     
-    }),
-
-    mounted(){
-this.listInstances()
-    },
-
-    methods: {
-      openDetailsDialog(item){
-this.$refs.instanceDetails.instanceDetails = item
-this.$refs.instanceDetails.listEmails(item)
-this.$refs.instanceDetails.listCampaigns(item)
-this.$refs.instanceDetails.listReport(item)
-
-this.$refs.instanceDetails.dialog = true
-console.log(item)
+export default {
+  components: { InstanceDetails },
+  data: () => ({
+    createInstanceDialog: false,
+    dialogDelete: false,
+    editDialog: false,
+    showPassword: false,
+    headers: [
+      {
+        text: 'Instance Name',
+        align: 'start',
+        sortable: false,
+        value: 'instanceName',
       },
-      listInstances() {
+      { text: 'User Name', value: 'userName' },
+      { text: 'Instance URL', value: 'instanceUrl' },
+
+      // { text: 'Password', value: 'instancePassword' },
+      { text: 'Actions', value: 'actions', sortable: false }
+
+
+    ],
+    instanceName: '',
+    userName: '',
+    instanceUrl: '',
+    instancePassword: '',
+    apiKey: '',
+    instances: [],
+    instanceID: null
+
+
+
+  }),
+
+  mounted() {
+    this.listInstances()
+  },
+
+  methods: {
+    openDetailsDialog(item) {
+      this.$refs.instanceDetails.instanceDetails = item
+      this.$refs.instanceDetails.listEmails(item)
+      this.$refs.instanceDetails.listCampaigns(item)
+      this.$refs.instanceDetails.listReport(item)
+
+      this.$refs.instanceDetails.dialog = true
+      console.log(item)
+    },
+    listInstances() {
       axios
         .get(`${process.env.VUE_APP_API_URL}api/get-instances`, {
           headers: {
@@ -342,20 +197,20 @@ console.log(item)
           this.instances = res.data.data;
         });
     },
-     editItemDialog(item){
-console.log(item)
-this.editDialog = true
-this.instanceName = item.instanceName
-this.userName = item.userName
-this.instancePassword = item.instancePassword
-this.instanceUrl = item.instanceUrl
-this.apiKey = item.apiKey,
-this.instanceID = item._id
- 
+    editItemDialog(item) {
+      console.log(item)
+      this.editDialog = true
+      this.instanceName = item.instanceName
+      this.userName = item.userName
+      this.instancePassword = item.instancePassword
+      this.instanceUrl = item.instanceUrl
+      this.apiKey = item.apiKey,
+        this.instanceID = item._id
 
-     },
-     eidtItem(){
- let payload = {
+
+    },
+    eidtItem() {
+      let payload = {
         instanceName: this.instanceName,
         userName: this.userName,
         id: this.instanceID,
@@ -372,7 +227,7 @@ this.instanceID = item._id
         })
         .then((res) => {
           console.log(res);
-        
+
           this.editDialog = false;
           this.listInstances()
           EventBus.$emit(
@@ -382,15 +237,15 @@ this.instanceID = item._id
           );
 
         });
-     },
-     createInstance() {
-    
+    },
+    createInstance() {
+
       let payload = {
-       instanceName: this.instanceName,
-       userName: this.userName,
-       instanceUrl :this.instanceUrl,
-       instancePassword: this.instancePassword,
-       
+        instanceName: this.instanceName,
+        userName: this.userName,
+        instanceUrl: this.instanceUrl,
+        instancePassword: this.instancePassword,
+
 
 
 
@@ -405,17 +260,17 @@ this.instanceID = item._id
         .then((res) => {
           console.log(res);
           this.createInstanceDialog = false
-         
+
         });
     },
-    clearForm(){
-        this.$refs.createForm.reset()
+    clearForm() {
+      this.$refs.createForm.reset()
     },
-    deleteItem(id){
-this.dialogDelete = true
-this.instanceID = id._id
+    deleteItem(id) {
+      this.dialogDelete = true
+      this.instanceID = id._id
     },
- deleteInstance(id) {
+    deleteInstance(id) {
       console.log(id);
       const data = {
         id: this.instanceID,
@@ -439,17 +294,15 @@ this.instanceID = id._id
         });
     },
 
-     
 
 
-     
 
 
-      
-    },
-  }
+
+
+
+  },
+}
 </script>
 
-<style>
-
-</style>
+<style></style>

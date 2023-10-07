@@ -24,24 +24,13 @@
           ><v-icon> mdi-filter-outline </v-icon> Add Filters
         </v-btn> -->
 
-          <v-btn
-            class="ma-2"
-           
-            color="#D75D3F"
-            :loading="exportLoader"
-            @click="exportCSV"
-          >
+          <v-btn class="ma-2" color="#D75D3F" :loading="exportLoader" @click="exportCSV">
             <v-icon color="white"> mdi-database-export-outline </v-icon>
             <span style="color: white">Export to CSV</span>
           </v-btn>
-          <v-btn
-            class="ma-2"
-           color="rgb(124 155 211)"
-            :loading="verifyLoader"
-            @click="verifyEmail"
-          >
+          <v-btn class="ma-2" color="rgb(124 155 211)" :loading="verifyLoader" @click="verifyEmail">
             <v-icon color="white"> mdi-database-export-outline </v-icon>
-            <span style="color: white">Launch To Campaign</span>
+            <span style="color: white">Send for verification</span>
           </v-btn>
 
           <v-btn class="ma-2" color="Primary" @click="uploadCSV">
@@ -51,18 +40,9 @@
             <v-icon> mdi-database-import-outline </v-icon> Check Duplicates
           </v-btn>
           <DuplicateDataModal ref="duplicates" /> -->
-          <UploadFile
-            ref="uploadFile"
-            @file-uploaded="fileUploaded = true"
-            @update-data="getUsers"
-            dataType="add-consumer-data"
-          />
-          <v-btn
-            class="ma-2"
-            color="error"
-            @click="openConfirmation"
-            :disabled="selected.length < 1"
-          >
+          <UploadFile ref="uploadFile" @file-uploaded="fileUploaded = true" @update-data="getUsers"
+            dataType="add-consumer-data" />
+          <v-btn class="ma-2" color="error" @click="openConfirmation" :disabled="selected.length < 1">
             <v-icon> mdi-trash-can-outline </v-icon> Delete Selected Records
           </v-btn>
         </div>
@@ -80,12 +60,7 @@
         <v-expansion-panel>
           <v-expansion-panel-header> Apply Filters </v-expansion-panel-header>
           <v-expansion-panel-content>
-            <Filters
-              ref="filters"
-              @apply-filter="applyFilters"
-              @check-any="checkAny"
-              dataType="consumerData"
-            />
+            <Filters ref="filters" @apply-filter="applyFilters" @check-any="checkAny" dataType="consumerData" />
           </v-expansion-panel-content>
         </v-expansion-panel>
       </v-expansion-panels>
@@ -96,21 +71,10 @@
             <div id="div2" class="width-scroll"></div>
           </div>
 
-          <v-data-table
-            ref="dt"
-            v-model="selected"
-            :headers="headers"
-            hide-default-footer
-            :items="usersData"
-            show-select
-            :single-select="singleSelect"
-            fixed-header
-            item-key="_id"
-            class="elevation-1 v-scroll-x-reverse v-data-table__overflow table-reference"
-            height="70vh"
-            :page.sync="pagination.page"
-            :items-per-page="pagination.itemPerPage"
-          >
+          <v-data-table ref="dt" v-model="selected" :headers="headers" hide-default-footer :items="usersData" show-select
+            :single-select="singleSelect" fixed-header item-key="_id"
+            class="elevation-1 v-scroll-x-reverse v-data-table__overflow table-reference" height="70vh"
+            :page.sync="pagination.page" :items-per-page="pagination.itemPerPage">
             <template v-slot:header.source="{ header }">
               <span v-if="isAdmin == 'true'">{{ header.text }}</span>
             </template>
@@ -160,27 +124,15 @@
               <v-btn class="ma-2" @click="openUserDetails(item)">
                 View Details
               </v-btn>
-              <UserDetailsModal
-                ref="userDetails"
-                :userData="userData"
-                dataType="add-consumer-data"
-              />
+              <UserDetailsModal ref="userDetails" :userData="userData" dataType="add-consumer-data" />
             </template>
             <template v-slot:top>
-              <Pagination
-                :count="count"
-                :pagination="pagination"
-                @pageChangedEvent="pagination.page = $event"
-              />
+              <Pagination :count="count" :pagination="pagination" @pageChangedEvent="pagination.page = $event" />
             </template>
           </v-data-table>
         </v-col>
       </v-row>
-      <ConfirmationModalVue
-        @delete-records="deleteData"
-        ref="confirmation"
-        :loading="loading"
-      />
+      <ConfirmationModalVue @delete-records="deleteData" ref="confirmation" :loading="loading" />
     </div>
   </div>
 </template>
@@ -210,12 +162,12 @@ export default {
   },
   data() {
     return {
-     
-     totalEmails: 0,
-     verifiedEmails: 0,
+
+      totalEmails: 0,
+      verifiedEmails: 0,
       deletedText: "Data has been deleted successfully!",
       dataDeleted: false,
-     verifyLoader: false,
+      verifyLoader: false,
       timeout: 5000,
       singleSelect: false,
       selected: [],
@@ -357,7 +309,7 @@ export default {
         firstName: this.filtersData?.firstName || null,
         dob: this.filtersData?.dob || null,
         city: this.filtersData?.city || null,
-       
+
         address: this.filtersData?.address || null,
         address2: this.filtersData?.address2 || null,
         email: this.filtersData?.email || null,
@@ -370,7 +322,7 @@ export default {
         companyName: this.filtersData?.companyName || null,
         jobTitle: this.filtersData?.jobTitle || null,
         jobTitleValue: this.filtersData?.jobTitles || null,
-         state: this.filtersData?.state || null,
+        state: this.filtersData?.state || null,
         stateValue: this.filtersData?.states || null,
         dob: this.filtersData?.dob || null,
         firstNameValue: this.filtersData?.firstNameValue || null,
@@ -384,7 +336,7 @@ export default {
         companyPhoneValue: this.filtersData?.companyPhoneValue || null,
         companyNameValue: this.filtersData?.companies || null,
 
-       
+
         zipCodeValue: this.filtersData?.zipCodes || null,
         zipCode: this.filtersData?.zipCode || null,
         optionSource: this.filtersData?.optionSource || null,
@@ -393,41 +345,27 @@ export default {
         gender: this.filtersData?.gender || null,
       };
 
-      let url = `${
-        process.env.VUE_APP_API_URL
-      }api/get-consumer-data?itemsPerPage=${this.pagination.itemPerPage}&page=${
-        this.pagination.page
-      }&dobStartValue=${filters?.dobStartValue}&dobEndValue=${
-        filters?.dobEndValue
-      }&dob=${filters?.dob}&firstName=${filters?.firstName}&firstNameValue=${
-        filters?.firstNameValue
-      }&lastName=${filters?.lastName}&lastNameValue=${
-        filters?.lastNameValue
-      }&email=${filters?.email}&emailValue=${
-        filters?.emailValue
-      }&companyPhone=${filters?.companyPhone}&companyPhoneValue=${
-        filters?.companyPhoneValue
-      }&mobilePhone=${filters?.mobilePhone}&mobilePhoneValue=${
-        filters?.mobilePhoneValue
-      }&city=${filters?.city}&cityValue=${JSON.stringify(
-        filters?.cityValue
-      )}&state=${filters?.state}&stateValue=${JSON.stringify(filters?.stateValue)}&jobTitle=${
-        filters?.jobTitle
-      }&jobTitleValue=${JSON.stringify(filters?.jobTitleValue)}&address=${
-        filters?.address
-      }&addressValue=${filters?.addressValue}&companyName=${
-        filters?.companyName
-      }&companyNameValue=${JSON.stringify(
-        filters?.companyNameValue
-      )}&optionSource=${
-        filters?.optionSource
-      }&optionSourceValue=${JSON.stringify(
-        filters?.optionSourceValue
-      )}&ownRent=${filters?.ownRent}&gender=${
-        filters?.gender
-      }&zipCodeValue=${JSON.stringify(filters?.zipCodeValue)}&zipCode=${
-        filters?.zipCode
-      }`;
+      let url = `${process.env.VUE_APP_API_URL
+        }api/get-consumer-data?itemsPerPage=${this.pagination.itemPerPage}&page=${this.pagination.page
+        }&dobStartValue=${filters?.dobStartValue}&dobEndValue=${filters?.dobEndValue
+        }&dob=${filters?.dob}&firstName=${filters?.firstName}&firstNameValue=${filters?.firstNameValue
+        }&lastName=${filters?.lastName}&lastNameValue=${filters?.lastNameValue
+        }&email=${filters?.email}&emailValue=${filters?.emailValue
+        }&companyPhone=${filters?.companyPhone}&companyPhoneValue=${filters?.companyPhoneValue
+        }&mobilePhone=${filters?.mobilePhone}&mobilePhoneValue=${filters?.mobilePhoneValue
+        }&city=${filters?.city}&cityValue=${JSON.stringify(
+          filters?.cityValue
+        )}&state=${filters?.state}&stateValue=${JSON.stringify(filters?.stateValue)}&jobTitle=${filters?.jobTitle
+        }&jobTitleValue=${JSON.stringify(filters?.jobTitleValue)}&address=${filters?.address
+        }&addressValue=${filters?.addressValue}&companyName=${filters?.companyName
+        }&companyNameValue=${JSON.stringify(
+          filters?.companyNameValue
+        )}&optionSource=${filters?.optionSource
+        }&optionSourceValue=${JSON.stringify(
+          filters?.optionSourceValue
+        )}&ownRent=${filters?.ownRent}&gender=${filters?.gender
+        }&zipCodeValue=${JSON.stringify(filters?.zipCodeValue)}&zipCode=${filters?.zipCode
+        }`;
       axios
         .get(url, {
           headers: {
@@ -452,7 +390,7 @@ export default {
         firstName: this.filtersData?.firstName || null,
         dob: this.filtersData?.dob || null,
         city: this.filtersData?.city || null,
-      
+
         address: this.filtersData?.address || null,
         address2: this.filtersData?.address2 || null,
         email: this.filtersData?.email || null,
@@ -477,7 +415,7 @@ export default {
         companyPhoneValue: this.filtersData?.companyPhoneValue || null,
         companyNameValue: this.filtersData?.companies || null,
 
-         state: this.filtersData?.state || null,
+        state: this.filtersData?.state || null,
         stateValue: this.filtersData?.states || null,
         zipCodeValue: this.filtersData?.zipCodes || null,
         zipCode: this.filtersData?.zipCode || null,
@@ -486,41 +424,27 @@ export default {
         ownRent: this.filtersData?.ownRent || null,
         gender: this.filtersData?.gender || null,
       };
-      let url = `${
-        process.env.VUE_APP_API_URL
-      }api/get-consumer-data?export=${true}&dobStartValue=${
-        filters?.dobStartValue
-      }&dobEndValue=${filters?.dobEndValue}&dob=${filters?.dob}&firstName=${
-        filters?.firstName
-      }&firstNameValue=${filters?.firstNameValue}&lastName=${
-        filters?.lastName
-      }&lastNameValue=${filters?.lastNameValue}&email=${
-        filters?.email
-      }&emailValue=${filters?.emailValue}&companyPhone=${
-        filters?.companyPhone
-      }&companyPhoneValue=${filters?.companyPhoneValue}&mobilePhone=${
-        filters?.mobilePhone
-      }&mobilePhoneValue=${filters?.mobilePhoneValue}&city=${
-        filters?.city
-      }&cityValue=${JSON.stringify(filters?.cityValue)}&state=${filters?.state}&stateValue=${JSON.stringify(filters?.stateValue)}&jobTitle=${
-        filters?.jobTitle
-      }&jobTitleValue=${JSON.stringify(filters?.jobTitleValue)}&address=${
-        filters?.address
-      }&addressValue=${filters?.addressValue}&companyName=${
-        filters?.companyName
-      }&companyNameValue=${JSON.stringify(
-        filters?.companyNameValue
-      )}&optionSource=${
-        filters?.optionSource
-      }&optionSourceValue=${JSON.stringify(
-        filters?.optionSourceValue
-      )}&ownRent=${filters?.ownRent}&gender=${
-        filters?.gender
-      }&zipCodeValue=${JSON.stringify(filters?.zipCodeValue)}&zipCode=${
-        filters?.zipCode
-      }`;
+      let url = `${process.env.VUE_APP_API_URL
+        }api/get-consumer-data?export=${true}&dobStartValue=${filters?.dobStartValue
+        }&dobEndValue=${filters?.dobEndValue}&dob=${filters?.dob}&firstName=${filters?.firstName
+        }&firstNameValue=${filters?.firstNameValue}&lastName=${filters?.lastName
+        }&lastNameValue=${filters?.lastNameValue}&email=${filters?.email
+        }&emailValue=${filters?.emailValue}&companyPhone=${filters?.companyPhone
+        }&companyPhoneValue=${filters?.companyPhoneValue}&mobilePhone=${filters?.mobilePhone
+        }&mobilePhoneValue=${filters?.mobilePhoneValue}&city=${filters?.city
+        }&cityValue=${JSON.stringify(filters?.cityValue)}&state=${filters?.state}&stateValue=${JSON.stringify(filters?.stateValue)}&jobTitle=${filters?.jobTitle
+        }&jobTitleValue=${JSON.stringify(filters?.jobTitleValue)}&address=${filters?.address
+        }&addressValue=${filters?.addressValue}&companyName=${filters?.companyName
+        }&companyNameValue=${JSON.stringify(
+          filters?.companyNameValue
+        )}&optionSource=${filters?.optionSource
+        }&optionSourceValue=${JSON.stringify(
+          filters?.optionSourceValue
+        )}&ownRent=${filters?.ownRent}&gender=${filters?.gender
+        }&zipCodeValue=${JSON.stringify(filters?.zipCodeValue)}&zipCode=${filters?.zipCode
+        }`;
       const key = "lxxzhhJB1iCpKE5Uvzw5D";
-       axios
+      axios
         .get(url, {
           headers: {
             "Content-Type": "application/json",
@@ -547,8 +471,8 @@ export default {
       //   .then((response) => {
       //     console.log(response);
 
-         
-         
+
+
       //     let myInterval = setInterval(function () {
       //       axios
       //         .get(
@@ -565,7 +489,7 @@ export default {
 
       //          this.totalEmails = splitString[3];
       //           this.verifiedEmails = splitString[4];
-              
+
       //           if (finished == "finished") {
       //             this.exportLoader = false;
       //             window.open(url, "_blank");
@@ -590,7 +514,7 @@ export default {
         firstName: this.filtersData?.firstName || null,
         dob: this.filtersData?.dob || null,
         city: this.filtersData?.city || null,
-      
+
         address: this.filtersData?.address || null,
         address2: this.filtersData?.address2 || null,
         email: this.filtersData?.email || null,
@@ -615,7 +539,7 @@ export default {
         companyPhoneValue: this.filtersData?.companyPhoneValue || null,
         companyNameValue: this.filtersData?.companies || null,
 
-         state: this.filtersData?.state || null,
+        state: this.filtersData?.state || null,
         stateValue: this.filtersData?.states || null,
         zipCodeValue: this.filtersData?.zipCodes || null,
         zipCode: this.filtersData?.zipCode || null,
@@ -624,41 +548,27 @@ export default {
         ownRent: this.filtersData?.ownRent || null,
         gender: this.filtersData?.gender || null,
       };
-      let url = `${
-        process.env.VUE_APP_API_URL
-      }api/get-consumer-data?export=${true}&verifyEmailList=${true}&dobStartValue=${
-        filters?.dobStartValue
-      }&dobEndValue=${filters?.dobEndValue}&dob=${filters?.dob}&firstName=${
-        filters?.firstName
-      }&firstNameValue=${filters?.firstNameValue}&lastName=${
-        filters?.lastName
-      }&lastNameValue=${filters?.lastNameValue}&email=${
-        filters?.email
-      }&emailValue=${filters?.emailValue}&companyPhone=${
-        filters?.companyPhone
-      }&companyPhoneValue=${filters?.companyPhoneValue}&mobilePhone=${
-        filters?.mobilePhone
-      }&mobilePhoneValue=${filters?.mobilePhoneValue}&city=${
-        filters?.city
-      }&cityValue=${JSON.stringify(filters?.cityValue)}&state=${filters?.state}&stateValue=${JSON.stringify(filters?.stateValue)}&jobTitle=${
-        filters?.jobTitle
-      }&jobTitleValue=${JSON.stringify(filters?.jobTitleValue)}&address=${
-        filters?.address
-      }&addressValue=${filters?.addressValue}&companyName=${
-        filters?.companyName
-      }&companyNameValue=${JSON.stringify(
-        filters?.companyNameValue
-      )}&optionSource=${
-        filters?.optionSource
-      }&optionSourceValue=${JSON.stringify(
-        filters?.optionSourceValue
-      )}&ownRent=${filters?.ownRent}&gender=${
-        filters?.gender
-      }&zipCodeValue=${JSON.stringify(filters?.zipCodeValue)}&zipCode=${
-        filters?.zipCode
-      }`;
+      let url = `${process.env.VUE_APP_API_URL
+        }api/get-consumer-data?export=${true}&verifyEmailList=${true}&dobStartValue=${filters?.dobStartValue
+        }&dobEndValue=${filters?.dobEndValue}&dob=${filters?.dob}&firstName=${filters?.firstName
+        }&firstNameValue=${filters?.firstNameValue}&lastName=${filters?.lastName
+        }&lastNameValue=${filters?.lastNameValue}&email=${filters?.email
+        }&emailValue=${filters?.emailValue}&companyPhone=${filters?.companyPhone
+        }&companyPhoneValue=${filters?.companyPhoneValue}&mobilePhone=${filters?.mobilePhone
+        }&mobilePhoneValue=${filters?.mobilePhoneValue}&city=${filters?.city
+        }&cityValue=${JSON.stringify(filters?.cityValue)}&state=${filters?.state}&stateValue=${JSON.stringify(filters?.stateValue)}&jobTitle=${filters?.jobTitle
+        }&jobTitleValue=${JSON.stringify(filters?.jobTitleValue)}&address=${filters?.address
+        }&addressValue=${filters?.addressValue}&companyName=${filters?.companyName
+        }&companyNameValue=${JSON.stringify(
+          filters?.companyNameValue
+        )}&optionSource=${filters?.optionSource
+        }&optionSourceValue=${JSON.stringify(
+          filters?.optionSourceValue
+        )}&ownRent=${filters?.ownRent}&gender=${filters?.gender
+        }&zipCodeValue=${JSON.stringify(filters?.zipCodeValue)}&zipCode=${filters?.zipCode
+        }`;
       const key = "lxxzhhJB1iCpKE5Uvzw5D";
-      
+
       axios
         .get(url, {
           headers: {
@@ -667,7 +577,7 @@ export default {
           },
         })
         .then((response) => {
-       console.log(response)
+          console.log(response)
           let myInterval = setInterval(function () {
             axios
               .get(
@@ -682,9 +592,9 @@ export default {
 
                 const finished = splitString[5];
 
-               this.totalEmails = splitString[3];
+                this.totalEmails = splitString[3];
                 this.verifiedEmails = splitString[4];
-              
+
                 if (finished == "finished") {
                   this.verifyLoader = false;
                   window.open(url, "_blank");
@@ -710,7 +620,7 @@ export default {
     checkDuplicates() {
       this.$refs.duplicates.dialog = true;
     },
-   
+
   },
   watch: {
     "pagination.page"() {
@@ -726,7 +636,7 @@ export default {
   },
   mounted() {
     this.getUsers();
-    
+
     console.log(process.env.VUE_APP_API_URL);
 
     let wrapper_1 = document.querySelector(
@@ -750,14 +660,17 @@ export default {
   overflow-x: scroll;
   overflow-y: hidden;
 }
+
 .width-scroll {
   width: 3700px;
 }
+
 /* This div allow to make the scroll function and show the scrollbar */
 #div2 {
   height: 1px;
   overflow: scroll;
 }
+
 .v-data-table__wrapper {
   overflow-x: visible !important;
 }
@@ -769,13 +682,15 @@ export default {
 }
 
 .v-data-footer__wrapper .v-data-table__wrapper {
-  margin-bottom: -18px; /* adjust for scrollbar height */
+  margin-bottom: -18px;
+  /* adjust for scrollbar height */
 }
+
 ::v-deep .v-data-table-header {
   background: #f9f9f9 !important;
 }
 
-::v-deep .v-text-field--outlined > .v-input__control > .v-input__slot {
+::v-deep .v-text-field--outlined>.v-input__control>.v-input__slot {
   align-items: stretch;
   min-height: 36px;
   margin-top: 7px;
