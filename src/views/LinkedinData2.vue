@@ -25,9 +25,17 @@
           ><v-icon> mdi-filter-outline </v-icon> Add Filters
         </v-btn> -->
 
-          <v-btn class="ma-2" color="#D75D3F" :loading="exportLoader" @click="exportCSV">
+          <!-- <v-btn class="ma-2" color="#D75D3F" :loading="exportLoader" @click="exportCSV">
             <v-icon color="white"> mdi-database-export-outline </v-icon>
             <span style="color: white">Launch To Campaign</span>
+          </v-btn> -->
+          <v-btn class="ma-2" color="#D75D3F" :loading="exportLoader" @click="exportCSV">
+            <v-icon color="white"> mdi-database-export-outline </v-icon>
+            <span style="color: white">Export to CSV</span>
+          </v-btn>
+          <v-btn class="ma-2" color="rgb(124 155 211)" :loading="verifyLoader" @click="verifyEmail">
+            <v-icon color="white"> mdi-database-export-outline </v-icon>
+            <span style="color: white">Send for verification</span>
           </v-btn>
 
           <v-btn class="ma-2" color="Primary" @click="uploadCSV">
@@ -391,7 +399,7 @@ export default {
       let filters = {
         lastName: this.filtersData?.lastName || null,
         firstName: this.filtersData?.firstName || null,
-        age: this.filtersData?.age || null,
+        dob: this.filtersData?.dob || null,
         city: this.filtersData?.city || null,
 
         address: this.filtersData?.address || null,
@@ -400,8 +408,8 @@ export default {
         companyPhone: this.filtersData?.companyPhone || null,
         mobilePhone: this.filtersData?.mobilePhone || null,
         mobilePhoneValue: this.filtersData?.mobilePhoneValue || null,
-        ageStartValue: this.filtersData?.ageStartValue || null,
-        ageEndValue: this.filtersData?.ageEndValue || null,
+        dobStartValue: this.filtersData?.dobStartValue || null,
+        dobEndValue: this.filtersData?.dobEndValue || null,
 
         companyName: this.filtersData?.companyName || null,
         jobTitle: this.filtersData?.jobTitle || null,
@@ -420,11 +428,17 @@ export default {
 
         state: this.filtersData?.state || null,
         stateValue: this.filtersData?.states || null,
-        zipCode: this.filtersData?.zipCodes || null,
+        zipCodeValue: this.filtersData?.zipCodes || null,
+        zipCode: this.filtersData?.zipCode || null,
+        optionSource: this.filtersData?.optionSource || null,
+        optionSourceValue: this.filtersData?.optionSources || null,
+        ownRent: this.filtersData?.ownRent || null,
+        gender: this.filtersData?.gender || null,
         verified: this.filtersData?.verified || null
       };
-      let url = `${process.env.VUE_APP_API_URL}api/linkedin2?export=${true}&ageStartValue=${filters?.ageStartValue
-        }&ageEndValue=${filters?.ageEndValue}&age=${filters?.age}&firstName=${filters?.firstName
+      let url = `${process.env.VUE_APP_API_URL
+        }api/linkedin2?export=${true}&dobStartValue=${filters?.dobStartValue
+        }&dobEndValue=${filters?.dobEndValue}&dob=${filters?.dob}&firstName=${filters?.firstName
         }&firstNameValue=${filters?.firstNameValue}&lastName=${filters?.lastName
         }&lastNameValue=${filters?.lastNameValue}&email=${filters?.email
         }&emailValue=${filters?.emailValue}&companyPhone=${filters?.companyPhone
@@ -433,8 +447,15 @@ export default {
         }&cityValue=${JSON.stringify(filters?.cityValue)}&state=${filters?.state}&stateValue=${JSON.stringify(filters?.stateValue)}&jobTitle=${filters?.jobTitle
         }&jobTitleValue=${JSON.stringify(filters?.jobTitleValue)}&address=${filters?.address
         }&addressValue=${filters?.addressValue}&companyName=${filters?.companyName
-        }&companyNameValue=${JSON.stringify(filters?.companyNameValue)}&verified=${filters?.verified}`;
-
+        }&companyNameValue=${JSON.stringify(
+          filters?.companyNameValue
+        )}&optionSource=${filters?.optionSource
+        }&optionSourceValue=${JSON.stringify(
+          filters?.optionSourceValue
+        )}&ownRent=${filters?.ownRent}&gender=${filters?.gender
+        }&zipCodeValue=${JSON.stringify(filters?.zipCodeValue)}&zipCode=${filters?.zipCode
+        }&verified=${filters.verified}`;
+      const key = "lxxzhhJB1iCpKE5Uvzw5D";
       axios
         .get(url, {
           headers: {
@@ -448,6 +469,156 @@ export default {
           this.exportLoader = false;
 
           window.open(url, "_blank");
+        })
+        .catch((error) => {
+          this.exportLoader = false;
+        });
+      // axios
+      //   .get(url, {
+      //     headers: {
+      //       "Content-Type": "application/json",
+      //       Authorization: `Bearer ${localStorage.getItem("token")}`,
+      //     },
+      //   })
+      //   .then((response) => {
+      //     console.log(response);
+
+
+
+      //     let myInterval = setInterval(function () {
+      //       axios
+      //         .get(
+      //           `https://apps.emaillistverify.com/api/getApiFileInfo?secret=${key}&id=${response.data}`
+      //         )
+      //         .then((res) => {
+      //           const inputString = res.data;
+      //           const splitString = inputString.split("|");
+
+      //           // Access the desired URL, which is the 8th element in the splitString array
+      //           const url = splitString[7];
+
+      //           const finished = splitString[5];
+
+      //          this.totalEmails = splitString[3];
+      //           this.verifiedEmails = splitString[4];
+
+      //           if (finished == "finished") {
+      //             this.exportLoader = false;
+      //             window.open(url, "_blank");
+      //             clearInterval(myInterval);
+      //           }
+
+      //           console.log(res.data);
+      //         });
+      //       // window.open(url, "_blank");
+      //     }, 5000);
+      //   })
+      //   .catch((error) => {
+      //     this.exportLoader = false;
+      //   });
+    },
+
+    verifyEmail() {
+      this.verifyLoader = true;
+      // let pagination = `?itemsPerPage=${this.pagination.itemPerPage}&page=${this.pagination.page}`
+      let filters = {
+        lastName: this.filtersData?.lastName || null,
+        firstName: this.filtersData?.firstName || null,
+        dob: this.filtersData?.dob || null,
+        city: this.filtersData?.city || null,
+
+        address: this.filtersData?.address || null,
+        address2: this.filtersData?.address2 || null,
+        email: this.filtersData?.email || null,
+        companyPhone: this.filtersData?.companyPhone || null,
+        mobilePhone: this.filtersData?.mobilePhone || null,
+        mobilePhoneValue: this.filtersData?.mobilePhoneValue || null,
+        dobStartValue: this.filtersData?.dobStartValue || null,
+        dobEndValue: this.filtersData?.dobEndValue || null,
+
+        companyName: this.filtersData?.companyName || null,
+        jobTitle: this.filtersData?.jobTitle || null,
+        jobTitleValue: this.filtersData?.jobTitles || null,
+        dob: this.filtersData?.dob || null,
+        firstNameValue: this.filtersData?.firstNameValue || null,
+        lastNameValue: this.filtersData?.lastNameValue || null,
+        ageValue: this.filtersData?.ageValue || null,
+        cityValue: this.filtersData?.cities || null,
+        dobValue: this.filtersData?.dobvalue || null,
+        addressValue: this.filtersData?.addressValue || null,
+        address2Value: this.filtersData?.address2Value || null,
+        emailValue: this.filtersData?.emailValue || null,
+        companyPhoneValue: this.filtersData?.companyPhoneValue || null,
+        companyNameValue: this.filtersData?.companies || null,
+
+        state: this.filtersData?.state || null,
+        stateValue: this.filtersData?.states || null,
+        zipCodeValue: this.filtersData?.zipCodes || null,
+        zipCode: this.filtersData?.zipCode || null,
+        optionSource: this.filtersData?.optionSource || null,
+        optionSourceValue: this.filtersData?.optionSources || null,
+        ownRent: this.filtersData?.ownRent || null,
+        gender: this.filtersData?.gender || null,
+      };
+      let url = `${process.env.VUE_APP_API_URL
+        }api/linkedin2?export=${true}&verifyEmailList=${true}&dobStartValue=${filters?.dobStartValue
+        }&dobEndValue=${filters?.dobEndValue}&dob=${filters?.dob}&firstName=${filters?.firstName
+        }&firstNameValue=${filters?.firstNameValue}&lastName=${filters?.lastName
+        }&lastNameValue=${filters?.lastNameValue}&email=${filters?.email
+        }&emailValue=${filters?.emailValue}&companyPhone=${filters?.companyPhone
+        }&companyPhoneValue=${filters?.companyPhoneValue}&mobilePhone=${filters?.mobilePhone
+        }&mobilePhoneValue=${filters?.mobilePhoneValue}&city=${filters?.city
+        }&cityValue=${JSON.stringify(filters?.cityValue)}&state=${filters?.state}&stateValue=${JSON.stringify(filters?.stateValue)}&jobTitle=${filters?.jobTitle
+        }&jobTitleValue=${JSON.stringify(filters?.jobTitleValue)}&address=${filters?.address
+        }&addressValue=${filters?.addressValue}&companyName=${filters?.companyName
+        }&companyNameValue=${JSON.stringify(
+          filters?.companyNameValue
+        )}&optionSource=${filters?.optionSource
+        }&optionSourceValue=${JSON.stringify(
+          filters?.optionSourceValue
+        )}&ownRent=${filters?.ownRent}&gender=${filters?.gender
+        }&zipCodeValue=${JSON.stringify(filters?.zipCodeValue)}&zipCode=${filters?.zipCode
+        }&verified=false`;
+      const key = "lxxzhhJB1iCpKE5Uvzw5D";
+
+      axios
+        .get(url, {
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${localStorage.getItem("token")}`,
+          },
+        })
+        .then((response) => {
+          console.log(response)
+          this.verifyLoader = false;
+          let myInterval = setInterval(function () {
+            axios
+              .get(
+                `https://apps.emaillistverify.com/api/getApiFileInfo?secret=${key}&id=${response.data}`
+              )
+              .then((res) => {
+                const inputString = res.data;
+                const splitString = inputString.split("|");
+
+                // Access the desired URL, which is the 8th element in the splitString array
+                const url = splitString[7];
+
+                const finished = splitString[5];
+
+                this.totalEmails = splitString[3];
+                this.verifiedEmails = splitString[4];
+
+                if (finished == "finished") {
+
+                  window.open(url, "_blank");
+                  clearInterval(myInterval);
+
+                }
+
+                console.log(res.data);
+              });
+            // window.open(url, "_blank");
+          }, 5000);
         })
         .catch((error) => {
           this.exportLoader = false;
