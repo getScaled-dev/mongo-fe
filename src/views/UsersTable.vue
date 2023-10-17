@@ -200,6 +200,7 @@ export default {
     return {
       deletedText: "Data has been deleted successfully!",
       dataDeleted: false,
+      verifyLoader: false,
       timeout: 5000,
       singleSelect: false,
       selected: [],
