@@ -5,71 +5,41 @@
         Select Saved Filters
       </v-btn>
       <!-- First Name  -->
-     
+
       <v-form ref="form">
         <v-row class="mt-4">
           <v-col md="3">
             <div class="d-flex flex-column">
               <label for="firstName">First Name</label>
-              <v-select
-                :items="filterItems"
-                dense
-                outlined
-                v-model="filters.firstName"
-                :menu-props="{ bottom: true }"
-                item-text="name"
-                item-value="key"
-                @change="checkIsAny(filters.firstName, 'firstName')"
-              ></v-select>
+              <v-select :items="filterItems" dense outlined v-model="filters.firstName" :menu-props="{ bottom: true }"
+                item-text="name" item-value="key" @change="checkIsAny(filters.firstName, 'firstName')"></v-select>
             </div>
           </v-col>
 
           <v-col md="3">
-            <v-text-field
-              v-if="
-                filters.firstName == 'like' ||
-                filters.firstName == 'notLike' ||
-                filters.firstName == 'eq' ||
-                filters.firstName == 'ne' ||
-                filters.firstName == 'startsWith' ||
-                filters.firstName == 'endsWith'
-              "
-              class="mt-5"
-              outlined
-              type="text"
-              v-model="filters.firstNameValue"
-            ></v-text-field>
+            <v-text-field v-if="filters.firstName == 'like' ||
+              filters.firstName == 'notLike' ||
+              filters.firstName == 'eq' ||
+              filters.firstName == 'ne' ||
+              filters.firstName == 'startsWith' ||
+              filters.firstName == 'endsWith'
+              " class="mt-5" outlined type="text" v-model="filters.firstNameValue"></v-text-field>
           </v-col>
           <v-col md="3">
             <div class="d-flex flex-column">
               <label for="firstName">Last Name</label>
-              <v-select
-                :items="filterItems"
-                outlined
-                dense
-                :menu-props="{ bottom: true }"
-                v-model="filters.lastName"
-                item-text="name"
-                item-value="key"
-                @change="checkIsAny(filters.lastName, 'lastName')"
-              ></v-select>
+              <v-select :items="filterItems" outlined dense :menu-props="{ bottom: true }" v-model="filters.lastName"
+                item-text="name" item-value="key" @change="checkIsAny(filters.lastName, 'lastName')"></v-select>
             </div>
           </v-col>
           <v-col md="3">
-            <v-text-field
-              v-if="
-                filters.lastName == 'like' ||
-                filters.lastName == 'notLike' ||
-                filters.lastName == 'eq' ||
-                filters.lastName == 'ne' ||
-                filters.lastName == 'startsWith' ||
-                filters.lastName == 'endsWith'
-              "
-              class="mt-5"
-              outlined
-              type="text"
-              v-model="filters.lastNameValue"
-            ></v-text-field>
+            <v-text-field v-if="filters.lastName == 'like' ||
+              filters.lastName == 'notLike' ||
+              filters.lastName == 'eq' ||
+              filters.lastName == 'ne' ||
+              filters.lastName == 'startsWith' ||
+              filters.lastName == 'endsWith'
+              " class="mt-5" outlined type="text" v-model="filters.lastNameValue"></v-text-field>
           </v-col>
         </v-row>
 
@@ -78,66 +48,36 @@
           <v-col md="3">
             <div class="d-flex flex-column">
               <label for="firstName">Email</label>
-              <v-select
-                :items="filterItems"
-                :menu-props="{ bottom: true }"
-                outlined
-                dense
-                v-model="filters.email"
-                item-text="name"
-                item-value="key"
-                @change="checkIsAny(filters.email, 'email')"
-              ></v-select>
+              <v-select :items="filterItems" :menu-props="{ bottom: true }" outlined dense v-model="filters.email"
+                item-text="name" item-value="key" @change="checkIsAny(filters.email, 'email')"></v-select>
             </div>
           </v-col>
 
           <v-col md="3">
-            <v-text-field
-              class="mt-5"
-              v-if="
-                filters.email == 'like' ||
-                filters.email == 'notLike' ||
-                filters.email == 'eq' ||
-                filters.email == 'ne' ||
-                filters.email == 'startsWith' ||
-                filters.email == 'endsWith'
-              "
-              outlined
-              type="text"
-              v-model="filters.emailValue"
-            ></v-text-field>
+            <v-text-field class="mt-5" v-if="filters.email == 'like' ||
+              filters.email == 'notLike' ||
+              filters.email == 'eq' ||
+              filters.email == 'ne' ||
+              filters.email == 'startsWith' ||
+              filters.email == 'endsWith'
+              " outlined type="text" v-model="filters.emailValue"></v-text-field>
           </v-col>
           <v-col md="3">
             <div class="d-flex flex-column">
               <label for="firstName">Company Phone</label>
-              <v-select
-                :items="filterItems"
-                outlined
-                dense
-                v-model="filters.companyPhone"
-                :menu-props="{ bottom: true }"
-                item-text="name"
-                item-value="key"
-                @change="checkIsAny(filters.companyPhone, 'companyPhone')"
-              ></v-select>
+              <v-select :items="filterItems" outlined dense v-model="filters.companyPhone" :menu-props="{ bottom: true }"
+                item-text="name" item-value="key" @change="checkIsAny(filters.companyPhone, 'companyPhone')"></v-select>
             </div>
           </v-col>
 
           <v-col md="3">
-            <v-text-field
-              class="mt-5"
-              outlined
-              v-if="
-                filters.companyPhone == 'like' ||
-                filters.companyPhone == 'notLike' ||
-                filters.companyPhone == 'eq' ||
-                filters.companyPhone == 'ne' ||
-                filters.companyPhone == 'startsWith' ||
-                filters.companyPhone == 'endsWith'
-              "
-              type="text"
-              v-model="filters.companyPhoneValue"
-            ></v-text-field>
+            <v-text-field class="mt-5" outlined v-if="filters.companyPhone == 'like' ||
+              filters.companyPhone == 'notLike' ||
+              filters.companyPhone == 'eq' ||
+              filters.companyPhone == 'ne' ||
+              filters.companyPhone == 'startsWith' ||
+              filters.companyPhone == 'endsWith'
+              " type="text" v-model="filters.companyPhoneValue"></v-text-field>
           </v-col>
         </v-row>
         <!-- Company Phone  -->
@@ -147,92 +87,47 @@
           <v-col md="3">
             <div class="d-flex flex-column">
               <label for="firstName">Mobile Phone</label>
-              <v-select
-                :items="filterItems"
-                :menu-props="{ bottom: true }"
-                outlined
-                dense
-                v-model="filters.mobilePhone"
-                item-text="name"
-                item-value="key"
-                @change="checkIsAny(filters.mobilePhone, 'mobilePhone')"
-              ></v-select>
+              <v-select :items="filterItems" :menu-props="{ bottom: true }" outlined dense v-model="filters.mobilePhone"
+                item-text="name" item-value="key" @change="checkIsAny(filters.mobilePhone, 'mobilePhone')"></v-select>
             </div>
           </v-col>
 
           <v-col md="3">
-            <v-text-field
-              class="mt-5"
-              outlined
-              type="text"
-              v-if="
-                filters.mobilePhone == 'like' ||
-                filters.mobilePhone == 'notLike' ||
-                filters.mobilePhone == 'eq' ||
-                filters.mobilePhone == 'ne' ||
-                filters.mobilePhone == 'startsWith' ||
-                filters.mobilePhone == 'endsWith'
-              "
-              v-model="filters.mobilePhoneValue"
-            ></v-text-field>
+            <v-text-field class="mt-5" outlined type="text" v-if="filters.mobilePhone == 'like' ||
+              filters.mobilePhone == 'notLike' ||
+              filters.mobilePhone == 'eq' ||
+              filters.mobilePhone == 'ne' ||
+              filters.mobilePhone == 'startsWith' ||
+              filters.mobilePhone == 'endsWith'
+              " v-model="filters.mobilePhoneValue"></v-text-field>
           </v-col>
           <v-col md="3">
             <div class="d-flex flex-column">
               <label for="firstName">Company Name</label>
-              <v-select
-                :items="jobTitleFilters"
-                outlined
-                dense
-                v-model="filters.companyName"
-                :menu-props="{ bottom: true }"
-                item-text="name"
-                item-value="key"
-                @change="checkIsAny(filters.companyName, 'companyName')"
-              ></v-select>
+              <v-select :items="jobTitleFilters" outlined dense v-model="filters.companyName"
+                :menu-props="{ bottom: true }" item-text="name" item-value="key"
+                @change="checkIsAny(filters.companyName, 'companyName')"></v-select>
             </div>
           </v-col>
 
           <v-col md="3">
-            <v-combobox
-              v-if="
-                filters.companyName == 'like' ||
-                filters.companyName == 'not' ||
-                filters.companyName == 'in'
-              "
-              class="mt-7"
-              v-model="filters.companies"
-              :filter="filter"
-              :hide-no-data="!searchCompany"
-              :items="items"
-              :search-input.sync="searchCompany"
-              hide-selected
-              label="Search for an option"
-              multiple
-              small-chips
-              solo
-              dense
-            >
+            <v-combobox v-if="filters.companyName == 'like' ||
+              filters.companyName == 'not' ||
+              filters.companyName == 'in'
+              " class="mt-7" v-model="filters.companies" :filter="filter" :hide-no-data="!searchCompany" :items="items"
+              :search-input.sync="searchCompany" hide-selected label="Search for an option" multiple small-chips solo
+              dense>
               <template v-slot:no-data>
                 <v-list-item>
                   <span class="subheading">Create</span>
-                  <v-chip
-                    :color="`${colors[nonceCompany - 1]} lighten-3`"
-                    label
-                    small
-                  >
+                  <v-chip :color="`${colors[nonceCompany - 1]} lighten-3`" label small>
                     {{ searchCompany }}
                   </v-chip>
                 </v-list-item>
               </template>
               <template v-slot:selection="{ attrs, item, parent, selected }">
-                <v-chip
-                  v-if="item === Object(item)"
-                  v-bind="attrs"
-                  :color="`${item.color} lighten-3`"
-                  :input-value="selected"
-                  label
-                  small
-                >
+                <v-chip v-if="item === Object(item)" v-bind="attrs" :color="`${item.color} lighten-3`"
+                  :input-value="selected" label small>
                   <span class="pr-2">
                     {{ item.companyNameValue }}
                   </span>
@@ -242,31 +137,15 @@
                 </v-chip>
               </template>
               <template v-slot:item="{ index, item }">
-                <v-text-field
-                  v-if="editingCompany === item"
-                  v-model="editingCompany.companyNameValue"
-                  autofocus
-                  flat
-                  background-color="transparent"
-                  hide-details
-                  solo
-                  @keyup.enter="editCompanyName(index, item)"
-                ></v-text-field>
-                <v-chip
-                  v-else
-                  :color="`${item.color} lighten-3`"
-                  dark
-                  label
-                  small
-                >
+                <v-text-field v-if="editingCompany === item" v-model="editingCompany.companyNameValue" autofocus flat
+                  background-color="transparent" hide-details solo
+                  @keyup.enter="editCompanyName(index, item)"></v-text-field>
+                <v-chip v-else :color="`${item.color} lighten-3`" dark label small>
                   {{ item.companyNameValue }}
                 </v-chip>
                 <v-spacer></v-spacer>
                 <v-list-item-action @click.stop>
-                  <v-btn
-                    icon
-                    @click.stop.prevent="editCompanyName(index, item)"
-                  >
+                  <v-btn icon @click.stop.prevent="editCompanyName(index, item)">
                     <v-icon>{{
                       editingCompany !== item ? "mdi-pencil" : "mdi-check"
                     }}</v-icon>
@@ -286,16 +165,8 @@
           <v-col md="3">
             <div class="d-flex flex-column">
               <label for="firstName">Date of birth</label>
-              <v-select
-                :items="dobFilters"
-                :menu-props="{ bottom: true }"
-                outlined
-                dense
-                v-model="filters.dob"
-                item-text="name"
-                item-value="key"
-                @change="checkIsAny(filters.dob, 'dob')"
-              ></v-select>
+              <v-select :items="dobFilters" :menu-props="{ bottom: true }" outlined dense v-model="filters.dob"
+                item-text="name" item-value="key" @change="checkIsAny(filters.dob, 'dob')"></v-select>
             </div>
           </v-col>
 
@@ -335,34 +206,19 @@
           <v-col md="3">
             <div class="d-flex flex-column">
               <label for="firstName">Address Line 1</label>
-              <v-select
-                :items="filterItems"
-                outlined
-                dense
-                :menu-props="{ bottom: true }"
-                v-model="filters.address"
-                item-text="name"
-                item-value="key"
-                @change="checkIsAny(filters.address, 'address')"
-              ></v-select>
+              <v-select :items="filterItems" outlined dense :menu-props="{ bottom: true }" v-model="filters.address"
+                item-text="name" item-value="key" @change="checkIsAny(filters.address, 'address')"></v-select>
             </div>
           </v-col>
 
           <v-col md="3">
-            <v-text-field
-              class="mt-5"
-              outlined
-              type="text"
-              v-if="
-                filters.address == 'like' ||
-                filters.address == 'notLike' ||
-                filters.address == 'eq' ||
-                filters.address == 'ne' ||
-                filters.address == 'startsWith' ||
-                filters.address == 'endsWith'
-              "
-              v-model="filters.addressValue"
-            ></v-text-field>
+            <v-text-field class="mt-5" outlined type="text" v-if="filters.address == 'like' ||
+              filters.address == 'notLike' ||
+              filters.address == 'eq' ||
+              filters.address == 'ne' ||
+              filters.address == 'startsWith' ||
+              filters.address == 'endsWith'
+              " v-model="filters.addressValue"></v-text-field>
           </v-col>
         </v-row>
         <!-- Address 1  -->
@@ -372,92 +228,45 @@
           <v-col md="3">
             <div class="d-flex flex-column">
               <label for="firstName">Address Line 2</label>
-              <v-select
-                :menu-props="{ bottom: true }"
-                :items="filterItems"
-                outlined
-                dense
-                v-model="filters.address2"
-                item-text="name"
-                item-value="key"
-                @change="checkIsAny(filters.address2, 'address2')"
-              ></v-select>
+              <v-select :menu-props="{ bottom: true }" :items="filterItems" outlined dense v-model="filters.address2"
+                item-text="name" item-value="key" @change="checkIsAny(filters.address2, 'address2')"></v-select>
             </div>
           </v-col>
 
           <v-col md="3">
-            <v-text-field
-              class="mt-5"
-              outlined
-              type="text"
-              v-if="
-                filters.address2 == 'like' ||
-                filters.address2 == 'notLike' ||
-                filters.address2 == 'eq' ||
-                filters.address2 == 'ne' ||
-                filters.address2 == 'startsWith' ||
-                filters.address2 == 'endsWith'
-              "
-              v-model="filters.address2Value"
-            ></v-text-field>
+            <v-text-field class="mt-5" outlined type="text" v-if="filters.address2 == 'like' ||
+              filters.address2 == 'notLike' ||
+              filters.address2 == 'eq' ||
+              filters.address2 == 'ne' ||
+              filters.address2 == 'startsWith' ||
+              filters.address2 == 'endsWith'
+              " v-model="filters.address2Value"></v-text-field>
           </v-col>
           <v-col md="3">
             <div class="d-flex flex-column">
               <label for="firstName">City</label>
-              <v-select
-                :items="jobTitleFilters"
-                :menu-props="{ bottom: true }"
-                outlined
-                dense
-                v-model="filters.city"
-                item-text="name"
-                item-value="key"
-                @change="checkIsAny(filters.city, 'city')"
-              ></v-select>
+              <v-select :items="jobTitleFilters" :menu-props="{ bottom: true }" outlined dense v-model="filters.city"
+                item-text="name" item-value="key" @change="checkIsAny(filters.city, 'city')"></v-select>
             </div>
           </v-col>
 
           <v-col md="3">
-            <v-combobox
-              v-if="
-                filters.city == 'like' ||
-                filters.city == 'not' ||
-                filters.city == 'in'
-              "
-              class="mt-7"
-              v-model="filters.cities"
-              :filter="filter"
-              :hide-no-data="!searchCity"
-              :items="items"
-              :search-input.sync="searchCity"
-              hide-selected
-              label="Search for an option"
-              multiple
-              small-chips
-              solo
-              dense
-            >
+            <v-combobox v-if="filters.city == 'like' ||
+              filters.city == 'not' ||
+              filters.city == 'in'
+              " class="mt-7" v-model="filters.cities" :filter="filter" :hide-no-data="!searchCity" :items="items"
+              :search-input.sync="searchCity" hide-selected label="Search for an option" multiple small-chips solo dense>
               <template v-slot:no-data>
                 <v-list-item>
                   <span class="subheading">Create</span>
-                  <v-chip
-                    :color="`${colors[nonceCity - 1]} lighten-3`"
-                    label
-                    small
-                  >
+                  <v-chip :color="`${colors[nonceCity - 1]} lighten-3`" label small>
                     {{ searchCity }}
                   </v-chip>
                 </v-list-item>
               </template>
               <template v-slot:selection="{ attrs, item, parent, selected }">
-                <v-chip
-                  v-if="item === Object(item)"
-                  v-bind="attrs"
-                  :color="`${item.color} lighten-3`"
-                  :input-value="selected"
-                  label
-                  small
-                >
+                <v-chip v-if="item === Object(item)" v-bind="attrs" :color="`${item.color} lighten-3`"
+                  :input-value="selected" label small>
                   <span class="pr-2">
                     {{ item.cityValue }}
                   </span>
@@ -467,23 +276,9 @@
                 </v-chip>
               </template>
               <template v-slot:item="{ index, item }">
-                <v-text-field
-                  v-if="editingCity === item"
-                  v-model="editingCity.cityValue"
-                  autofocus
-                  flat
-                  background-color="transparent"
-                  hide-details
-                  solo
-                  @keyup.enter="editCity(index, item)"
-                ></v-text-field>
-                <v-chip
-                  v-else
-                  :color="`${item.color} lighten-3`"
-                  dark
-                  label
-                  small
-                >
+                <v-text-field v-if="editingCity === item" v-model="editingCity.cityValue" autofocus flat
+                  background-color="transparent" hide-details solo @keyup.enter="editCity(index, item)"></v-text-field>
+                <v-chip v-else :color="`${item.color} lighten-3`" dark label small>
                   {{ item.cityValue }}
                 </v-chip>
                 <v-spacer></v-spacer>
@@ -504,60 +299,29 @@
             <div class="d-flex flex-column">
               <label for="firstName">Job Title</label>
 
-              <v-select
-                :items="jobTitleFilters"
-                :menu-props="{ bottom: true }"
-                outlined
-                dense
-                v-model="filters.jobTitle"
-                item-text="name"
-                item-value="key"
-                @change="checkIsAny(filters.jobTitle, 'jobTitle')"
-              ></v-select>
+              <v-select :items="jobTitleFilters" :menu-props="{ bottom: true }" outlined dense v-model="filters.jobTitle"
+                item-text="name" item-value="key" @change="checkIsAny(filters.jobTitle, 'jobTitle')"></v-select>
             </div>
           </v-col>
 
           <v-col md="3">
-            <v-combobox
-              v-if="
-                filters.jobTitle == 'like' ||
-                filters.jobTitle == 'not' ||
-                filters.jobTitle == 'in'
-              "
-              class="mt-7"
-              v-model="filters.jobTitles"
-              :filter="filter"
-              :hide-no-data="!searchJobTitle"
-              :items="items"
-              :search-input.sync="searchJobTitle"
-              hide-selected
-              label="Search for an option"
-              multiple
-              small-chips
-              solo
-              dense
-            >
+            <v-combobox v-if="filters.jobTitle == 'like' ||
+              filters.jobTitle == 'not' ||
+              filters.jobTitle == 'in'
+              " class="mt-7" v-model="filters.jobTitles" :filter="filter" :hide-no-data="!searchJobTitle"
+              :items="items" :search-input.sync="searchJobTitle" hide-selected label="Search for an option" multiple
+              small-chips solo dense>
               <template v-slot:no-data>
                 <v-list-item>
                   <span class="subheading">Create</span>
-                  <v-chip
-                    :color="`${colors[nonceJobTitle - 1]} lighten-3`"
-                    label
-                    small
-                  >
+                  <v-chip :color="`${colors[nonceJobTitle - 1]} lighten-3`" label small>
                     {{ searchJobTitle }}
                   </v-chip>
                 </v-list-item>
               </template>
               <template v-slot:selection="{ attrs, item, parent, selected }">
-                <v-chip
-                  v-if="item === Object(item)"
-                  v-bind="attrs"
-                  :color="`${item.color} lighten-3`"
-                  :input-value="selected"
-                  label
-                  small
-                >
+                <v-chip v-if="item === Object(item)" v-bind="attrs" :color="`${item.color} lighten-3`"
+                  :input-value="selected" label small>
                   <span class="pr-2">
                     {{ item.jobTitleValue }}
                   </span>
@@ -568,23 +332,10 @@
               </template>
 
               <template v-slot:item="{ index, item }">
-                <v-text-field
-                  v-if="edtingJobTitle === item"
-                  v-model="edtingJobTitle.jobTitleValue"
-                  autofocus
-                  flat
-                  background-color="transparent"
-                  hide-details
-                  solo
-                  @keyup.enter="editJobTitle(index, item)"
-                ></v-text-field>
-                <v-chip
-                  v-else
-                  :color="`${item.color} lighten-3`"
-                  dark
-                  label
-                  small
-                >
+                <v-text-field v-if="edtingJobTitle === item" v-model="edtingJobTitle.jobTitleValue" autofocus flat
+                  background-color="transparent" hide-details solo
+                  @keyup.enter="editJobTitle(index, item)"></v-text-field>
+                <v-chip v-else :color="`${item.color} lighten-3`" dark label small>
                   {{ item.jobTitleValue }}
                 </v-chip>
                 <v-spacer></v-spacer>
@@ -599,64 +350,32 @@
             </v-combobox>
           </v-col>
           <!-- state  -->
-            <v-col md="3">
+          <v-col md="3">
             <div class="d-flex flex-column">
               <label for="firstName">State</label>
 
-              <v-select
-                :items="jobTitleFilters"
-                :menu-props="{ bottom: true }"
-                outlined
-                dense
-                v-model="filters.state"
-                item-text="name"
-                item-value="key"
-                @change="checkIsAny(filters.state, 'state')"
-              ></v-select>
+              <v-select :items="jobTitleFilters" :menu-props="{ bottom: true }" outlined dense v-model="filters.state"
+                item-text="name" item-value="key" @change="checkIsAny(filters.state, 'state')"></v-select>
             </div>
           </v-col>
 
           <v-col md="3">
-            <v-combobox
-              v-if="
-                filters.state == 'like' ||
-                filters.state == 'not' ||
-                filters.state == 'in'
-              "
-              class="mt-7"
-              v-model="filters.states"
-              :filter="filter"
-              :hide-no-data="!searchState"
-              :items="items"
-              :search-input.sync="searchState"
-              hide-selected
-              label="Search for an option"
-              multiple
-              small-chips
-              solo
-              dense
-            >
+            <v-combobox v-if="filters.state == 'like' ||
+              filters.state == 'not' ||
+              filters.state == 'in'
+              " class="mt-7" v-model="filters.states" :filter="filter" :hide-no-data="!searchState" :items="items"
+              :search-input.sync="searchState" hide-selected label="Search for an option" multiple small-chips solo dense>
               <template v-slot:no-data>
                 <v-list-item>
                   <span class="subheading">Create</span>
-                  <v-chip
-                    :color="`${colors[nonceState - 1]} lighten-3`"
-                    label
-                    small
-                  >
+                  <v-chip :color="`${colors[nonceState - 1]} lighten-3`" label small>
                     {{ searchState }}
                   </v-chip>
                 </v-list-item>
               </template>
               <template v-slot:selection="{ attrs, item, parent, selected }">
-                <v-chip
-                  v-if="item === Object(item)"
-                  v-bind="attrs"
-                  :color="`${item.color} lighten-3`"
-                  :input-value="selected"
-                  label
-                  small
-                >
+                <v-chip v-if="item === Object(item)" v-bind="attrs" :color="`${item.color} lighten-3`"
+                  :input-value="selected" label small>
                   <span class="pr-2">
                     {{ item.stateValue }}
                   </span>
@@ -667,23 +386,9 @@
               </template>
 
               <template v-slot:item="{ index, item }">
-                <v-text-field
-                  v-if="edtingState === item"
-                  v-model="edtingState.stateValue"
-                  autofocus
-                  flat
-                  background-color="transparent"
-                  hide-details
-                  solo
-                  @keyup.enter="editState(index, item)"
-                ></v-text-field>
-                <v-chip
-                  v-else
-                  :color="`${item.color} lighten-3`"
-                  dark
-                  label
-                  small
-                >
+                <v-text-field v-if="edtingState === item" v-model="edtingState.stateValue" autofocus flat
+                  background-color="transparent" hide-details solo @keyup.enter="editState(index, item)"></v-text-field>
+                <v-chip v-else :color="`${item.color} lighten-3`" dark label small>
                   {{ item.stateValue }}
                 </v-chip>
                 <v-spacer></v-spacer>
@@ -697,7 +402,7 @@
               </template>
             </v-combobox>
           </v-col>
-<!-- 
+          <!-- 
           <v-col md="3">
             <div class="d-flex flex-column">
               <label for="firstName">State</label>
@@ -737,60 +442,28 @@
           <v-col md="3">
             <div class="d-flex flex-column">
               <label for="firstName">zipCode</label>
-              <v-select
-                :menu-props="{ bottom: true }"
-                :items="jobTitleFilters"
-                outlined
-                dense
-                v-model="filters.zipCode"
-                item-text="name"
-                item-value="key"
-                @change="checkIsAny(filters.zipCode, 'zipCode')"
-              ></v-select>
+              <v-select :menu-props="{ bottom: true }" :items="jobTitleFilters" outlined dense v-model="filters.zipCode"
+                item-text="name" item-value="key" @change="checkIsAny(filters.zipCode, 'zipCode')"></v-select>
             </div>
           </v-col>
 
           <v-col md="3">
-            <v-combobox
-              v-if="
-                filters.zipCode == 'like' ||
-                filters.zipCode == 'not' ||
-                filters.zipCode == 'in'
-              "
-              class="mt-7"
-              v-model="filters.zipCodes"
-              :filter="filter"
-              :hide-no-data="!searchZipCode"
-              :items="items"
-              :search-input.sync="searchZipCode"
-              hide-selected
-              label="Search zipcodes"
-              multiple
-              small-chips
-              solo
-              dense
-            >
+            <v-combobox v-if="filters.zipCode == 'like' ||
+              filters.zipCode == 'not' ||
+              filters.zipCode == 'in'
+              " class="mt-7" v-model="filters.zipCodes" :filter="filter" :hide-no-data="!searchZipCode" :items="items"
+              :search-input.sync="searchZipCode" hide-selected label="Search zipcodes" multiple small-chips solo dense>
               <template v-slot:no-data>
                 <v-list-item>
                   <span class="subheading">Create</span>
-                  <v-chip
-                    :color="`${colors[nonceZipCode - 1]} lighten-3`"
-                    label
-                    small
-                  >
+                  <v-chip :color="`${colors[nonceZipCode - 1]} lighten-3`" label small>
                     {{ searchZipCode }}
                   </v-chip>
                 </v-list-item>
               </template>
               <template v-slot:selection="{ attrs, item, parent, selected }">
-                <v-chip
-                  v-if="item === Object(item)"
-                  v-bind="attrs"
-                  :color="`${item.color} lighten-3`"
-                  :input-value="selected"
-                  label
-                  small
-                >
+                <v-chip v-if="item === Object(item)" v-bind="attrs" :color="`${item.color} lighten-3`"
+                  :input-value="selected" label small>
                   <span class="pr-2">
                     {{ item.zipCodeValue }}
                   </span>
@@ -800,23 +473,10 @@
                 </v-chip>
               </template>
               <template v-slot:item="{ index, item }">
-                <v-text-field
-                  v-if="editingZipCode === item"
-                  v-model="editingZipCode.zipCodeValue"
-                  autofocus
-                  flat
-                  background-color="transparent"
-                  hide-details
-                  solo
-                  @keyup.enter="editOptionSource(index, item)"
-                ></v-text-field>
-                <v-chip
-                  v-else
-                  :color="`${item.color} lighten-3`"
-                  dark
-                  label
-                  small
-                >
+                <v-text-field v-if="editingZipCode === item" v-model="editingZipCode.zipCodeValue" autofocus flat
+                  background-color="transparent" hide-details solo
+                  @keyup.enter="editOptionSource(index, item)"></v-text-field>
+                <v-chip v-else :color="`${item.color} lighten-3`" dark label small>
                   {{ item.zipCodeValue }}
                 </v-chip>
                 <v-spacer></v-spacer>
@@ -830,23 +490,23 @@
               </template>
             </v-combobox>
           </v-col>
+
+          <v-col md="3">
+            <div class="d-flex flex-column">
+              <label for="firstName">Verified</label>
+              <v-select :menu-props="{ bottom: true }" :items="VerifiedFilters" outlined dense v-model="filters.verified"
+                item-text="name" item-value="key" @change="checkIsAny(filters.verified, 'verified')"></v-select>
+            </div>
+          </v-col>
         </v-row>
         <v-row class="mt-4" v-if="dataType == 'consumerData'">
           <!-- gender  -->
           <v-col md="3">
             <div class="d-flex flex-column">
               <label for="firstName">Gender</label>
-              <v-select
-                :menu-props="{ bottom: true }"
-                :items="genderFilters"
-                outlined
-                dense
-                v-model="filters.gender"
-                item-text="name"
-                item-value="key"
-                placeholder="Select gender"
-                @change="checkIsAny(filters.gender, 'gender')"
-              ></v-select>
+              <v-select :menu-props="{ bottom: true }" :items="genderFilters" outlined dense v-model="filters.gender"
+                item-text="name" item-value="key" placeholder="Select gender"
+                @change="checkIsAny(filters.gender, 'gender')"></v-select>
             </div>
           </v-col>
           <!-- gender  -->
@@ -855,17 +515,9 @@
           <v-col md="3">
             <div class="d-flex flex-column">
               <label for="firstName">Own Rent</label>
-              <v-select
-                :menu-props="{ bottom: true }"
-                :items="ownRentFilter"
-                outlined
-                dense
-                v-model="filters.ownRent"
-                item-text="name"
-                item-value="key"
-                placeholder="Select type"
-                @change="checkIsAny(filters.ownRent, 'ownRent')"
-              ></v-select>
+              <v-select :menu-props="{ bottom: true }" :items="ownRentFilter" outlined dense v-model="filters.ownRent"
+                item-text="name" item-value="key" placeholder="Select type"
+                @change="checkIsAny(filters.ownRent, 'ownRent')"></v-select>
             </div>
           </v-col>
 
@@ -875,60 +527,30 @@
           <v-col md="3">
             <div class="d-flex flex-column">
               <label for="firstName">Opt in Source</label>
-              <v-select
-                :menu-props="{ bottom: true }"
-                :items="jobTitleFilters"
-                outlined
-                dense
-                v-model="filters.optionSource"
-                item-text="name"
-                item-value="key"
-                @change="checkIsAny(filters.optionSource, 'optionSource')"
-              ></v-select>
+              <v-select :menu-props="{ bottom: true }" :items="jobTitleFilters" outlined dense
+                v-model="filters.optionSource" item-text="name" item-value="key"
+                @change="checkIsAny(filters.optionSource, 'optionSource')"></v-select>
             </div>
           </v-col>
 
           <v-col md="3">
-            <v-combobox
-              v-if="
-                filters.optionSource == 'like' ||
-                filters.optionSource == 'not' ||
-                filters.optionSource == 'in'
-              "
-              class="mt-7"
-              v-model="filters.optionSources"
-              :filter="filter"
-              :hide-no-data="!searchOptionSource"
-              :items="items"
-              :search-input.sync="searchOptionSource"
-              hide-selected
-              label="Search for an option"
-              multiple
-              small-chips
-              solo
-              dense
-            >
+            <v-combobox v-if="filters.optionSource == 'like' ||
+              filters.optionSource == 'not' ||
+              filters.optionSource == 'in'
+              " class="mt-7" v-model="filters.optionSources" :filter="filter" :hide-no-data="!searchOptionSource"
+              :items="items" :search-input.sync="searchOptionSource" hide-selected label="Search for an option" multiple
+              small-chips solo dense>
               <template v-slot:no-data>
                 <v-list-item>
                   <span class="subheading">Create</span>
-                  <v-chip
-                    :color="`${colors[nonceOptionSource - 1]} lighten-3`"
-                    label
-                    small
-                  >
+                  <v-chip :color="`${colors[nonceOptionSource - 1]} lighten-3`" label small>
                     {{ searchOptionSource }}
                   </v-chip>
                 </v-list-item>
               </template>
               <template v-slot:selection="{ attrs, item, parent, selected }">
-                <v-chip
-                  v-if="item === Object(item)"
-                  v-bind="attrs"
-                  :color="`${item.color} lighten-3`"
-                  :input-value="selected"
-                  label
-                  small
-                >
+                <v-chip v-if="item === Object(item)" v-bind="attrs" :color="`${item.color} lighten-3`"
+                  :input-value="selected" label small>
                   <span class="pr-2">
                     {{ item.optionSourceValue }}
                   </span>
@@ -938,31 +560,15 @@
                 </v-chip>
               </template>
               <template v-slot:item="{ index, item }">
-                <v-text-field
-                  v-if="editingOptionSource === item"
-                  v-model="editingOptionSource.optionSourceValue"
-                  autofocus
-                  flat
-                  background-color="transparent"
-                  hide-details
-                  solo
-                  @keyup.enter="editOptionSource(index, item)"
-                ></v-text-field>
-                <v-chip
-                  v-else
-                  :color="`${item.color} lighten-3`"
-                  dark
-                  label
-                  small
-                >
+                <v-text-field v-if="editingOptionSource === item" v-model="editingOptionSource.optionSourceValue"
+                  autofocus flat background-color="transparent" hide-details solo
+                  @keyup.enter="editOptionSource(index, item)"></v-text-field>
+                <v-chip v-else :color="`${item.color} lighten-3`" dark label small>
                   {{ item.optionSourceValue }}
                 </v-chip>
                 <v-spacer></v-spacer>
                 <v-list-item-action @click.stop>
-                  <v-btn
-                    icon
-                    @click.stop.prevent="editOptionSource(index, item)"
-                  >
+                  <v-btn icon @click.stop.prevent="editOptionSource(index, item)">
                     <v-icon>{{
                       editingOptionSource !== item ? "mdi-pencil" : "mdi-check"
                     }}</v-icon>
@@ -985,17 +591,10 @@
       <v-btn color="#D75D3F" style="color: white" @click="applyFilters">
         Apply Filters
       </v-btn>
-     
+
       <v-dialog v-model="searchDialog" width="500">
         <template v-slot:activator="{ on, attrs }">
-          <v-btn
-            color="red lighten-2"
-            class="mx-2"
-            dark
-            v-bind="attrs"
-            v-on="on"
-            :disabled='!isFilterApplied'
-          >
+          <v-btn color="red lighten-2" class="mx-2" dark v-bind="attrs" v-on="on" :disabled='!isFilterApplied'>
             Save Search
           </v-btn>
         </template>
@@ -1009,12 +608,7 @@
           </v-card-title>
 
           <v-card-text>
-            <v-text-field
-              class="mt-5"
-              outlined
-              type="text"
-              v-model="searchName"
-            ></v-text-field>
+            <v-text-field class="mt-5" outlined type="text" v-model="searchName"></v-text-field>
           </v-card-text>
 
           <v-divider></v-divider>
@@ -1029,7 +623,7 @@
         </v-card>
       </v-dialog>
     </v-card-actions>
-    <SavedSearches ref="listSearch" :savedSearch='savedSearch' @applySavedFilter='applySavedFilter'/>
+    <SavedSearches ref="listSearch" :savedSearch='savedSearch' @applySavedFilter='applySavedFilter' />
   </v-card>
 </template>
 
@@ -1043,10 +637,10 @@ export default {
       default: "",
     },
   },
-  components: {SavedSearches},
+  components: { SavedSearches },
   data() {
     return {
-         menu: false,
+      menu: false,
       menu1: false,
       isFilterApplied: false,
       snackbar: false,
@@ -1123,6 +717,7 @@ export default {
         dobValue: "",
         stateValue: "",
         zipCodes: [],
+        verified: 'all'
       },
 
       dialog: false,
@@ -1159,6 +754,11 @@ export default {
         { name: "is any", key: null },
         { name: "Male", key: "M" },
         { name: "Female", key: "F" },
+      ],
+      VerifiedFilters: [
+        { name: "All", key: 'all' },
+        { name: "YES", key: 'true' },
+        { name: "NO", key: 'false' },
       ],
       ownRentFilter: [
         { name: "Own", key: "own" },
@@ -1287,111 +887,111 @@ export default {
 
   methods: {
     saveSearch() {
-      if(this.searchName == ''){
-this.snackbar = true
-this.text = 'Search name cannot be empty'
-      }else{
-         let payload = {
-        searchName: this.searchName,
-        firstName: this.filters.firstName,
-        firstNameValue: this.filters.firstNameValue,
-        lastName: this.filters.lastName,
-        lastNameValue: this.filters.lastNameValue,
-        email: this.filters.email,
-        emailValue: this.filters.emailValue,
-        companyName: this.filters.companyName,
-        companyNameValue: this.filters.companies,
-        mobilePhone: this.filters.mobilePhone,
-        mobilePhoneValue: this.filters.mobilePhoneValue,
-        companyPhone: this.filters.companyPhone,
-        companyPhoneValue: this.filters.companyPhoneValue,
-        address1: this.filters.address,
-        address1Value: this.filters.addressValue,
-        address2: this.filters.address2,
-        address2Value: this.filters.address2Value,
-        city: this.filters.city,
-        cityValue: this.filters.cities,
-        jobTitle: this.filters.jobTitle,
-        jobTitleValue: this.filters.jobTitles,
-        state: this.filters.state,
-        stateValue: this.filters.states,
-        zipCode: this.filters.zipCode,
-        zipCodeValue: this.filters.zipCodes,
-        gender: this.filters.gender,
-        ownRent: this.filters.ownRent,
-        optionSource: this.filters.optionSource,
-        optionSourceValue: this.filters.optionSources,
-        dob: this.filters.dob,
-        dobStartValue: this.filters.dobStartValue,
-        dobEndValue: this.filters.dobEndValue
-      };
-     
+      if (this.searchName == '') {
+        this.snackbar = true
+        this.text = 'Search name cannot be empty'
+      } else {
+        let payload = {
+          searchName: this.searchName,
+          firstName: this.filters.firstName,
+          firstNameValue: this.filters.firstNameValue,
+          lastName: this.filters.lastName,
+          lastNameValue: this.filters.lastNameValue,
+          email: this.filters.email,
+          emailValue: this.filters.emailValue,
+          companyName: this.filters.companyName,
+          companyNameValue: this.filters.companies,
+          mobilePhone: this.filters.mobilePhone,
+          mobilePhoneValue: this.filters.mobilePhoneValue,
+          companyPhone: this.filters.companyPhone,
+          companyPhoneValue: this.filters.companyPhoneValue,
+          address1: this.filters.address,
+          address1Value: this.filters.addressValue,
+          address2: this.filters.address2,
+          address2Value: this.filters.address2Value,
+          city: this.filters.city,
+          cityValue: this.filters.cities,
+          jobTitle: this.filters.jobTitle,
+          jobTitleValue: this.filters.jobTitles,
+          state: this.filters.state,
+          stateValue: this.filters.states,
+          zipCode: this.filters.zipCode,
+          zipCodeValue: this.filters.zipCodes,
+          gender: this.filters.gender,
+          ownRent: this.filters.ownRent,
+          optionSource: this.filters.optionSource,
+          optionSourceValue: this.filters.optionSources,
+          dob: this.filters.dob,
+          dobStartValue: this.filters.dobStartValue,
+          dobEndValue: this.filters.dobEndValue
+        };
 
-      this.loading = true;
 
-      axios
-        .post(`${process.env.VUE_APP_API_URL}api/save-search`, payload)
-        .then((res) => {
-          this.loading = false;
-          if (res.data.msg == "error") {
-            this.text = res.data.error;
-            this.snackbar = true;
-          } else {
-            (this.searchName = ""), (this.searchDialog = false);
-          }
-        })
-        .catch((err) => {
-          console.log(err);
-        });
+        this.loading = true;
+
+        axios
+          .post(`${process.env.VUE_APP_API_URL}api/save-search`, payload)
+          .then((res) => {
+            this.loading = false;
+            if (res.data.msg == "error") {
+              this.text = res.data.error;
+              this.snackbar = true;
+            } else {
+              (this.searchName = ""), (this.searchDialog = false);
+            }
+          })
+          .catch((err) => {
+            console.log(err);
+          });
       }
-     
+
     },
 
     getFilters() {
       axios
         .get(`${process.env.VUE_APP_API_URL}api/get-search`)
         .then((res) => {
-         console.log(res, 'this is saved search')
-         this.savedSearch = res.data.data
-        this.$refs.listSearch.listSearchesDialog = true
+          console.log(res, 'this is saved search')
+          this.savedSearch = res.data.data
+          this.$refs.listSearch.listSearchesDialog = true
         })
         .catch((err) => {
           console.log(err);
         });
     },
-    applySavedFilter(search){
-console.log(search, 'here is the search')
-this.filters.firstName = search.firstName
-this.filters.firstNameValue = search.firstNameValue
-this.filters.lastName = search.lastName
-this.filters.lastNameValue = search.lastNameValue
-this.filters.email = search.email
-this.filters.jobTitle = search.jobTitle
-this.filters.jobTitles = search.jobTitleValue
-this.filters.emailValue = search.emailValue
-this.filters.companyPhone = search.companyPhone
-this.filters.companyPhoneValue = search.companyPhoneValue
-this.filters.companyName = search.companyName
-this.filters.companies = search.companyNameValue
-this.filters.mobilePhone = search.mobilePhone
-this.filters.mobilePhoneValue = search.mobilePhoneValue
-this.filters.address = search.address1
-this.filters.addressValue = search.addressValue
-this.filters.address2 = search.address2
-this.filters.address2Value = search.address2Value
-this.filters.city = search.city
-this.filters.cities = search.cityValue
-this.filters.state = search.state
-this.filters.states = search.stateValue
-this.filters.zipCode = search.zipCode
-this.filters.zipCodes = search.zipCodeValue
-this.filters.gender = search.gender
-this.filters.ownRent = search.ownRent
-this.filters.optionSource = search.optionSource
-this.filters.optionSources = search.optionSourceValue
-this.filters.dob = search.dob
-this.filters.dobStartValue = search.dobStartValue
-this.filters.dobEndValue = search.dobEndValue
+    applySavedFilter(search) {
+      console.log(search, 'here is the search')
+      this.filters.firstName = search.firstName
+      this.filters.firstNameValue = search.firstNameValue
+      this.filters.lastName = search.lastName
+      this.filters.lastNameValue = search.lastNameValue
+      this.filters.email = search.email
+      this.filters.jobTitle = search.jobTitle
+      this.filters.jobTitles = search.jobTitleValue
+      this.filters.emailValue = search.emailValue
+      this.filters.companyPhone = search.companyPhone
+      this.filters.companyPhoneValue = search.companyPhoneValue
+      this.filters.companyName = search.companyName
+      this.filters.companies = search.companyNameValue
+      this.filters.mobilePhone = search.mobilePhone
+      this.filters.mobilePhoneValue = search.mobilePhoneValue
+      this.filters.address = search.address1
+      this.filters.addressValue = search.addressValue
+      this.filters.address2 = search.address2
+      this.filters.address2Value = search.address2Value
+      this.filters.city = search.city
+      this.filters.cities = search.cityValue
+      this.filters.state = search.state
+      this.filters.states = search.stateValue
+      this.filters.zipCode = search.zipCode
+      this.filters.zipCodes = search.zipCodeValue
+      this.filters.gender = search.gender
+      this.filters.ownRent = search.ownRent
+      this.filters.optionSource = search.optionSource
+      this.filters.optionSources = search.optionSourceValue
+      this.filters.dob = search.dob
+      this.filters.dobStartValue = search.dobStartValue
+      this.filters.dobEndValue = search.dobEndValue
 
     },
 
@@ -1432,14 +1032,16 @@ this.filters.dobEndValue = search.dobEndValue
 </script>
 
 <style scoped>
-::v-deep .v-text-field--outlined > .v-input__control > .v-input__slot {
+::v-deep .v-text-field--outlined>.v-input__control>.v-input__slot {
   align-items: stretch;
   min-height: 40px;
   height: 40px !important;
 }
+
 ::v-deep .v-text-field__details {
   display: none !important;
 }
+
 .filters {
   max-height: 85vh !important;
   overflow: auto;

@@ -25,12 +25,7 @@
           ><v-icon> mdi-filter-outline </v-icon> Add Filters
         </v-btn> -->
 
-          <v-btn
-            class="ma-2"
-            color="#D75D3F"
-            :loading="exportLoader"
-            @click="exportCSV"
-          >
+          <v-btn class="ma-2" color="#D75D3F" :loading="exportLoader" @click="exportCSV">
             <v-icon color="white"> mdi-database-export-outline </v-icon>
             <span style="color: white">Launch To Campaign</span>
           </v-btn>
@@ -38,22 +33,10 @@
           <v-btn class="ma-2" color="Primary" @click="uploadCSV">
             <v-icon> mdi-database-import-outline </v-icon> Import CSV
           </v-btn>
-          <v-btn class="ma-2" color="Primary" @click="checkDuplicates">
-            <v-icon> mdi-database-import-outline </v-icon> Check Duplicates
-          </v-btn>
-          <DuplicateDataModal ref="duplicates" />
-          <UploadFile
-            ref="uploadFile"
-            @file-uploaded="fileUploaded = true"
-            @update-data="getUsers"
-            dataType="add-linkedin2"
-          />
-          <v-btn
-            class="ma-2"
-            color="error"
-            @click="openConfirmation"
-            :disabled="selected.length < 1"
-          >
+
+
+
+          <v-btn class="ma-2" color="error" @click="openConfirmation" :disabled="selected.length < 1">
             <v-icon> mdi-trash-can-outline </v-icon> Delete Selected Records
           </v-btn>
         </div>
@@ -62,12 +45,7 @@
         <v-expansion-panel>
           <v-expansion-panel-header> Apply Filters </v-expansion-panel-header>
           <v-expansion-panel-content>
-            <Filters
-              ref="filters"
-              @apply-filter="applyFilters"
-              @check-any="checkAny"
-              dataType="linkedinData"
-            />
+            <Filters ref="filters" @apply-filter="applyFilters" @check-any="checkAny" dataType="linkedinData" />
           </v-expansion-panel-content>
         </v-expansion-panel>
       </v-expansion-panels>
@@ -78,21 +56,10 @@
             <div id="div2" class="width-scroll"></div>
           </div>
 
-          <v-data-table
-            ref="dt"
-            v-model="selected"
-            :headers="headers"
-            hide-default-footer
-            :items="usersData"
-            show-select
-            :single-select="singleSelect"
-            fixed-header
-            item-key="_id"
-            class="elevation-1 v-scroll-x-reverse v-data-table__overflow table-reference"
-            height="70vh"
-            :page.sync="pagination.page"
-            :items-per-page="pagination.itemPerPage"
-          >
+          <v-data-table ref="dt" v-model="selected" :headers="headers" hide-default-footer :items="usersData" show-select
+            :single-select="singleSelect" fixed-header item-key="_id"
+            class="elevation-1 v-scroll-x-reverse v-data-table__overflow table-reference" height="70vh"
+            :page.sync="pagination.page" :items-per-page="pagination.itemPerPage">
             <template v-slot:header.source="{ header }">
               <span v-if="isAdmin == 'true'">{{ header.text }}</span>
             </template>
@@ -132,6 +99,9 @@
             <template v-slot:item.zip="{ item }">
               {{ item.zip == "null" ? "" : item.zip }}
             </template>
+            <template v-slot:item.verified="{ item }">
+              {{ item.verified ? "Verified" : 'Not Verified' }}
+            </template>
             <template v-slot:item.createdAt="{ item }">
               {{ moment(item.createdAt).format("MM-DD-YYYY") }}
             </template>
@@ -139,27 +109,15 @@
               <v-btn class="ma-2" @click="openUserDetails(item)">
                 View Details
               </v-btn>
-              <UserDetailsModal 
-                ref="userDetails"
-                :userData="userData"
-                dataType="add-data"
-              />
+              <UserDetailsModal ref="userDetails" :userData="userData" dataType="add-data" />
             </template>
             <template v-slot:top>
-              <Pagination
-                :count="count"
-                :pagination="pagination"
-                @pageChangedEvent="pagination.page = $event"
-              />
+              <Pagination :count="count" :pagination="pagination" @pageChangedEvent="pagination.page = $event" />
             </template>
           </v-data-table>
         </v-col>
       </v-row>
-      <ConfirmationModalVue
-        @delete-records="deleteData"
-        ref="confirmation"
-        :loading="loading"
-      />
+      <ConfirmationModalVue @delete-records="deleteData" ref="confirmation" :loading="loading" />
     </div>
   </div>
 </template>
@@ -230,6 +188,8 @@ export default {
         { text: "State", value: "state", width: "100px" },
         { text: "ZIP", value: "zipCode", width: "100px" },
         { text: "Source", value: "source", width: "100px" },
+        { text: "Verified", value: "verified", width: "100px" },
+
         { text: "Created At", value: "createdAt", width: "150px" },
       ],
       csv_data: [],
@@ -356,33 +316,23 @@ export default {
         companyPhoneValue: this.filtersData?.companyPhoneValue || null,
         companyNameValue: this.filtersData?.companies || null,
 
-        
+
         zipCode: this.filtersData?.zipCodes || null,
+        verified: this.filtersData?.verified || null
       };
 
-      let url = `${process.env.VUE_APP_API_URL}api/linkedin2?itemsPerPage=${
-        this.pagination.itemPerPage
-      }&page=${this.pagination.page}&ageStartValue=${
-        filters?.ageStartValue
-      }&ageEndValue=${filters?.ageEndValue}&age=${filters?.age}&firstName=${
-        filters?.firstName
-      }&firstNameValue=${filters?.firstNameValue}&lastName=${
-        filters?.lastName
-      }&lastNameValue=${filters?.lastNameValue}&email=${
-        filters?.email
-      }&emailValue=${filters?.emailValue}&companyPhone=${
-        filters?.companyPhone
-      }&companyPhoneValue=${filters?.companyPhoneValue}&mobilePhone=${
-        filters?.mobilePhone
-      }&mobilePhoneValue=${filters?.mobilePhoneValue}&city=${
-        filters?.city
-      }&cityValue=${JSON.stringify(filters?.cityValue)}&state=${filters?.state}&stateValue=${JSON.stringify(filters?.stateValue)}&jobTitle=${
-        filters?.jobTitle
-      }&jobTitleValue=${JSON.stringify(filters?.jobTitleValue)}&address=${
-        filters?.address
-      }&addressValue=${filters?.addressValue}&companyName=${
-        filters?.companyName
-      }&companyNameValue=${JSON.stringify(filters?.companyNameValue)}`;
+      let url = `${process.env.VUE_APP_API_URL}api/linkedin2?itemsPerPage=${this.pagination.itemPerPage
+        }&page=${this.pagination.page}&ageStartValue=${filters?.ageStartValue
+        }&ageEndValue=${filters?.ageEndValue}&age=${filters?.age}&firstName=${filters?.firstName
+        }&firstNameValue=${filters?.firstNameValue}&lastName=${filters?.lastName
+        }&lastNameValue=${filters?.lastNameValue}&email=${filters?.email
+        }&emailValue=${filters?.emailValue}&companyPhone=${filters?.companyPhone
+        }&companyPhoneValue=${filters?.companyPhoneValue}&mobilePhone=${filters?.mobilePhone
+        }&mobilePhoneValue=${filters?.mobilePhoneValue}&city=${filters?.city
+        }&cityValue=${JSON.stringify(filters?.cityValue)}&state=${filters?.state}&stateValue=${JSON.stringify(filters?.stateValue)}&jobTitle=${filters?.jobTitle
+        }&jobTitleValue=${JSON.stringify(filters?.jobTitleValue)}&address=${filters?.address
+        }&addressValue=${filters?.addressValue}&companyName=${filters?.companyName
+        }&companyNameValue=${JSON.stringify(filters?.companyNameValue)}&verified=${filters?.verified}`;
       axios
         .get(url, {
           headers: {
@@ -403,7 +353,7 @@ export default {
     // exportCSV() {
     //   this.exportLoader = true;
     //   // let pagination = `?itemsPerPage=${this.pagination.itemPerPage}&page=${this.pagination.page}`
-    
+
     //   let url = `${process.env.VUE_APP_API_URL}api/get-company-data`;
 
     //   axios
@@ -432,7 +382,7 @@ export default {
         firstName: this.filtersData?.firstName || null,
         age: this.filtersData?.age || null,
         city: this.filtersData?.city || null,
-      
+
         address: this.filtersData?.address || null,
         address2: this.filtersData?.address2 || null,
         email: this.filtersData?.email || null,
@@ -457,31 +407,22 @@ export default {
         companyPhoneValue: this.filtersData?.companyPhoneValue || null,
         companyNameValue: this.filtersData?.companies || null,
 
-         state: this.filtersData?.state || null,
+        state: this.filtersData?.state || null,
         stateValue: this.filtersData?.states || null,
         zipCode: this.filtersData?.zipCodes || null,
+        verified: this.filtersData?.verified || null
       };
-      let url = `${process.env.VUE_APP_API_URL}api/linkedin2?export=${true}&ageStartValue=${
-        filters?.ageStartValue
-      }&ageEndValue=${filters?.ageEndValue}&age=${filters?.age}&firstName=${
-        filters?.firstName
-      }&firstNameValue=${filters?.firstNameValue}&lastName=${
-        filters?.lastName
-      }&lastNameValue=${filters?.lastNameValue}&email=${
-        filters?.email
-      }&emailValue=${filters?.emailValue}&companyPhone=${
-        filters?.companyPhone
-      }&companyPhoneValue=${filters?.companyPhoneValue}&mobilePhone=${
-        filters?.mobilePhone
-      }&mobilePhoneValue=${filters?.mobilePhoneValue}&city=${
-        filters?.city
-      }&cityValue=${JSON.stringify(filters?.cityValue)}&state=${filters?.state}&stateValue=${JSON.stringify(filters?.stateValue)}&jobTitle=${
-        filters?.jobTitle
-      }&jobTitleValue=${JSON.stringify(filters?.jobTitleValue)}&address=${
-        filters?.address
-      }&addressValue=${filters?.addressValue}&companyName=${
-        filters?.companyName
-      }&companyNameValue=${JSON.stringify(filters?.companyNameValue)}`;
+      let url = `${process.env.VUE_APP_API_URL}api/linkedin2?export=${true}&ageStartValue=${filters?.ageStartValue
+        }&ageEndValue=${filters?.ageEndValue}&age=${filters?.age}&firstName=${filters?.firstName
+        }&firstNameValue=${filters?.firstNameValue}&lastName=${filters?.lastName
+        }&lastNameValue=${filters?.lastNameValue}&email=${filters?.email
+        }&emailValue=${filters?.emailValue}&companyPhone=${filters?.companyPhone
+        }&companyPhoneValue=${filters?.companyPhoneValue}&mobilePhone=${filters?.mobilePhone
+        }&mobilePhoneValue=${filters?.mobilePhoneValue}&city=${filters?.city
+        }&cityValue=${JSON.stringify(filters?.cityValue)}&state=${filters?.state}&stateValue=${JSON.stringify(filters?.stateValue)}&jobTitle=${filters?.jobTitle
+        }&jobTitleValue=${JSON.stringify(filters?.jobTitleValue)}&address=${filters?.address
+        }&addressValue=${filters?.addressValue}&companyName=${filters?.companyName
+        }&companyNameValue=${JSON.stringify(filters?.companyNameValue)}&verified=${filters?.verified}`;
 
       axios
         .get(url, {
@@ -546,14 +487,17 @@ export default {
   overflow-x: scroll;
   overflow-y: hidden;
 }
+
 .width-scroll {
   width: 3700px;
 }
+
 /* This div allow to make the scroll function and show the scrollbar */
 #div2 {
   height: 1px;
   overflow: scroll;
 }
+
 .v-data-table__wrapper {
   overflow-x: visible !important;
 }
@@ -565,13 +509,15 @@ export default {
 }
 
 .v-data-footer__wrapper .v-data-table__wrapper {
-  margin-bottom: -18px; /* adjust for scrollbar height */
+  margin-bottom: -18px;
+  /* adjust for scrollbar height */
 }
+
 ::v-deep .v-data-table-header {
   background: #f9f9f9 !important;
 }
 
-::v-deep .v-text-field--outlined > .v-input__control > .v-input__slot {
+::v-deep .v-text-field--outlined>.v-input__control>.v-input__slot {
   align-items: stretch;
   min-height: 36px;
   margin-top: 7px;
