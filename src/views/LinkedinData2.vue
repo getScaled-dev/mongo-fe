@@ -39,6 +39,10 @@
           <v-btn class="ma-2" color="error" @click="openConfirmation" :disabled="selected.length < 1">
             <v-icon> mdi-trash-can-outline </v-icon> Delete Selected Records
           </v-btn>
+
+          <v-btn class="ma-2" color="scuuess" @click="uploadVerifiedCSV">
+            <v-icon> mdi-database-import-outline </v-icon> Import Verified Data
+          </v-btn>
         </div>
       </div>
       <v-expansion-panels class="mt-5">
@@ -118,6 +122,7 @@
         </v-col>
       </v-row>
       <ConfirmationModalVue @delete-records="deleteData" ref="confirmation" :loading="loading" />
+      <VerifiedModal ref="uploadVerified" />
     </div>
   </div>
 </template>
@@ -130,10 +135,12 @@ import UserDetailsModal from "@/components/UserDetailsModal.vue";
 import Filters from "@/components/Filters.vue";
 import Pagination from "@/components/Pagination.vue";
 import UploadFile from "@/components/UploadFile.vue";
+import VerifiedModal from '@/components/VerifiedModal.vue'
 import DuplicateDataModal from "@/components/DuplicateDataModal.vue";
 import moment from "moment";
 import DuplicateDataModalVue from "@/components/DuplicateDataModal.vue";
 import ConfirmationModalVue from "@/components/ConfirmationModal.vue";
+import VerifiedModalVue from '@/components/VerifiedModal.vue';
 export default {
   components: {
     UserDetailsModal,
@@ -144,6 +151,7 @@ export default {
     DuplicateDataModal,
     ConfirmationModalVue,
     Loader,
+    VerifiedModal
   },
   data() {
     return {
@@ -241,6 +249,9 @@ export default {
     },
     uploadCSV() {
       this.$refs.uploadFile.dialog = true;
+    },
+    uploadVerifiedCSV() {
+      this.$refs.uploadVerified.dialog = true;
     },
 
     checkAny(type) {
