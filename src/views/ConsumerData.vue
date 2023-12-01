@@ -549,7 +549,7 @@ export default {
         gender: this.filtersData?.gender || null,
       };
       let url = `${process.env.VUE_APP_API_URL
-        }api/get-consumer-data?export=${true}&verifyEmailList=${true}&dobStartValue=${filters?.dobStartValue
+        }api/get-consumer-data?verify=${true}&dobStartValue=${filters?.dobStartValue
         }&dobEndValue=${filters?.dobEndValue}&dob=${filters?.dob}&firstName=${filters?.firstName
         }&firstNameValue=${filters?.firstNameValue}&lastName=${filters?.lastName
         }&lastNameValue=${filters?.lastNameValue}&email=${filters?.email
@@ -597,16 +597,16 @@ export default {
                 this.verifiedEmails = splitString[4];
 
                 if (finished == "finished") {
-                 
+
                   window.open(url, "_blank");
                   clearInterval(myInterval);
-                  
+
                 }
- 
+
                 console.log(res.data);
               });
             // window.open(url, "_blank");
-          }, 5000);
+          }, 15000);
         })
         .catch((error) => {
           this.exportLoader = false;

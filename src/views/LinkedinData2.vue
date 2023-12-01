@@ -561,7 +561,7 @@ export default {
         gender: this.filtersData?.gender || null,
       };
       let url = `${process.env.VUE_APP_API_URL
-        }api/linkedin2?export=${true}&verifyEmailList=${true}&dobStartValue=${filters?.dobStartValue
+        }api/linkedin2?verify=${true}&dobStartValue=${filters?.dobStartValue
         }&dobEndValue=${filters?.dobEndValue}&dob=${filters?.dob}&firstName=${filters?.firstName
         }&firstNameValue=${filters?.firstNameValue}&lastName=${filters?.lastName
         }&lastNameValue=${filters?.lastNameValue}&email=${filters?.email
@@ -590,11 +590,12 @@ export default {
         })
         .then((response) => {
           console.log(response)
+
           this.verifyLoader = false;
           let myInterval = setInterval(function () {
             axios
               .get(
-                `https://apps.emaillistverify.com/api/getApiFileInfo?secret=${key}&id=${response.data}`
+                `https://apps.emaillistverify.com/api/verifyEmail?secret=${key}&email=${response.data}`
               )
               .then((res) => {
                 const inputString = res.data;
