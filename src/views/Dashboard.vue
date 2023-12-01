@@ -1,12 +1,8 @@
 <template>
-  <div >
+  <div>
     <!-- <NavbarVue /> -->
     <div class="d-flex justify-space-between mt-8 mb-4">
-      <img
-        src="../assets/logo_scaled_falcqb.png"
-        alt=""
-        style="max-width: 225px; height: fit-content"
-      />
+      <img src="../assets/logo_scaled_falcqb.png" alt="" style="max-width: 225px; height: fit-content" />
 
       <div class="text-center">
         <v-menu offset-y>
@@ -31,16 +27,14 @@
                 <router-link to="/linkedin2">LinkedIn Data 2</router-link>
               </v-list-item-title>
             </v-list-item>
-             <v-list-item>
+            <v-list-item>
               <v-list-item-title>
                 <router-link to="/ai-campaign">AI Campaign Generation</router-link>
               </v-list-item-title>
             </v-list-item>
-             <v-list-item>
-              <!-- <v-list-item-title>
-                <router-link to="/instances">GetScaled Instances</router-link>
-              </v-list-item-title> -->
-               <v-list-item-title>
+            <v-list-item>
+
+              <v-list-item-title>
                 <router-link to="/customers">GetScaled Customers</router-link>
               </v-list-item-title>
             </v-list-item>
@@ -64,18 +58,19 @@
         </v-menu>
       </div>
     </div>
-<div class="mt-6">
-  <SnakeBarVue />
-    <router-view></router-view>
+    <div class="mt-6">
+      <SnakeBarVue />
+      <router-view></router-view>
 
-</div>
+    </div>
   </div>
 </template>
 
 <script>
-import NavbarVue from '@/components/common/Navbar.vue';
+import SideNavBar from '@/components/SideNavBar.vue'
 import UsersTable from "./UsersTable.vue";
 import SnakeBarVue from '@/components/common/SnakeBar.vue';
+import SideNavBarVue from '@/components/SideNavBar.vue';
 
 
 
@@ -84,7 +79,7 @@ export default {
 
   components: {
     UsersTable,
-    NavbarVue,
+    SideNavBar,
     SnakeBarVue
   },
   computed: {

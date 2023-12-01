@@ -4,6 +4,10 @@
       <v-btn color="primary" text @click="getFilters">
         Select Saved Filters
       </v-btn>
+
+      <v-btn color="primary" @click="showUploadFilterModal">
+        Upload CSV Filters
+      </v-btn>
       <!-- First Name  -->
 
       <v-form ref="form">
@@ -624,12 +628,15 @@
       </v-dialog>
     </v-card-actions>
     <SavedSearches ref="listSearch" :savedSearch='savedSearch' @applySavedFilter='applySavedFilter' />
+    <UploadFilters ref="uploadFilters" :dataType="dataType" />
   </v-card>
 </template>
 
 <script>
 import axios from "axios";
 import SavedSearches from '../components/SavedSearches.vue';
+
+import UploadFilters from './UploadFilters.vue';
 export default {
   props: {
     dataType: {
@@ -637,7 +644,7 @@ export default {
       default: "",
     },
   },
-  components: { SavedSearches },
+  components: { SavedSearches, UploadFilters },
   data() {
     return {
       menu: false,
@@ -946,7 +953,9 @@ export default {
       }
 
     },
-
+    showUploadFilterModal() {
+      this.$refs.uploadFilters.dialog = true
+    },
     getFilters() {
       axios
         .get(`${process.env.VUE_APP_API_URL}api/get-search`)
