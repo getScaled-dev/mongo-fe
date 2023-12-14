@@ -48,7 +48,7 @@
 
                     <v-card-actions>
                         <v-spacer></v-spacer>
-                        <v-btn color="error" @click="dialog = false"> Close </v-btn>
+                        <v-btn color="error" @click="closeDialog"> Close </v-btn>
 
                         <v-btn :loading="loading" color="primary" @click="uploadFiles">
                             Upload
@@ -100,67 +100,86 @@ export default {
         uploadFiles() {
 
             this.loading = true;
-            let data = new FormData();
-            console.log(this.dataType);
-            for (var i = 0; i < this.$refs.documents.files.length; i++) {
-                let file = this.$refs.documents.files[i];
-                data.append("csvFile", file);
+            if (this.column == null || this.filterType == null || this.files == null) {
+                alert('please fill')
+                return
+            } else {
+                let data = new FormData();
+                console.log(this.dataType);
+                for (var i = 0; i < this.$refs.documents.files.length; i++) {
+                    let file = this.$refs.documents.files[i];
+                    data.append("csvFile", file);
 
+                }
+                data.append('model', this.dataType)
+                data.append('column', this.column)
+                data.append('filterType', this.filterType)
+
+                console.log(data)
+
+
+                axios
+                    .post(`${process.env.VUE_APP_API_URL}api/add-filter-data`, data, {
+                        headers: {
+                            "Content-Type": "multipart/form-data",
+                            Authorization: `Bearer ${localStorage.getItem("token")}`,
+                        },
+                    })
+
+                    .then((res) => {
+
+                        this.files = null;
+                        this.fielUploaded = true;
+                        this.loading = false;
+
+                        this.$emit("file-uploaded");
+                        console.log(this.loading, res, "=========>");
+
+                        this.dialog = false;
+                        const csvData = res.data;
+
+                        // Convert CSV data to Blob
+                        const blob = new Blob([csvData], { type: 'text/csv' });
+
+                        // Create a temporary anchor element
+                        const link = document.createElement('a');
+                        link.href = window.URL.createObjectURL(blob);
+                        link.download = 'data.csv';
+
+                        // Trigger a click event to download the file
+                        document.body.appendChild(link);
+                        link.click();
+
+                        // Remove the temporary anchor element from the DOM
+                        document.body.removeChild(link);
+
+
+                        this.$emit("update-data");
+                    })
+                    .catch((error) => {
+                        if (error.response) {
+                            console.log(error.reaponse);
+                        } else if (error.request) {
+                            console.log(error.request);
+                        } else {
+                            console.log("Error", error.message);
+                        }
+                    })
+                    .finally(() => {
+                        this.clearData()
+                    })
             }
-            data.append('model', this.dataType)
-            data.append('column', this.column)
-            data.append('filterType', this.filterType)
 
-            console.log(data)
-
-
-            axios
-                .post(`${process.env.VUE_APP_API_URL}api/add-filter-data`, data, {
-                    headers: {
-                        "Content-Type": "multipart/form-data",
-                        Authorization: `Bearer ${localStorage.getItem("token")}`,
-                    },
-                })
-
-                .then((res) => {
-                    this.files = null;
-                    this.fielUploaded = true;
-                    this.loading = false;
-
-                    this.$emit("file-uploaded");
-                    console.log(this.loading, res, "=========>");
-
-                    this.dialog = false;
-                    const csvData = res.data;
-
-                    // Convert CSV data to Blob
-                    const blob = new Blob([csvData], { type: 'text/csv' });
-
-                    // Create a temporary anchor element
-                    const link = document.createElement('a');
-                    link.href = window.URL.createObjectURL(blob);
-                    link.download = 'data.csv';
-
-                    // Trigger a click event to download the file
-                    document.body.appendChild(link);
-                    link.click();
-
-                    // Remove the temporary anchor element from the DOM
-                    document.body.removeChild(link);
-
-
-                    this.$emit("update-data");
-                })
-                .catch((error) => {
-                    if (error.response) {
-                        console.log(error.reaponse);
-                    } else if (error.request) {
-                        console.log(error.request);
-                    } else {
-                        console.log("Error", error.message);
-                    }
-                });
         },
+        closeDialog() {
+            this.dialog = false
+            this.clearData()
+        },
+        clearData() {
+            this.column = null
+            this.filterType = null
+            this.files = null
+        }
     },
 };
 </script>
