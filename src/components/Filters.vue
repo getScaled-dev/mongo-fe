@@ -598,7 +598,7 @@
 
       <v-dialog v-model="searchDialog" width="500">
         <template v-slot:activator="{ on, attrs }">
-          <v-btn color="red lighten-2" class="mx-2" dark v-bind="attrs" v-on="on" :disabled='!isFilterApplied'>
+          <v-btn color="red lighten-2" class="mx-2" dark v-bind="attrs" v-on="on" >
             Save Search
           </v-btn>
         </template>
