@@ -8,6 +8,9 @@
       <v-btn color="primary" @click="showUploadFilterModal">
         Upload CSV Filters
       </v-btn>
+       <v-btn color="primary" @click="showSelectedFilter">
+        Upload Selected Filters
+      </v-btn>
       <!-- First Name  -->
 
       <v-form ref="form">
@@ -629,6 +632,8 @@
     </v-card-actions>
     <SavedSearches ref="listSearch" :savedSearch='savedSearch' @applySavedFilter='applySavedFilter' />
     <UploadFilters ref="uploadFilters" :dataType="dataType" />
+    <SelectedUpload ref="selectedFilters" :dataType="dataType" />
+
   </v-card>
 </template>
 
@@ -637,6 +642,7 @@ import axios from "axios";
 import SavedSearches from '../components/SavedSearches.vue';
 
 import UploadFilters from './UploadFilters.vue';
+import SelectedUpload from './SelectedUpload.vue';
 export default {
   props: {
     dataType: {
@@ -644,7 +650,7 @@ export default {
       default: "",
     },
   },
-  components: { SavedSearches, UploadFilters },
+  components: { SavedSearches, UploadFilters, SelectedUpload },
   data() {
     return {
       menu: false,
@@ -955,6 +961,10 @@ export default {
     },
     showUploadFilterModal() {
       this.$refs.uploadFilters.dialog = true
+    },
+    showSelectedFilter(){
+      this.$refs.selectedFilters.dialog = true
+
     },
     getFilters() {
       axios
